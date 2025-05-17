@@ -8,8 +8,8 @@ import java.sql.*;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 
 public class DatabaseInitService {
-	public void initDatabase(String resourcePath) {
-		try(Connection conn = DBConnection.getConnection("root", "1234")) {
+	public void initDatabase(Connection conn, String resourcePath) {
+		try {
 			InputStream is = DatabaseInitService.class
 					.getClassLoader()
 					.getResourceAsStream(resourcePath);
@@ -29,6 +29,8 @@ public class DatabaseInitService {
             
 		} catch(SQLException e) {
 			System.err.println("[initDatabase] SQL 스크립트 실행 중 오류 발생");
+			e.printStackTrace();
+		} catch(RuntimeException e) {
 			e.printStackTrace();
 		}
 	}
