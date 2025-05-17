@@ -1,5 +1,5 @@
 # 데이터베이스 드랍
-DROP DATABASE IF EXISTS DBDBTEST;
+DROP DATABASE IF EXISTS DBTEST;
 
 # 데이터베이스 생성
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
@@ -10,22 +10,22 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema CampingCarRentalDB
+-- Schema DBTEST
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema CampingCarRentalDB
+-- Schema DBTEST
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `CampingCarRentalDB` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
+CREATE SCHEMA IF NOT EXISTS `DBTEST` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 
 # 데이터베이스 사용
-USE `CampingCarRentalDB` ;
+USE `DBTEST` ;
 
 # 데이터베이스 테이블 생성
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`CampingCarCompany`
+-- Table `DBTEST`.`CampingCarCompany`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`CampingCarCompany` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCarCompany` (
   `company_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `address` VARCHAR(255) NOT NULL,
@@ -39,9 +39,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`CampingCar`
+-- Table `DBTEST`.`CampingCar`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`CampingCar` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCar` (
   `car_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `plate_number` VARCHAR(255) NOT NULL,
@@ -56,16 +56,16 @@ CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`CampingCar` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `campingcar_ibfk_1`
     FOREIGN KEY (`company_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`DBTEST` (`company_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`Customer`
+-- Table `DBTEST`.`Customer`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`Customer` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`Customer` (
   `customer_id` INT NOT NULL AUTO_INCREMENT,
   `username` VARCHAR(255) NOT NULL,
   `password` VARCHAR(255) NOT NULL,
@@ -82,9 +82,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`Employee`
+-- Table `DBTEST`.`Employee`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`Employee` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`Employee` (
   `employee_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `phone` VARCHAR(255) NOT NULL,
@@ -100,9 +100,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`ExternalRepairShop`
+-- Table `DBTEST`.`ExternalRepairShop`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`ExternalRepairShop` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`ExternalRepairShop` (
   `shop_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NULL DEFAULT NULL,
   `address` VARCHAR(255) NULL DEFAULT NULL,
@@ -116,9 +116,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`ExternalRepairRecord`
+-- Table `DBTEST`.`ExternalRepairRecord`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`ExternalRepairRecord` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`ExternalRepairRecord` (
   `external_repair_id` INT NOT NULL AUTO_INCREMENT,
   `car_id` INT NOT NULL,
   `shop_id` INT NOT NULL,
@@ -136,25 +136,25 @@ CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`ExternalRepairRecord` (
   INDEX `customer_id` (`customer_id` ASC) VISIBLE,
   CONSTRAINT `externalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
   CONSTRAINT `externalrepairrecord_ibfk_2`
     FOREIGN KEY (`shop_id`)
-    REFERENCES `CampingCarRentalDB`.`ExternalRepairShop` (`shop_id`),
+    REFERENCES `DBTEST`.`ExternalRepairShop` (`shop_id`),
   CONSTRAINT `externalrepairrecord_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCarCompany` (`company_id`),
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`),
   CONSTRAINT `externalrepairrecord_ibfk_4`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `CampingCarRentalDB`.`Customer` (`customer_id`))
+    REFERENCES `DBTEST`.`Customer` (`customer_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`Part`
+-- Table `DBTEST`.`Part`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`Part` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`Part` (
   `part_id` INT NOT NULL AUTO_INCREMENT,
   `name` VARCHAR(255) NOT NULL,
   `unit_price` INT UNSIGNED NOT NULL,
@@ -169,9 +169,9 @@ COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`InternalRepairRecord`
+-- Table `DBTEST`.`InternalRepairRecord`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`InternalRepairRecord` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`InternalRepairRecord` (
   `internal_repair_id` INT NOT NULL AUTO_INCREMENT,
   `car_id` INT NOT NULL,
   `part_id` INT NULL DEFAULT NULL,
@@ -184,22 +184,22 @@ CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`InternalRepairRecord` (
   INDEX `employee_id` (`employee_id` ASC) VISIBLE,
   CONSTRAINT `internalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
   CONSTRAINT `internalrepairrecord_ibfk_2`
     FOREIGN KEY (`part_id`)
-    REFERENCES `CampingCarRentalDB`.`Part` (`part_id`),
+    REFERENCES `DBTEST`.`Part` (`part_id`),
   CONSTRAINT `internalrepairrecord_ibfk_3`
     FOREIGN KEY (`employee_id`)
-    REFERENCES `CampingCarRentalDB`.`Employee` (`employee_id`))
+    REFERENCES `DBTEST`.`Employee` (`employee_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
--- Table `CampingCarRentalDB`.`Rental`
+-- Table `DBTEST`.`Rental`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`Rental` (
+CREATE TABLE IF NOT EXISTS `DBTEST`.`Rental` (
   `rental_id` INT NOT NULL AUTO_INCREMENT,
   `car_id` INT NOT NULL,
   `customer_id` INT NOT NULL,
@@ -217,13 +217,13 @@ CREATE TABLE IF NOT EXISTS `CampingCarRentalDB`.`Rental` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `rental_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
   CONSTRAINT `rental_ibfk_2`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `CampingCarRentalDB`.`Customer` (`customer_id`),
+    REFERENCES `DBTEST`.`Customer` (`customer_id`),
   CONSTRAINT `rental_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `CampingCarRentalDB`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -356,15 +356,15 @@ INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, 
 -- user1 계정은 반드시 캠핑카 대역 예약에 필요한 테이블에 대해서만 읽기/쓰기 원한을 부여한다. (root 계정은 모든 권한 소유)
 
 -- root: 모든 권한 부여
-# GRANT ALL PRIVILEGES ON CampingCarRentalDB.* TO 'root'@'%';
+# GRANT ALL PRIVILEGES ON DBTEST.* TO 'root'@'%';
 
 -- 일반 사용자: 특정 테이블에 대해 CRUD만 허용
 -- 일반 회원은 Rental, externalRepairRecord 테이블에 대해서만 삭제/변경을 수행한다.
 # GRANT SELECT, INSERT, UPDATE, DELETE
-# ON CampingCarRentalDB.Rental TO 'user1'@'%';
+# ON DBTEST TO 'user1'@'%';
 
 # GRANT SELECT, INSERT, UPDATE, DELETE
-# ON CampingCarRentalDB.ExternalRepairRecord TO 'user1'@'%';
+# ON DBTEST TO 'user1'@'%';
 -- 필요한 다른 테이블도 동일하게 반복
 
 FLUSH PRIVILEGES;
