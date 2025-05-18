@@ -368,6 +368,3 @@ INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, 
 -- 필요한 다른 테이블도 동일하게 반복
 
 FLUSH PRIVILEGES;
-
-
-SELECT * FROM CampingCarCompany;
