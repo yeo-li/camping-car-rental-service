@@ -8,7 +8,7 @@ public class DBConnection {
 	
 	private static Connection conn;
 	//public static void main (String[] args) {
-	DBConnection(String user, String pw) {// ID와 pw를 불러와서 DB에 연결합니다.
+	public DBConnection(String user, String pw) {// ID와 pw를 불러와서 DB에 연결합니다.
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 드라이버 로드
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBTEST", user,pw); // JDBC 연결
