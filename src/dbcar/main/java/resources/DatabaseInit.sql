@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCar` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `campingcar_ibfk_1`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`DBTEST` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -368,3 +368,6 @@ INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, 
 -- 필요한 다른 테이블도 동일하게 반복
 
 FLUSH PRIVILEGES;
+
+
+SELECT * FROM CampingCarCompany;
