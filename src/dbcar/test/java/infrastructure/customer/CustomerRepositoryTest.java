@@ -12,7 +12,7 @@ public class CustomerRepositoryTest {
 	static DatabaseInitService databaseInitService;
 	static CustomerRepository customerRepository;
 	public static void main(String[] args) {
-		System.out.println("[[CustomerRepositoryTest 초기 팅]]");
+		System.out.println("[[CustomerRepositoryTest 초기 세팅]]");
 		
 		dc = new DBConnection("root", "1234");
 		databaseInitService = new DatabaseInitService();
@@ -31,8 +31,10 @@ public class CustomerRepositoryTest {
 		사용자의_아이디로_데이터가_삭제_되어야_한다();
 		
 		// save Test
+		새로운_사용자를_저장할_수_있어야_한다();
 		
 		// update Test
+		// 데이터를_업데이트_할_수_있어야_한다();
 		
 		System.out.println("\n[[CustomerRepositoryTest 완료]]");
 	}
@@ -55,5 +57,24 @@ public class CustomerRepositoryTest {
 		
 		// then
 		AssertUtil.assertEqual(null, customer, "사용자의 아이디로 데이터가 삭제 되어야 한다.");
+	}
+	
+	private static void 새로운_사용자를_저장할_수_있어야_한다() {
+		// given
+		Customer customer = new Customer(
+				"yeoli", 
+				"3014", 
+				"L134233212", 
+				"박성열", 
+				"광진구 천호대로", 
+				"010-3075-3014", 
+				"uio6699@naver.com");
+		
+		// when
+		customerRepository.save(customer);
+		
+		//then
+		Customer actual = customerRepository.findById(13);
+		AssertUtil.assertEqual("박성열", actual.getName(), "새로운 사용자를 저장할 수 있어야 한다.");
 	}
 }
