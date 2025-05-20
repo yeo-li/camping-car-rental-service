@@ -74,4 +74,17 @@ public class CustomerRepository {
 		return customers;
 	}
 	
+	public void deleteById(int id) {
+		String sql = "DELETE FROM Customer WHERE customer_id = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			
+			int deleted = pstmt.executeUpdate();
+			if(deleted > 0) System.out.printf("%d개 삭제 되었습니다.\n", deleted);
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
 }
