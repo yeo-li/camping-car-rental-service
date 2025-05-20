@@ -3,6 +3,7 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.customer;
 import java.util.*;
 
 public class Customer {
+	private final int customer_id;
 	private final String username;
 	private final String password;
 	private final String license_number;
@@ -13,9 +14,10 @@ public class Customer {
 	
 	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
 	
-	public Customer(String username, String password, String license_number, String name, String address, String phone, String email) {
+	public Customer(int customer_id, String username, String password, String license_number, String name, String address, String phone, String email) {
 		validate(username, password, license_number, name, address, phone, email);
 		
+		this.customer_id = customer_id;
 		this.username = username;
 		this.password = password;
 		this.license_number = license_number;
@@ -26,7 +28,8 @@ public class Customer {
 	}
 	
 	private void validate(String username, String password, String license_number, String name, String address, String phone, String emial) {
-	    Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
+		Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
+		Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
 	    Objects.requireNonNull(password, String.format(NULL_MESSAGE, "password"));
 	    Objects.requireNonNull(license_number, String.format(NULL_MESSAGE, "license_number"));
 	    Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
@@ -35,6 +38,10 @@ public class Customer {
 	    Objects.requireNonNull(email, String.format(NULL_MESSAGE, "email"));
 	}
 
+	public int getCustomer_id() {
+		return customer_id;
+	}
+	
 	public String getUsername() {
 		return username;
 	}
