@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCar` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `campingcar_ibfk_1`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -136,16 +136,16 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`ExternalRepairRecord` (
   INDEX `customer_id` (`customer_id` ASC) VISIBLE,
   CONSTRAINT `externalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_2`
     FOREIGN KEY (`shop_id`)
-    REFERENCES `DBTEST`.`ExternalRepairShop` (`shop_id`),
+    REFERENCES `DBTEST`.`ExternalRepairShop` (`shop_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`),
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_4`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `DBTEST`.`Customer` (`customer_id`))
+    REFERENCES `DBTEST`.`Customer` (`customer_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -184,13 +184,13 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`InternalRepairRecord` (
   INDEX `employee_id` (`employee_id` ASC) VISIBLE,
   CONSTRAINT `internalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `internalrepairrecord_ibfk_2`
     FOREIGN KEY (`part_id`)
-    REFERENCES `DBTEST`.`Part` (`part_id`),
+    REFERENCES `DBTEST`.`Part` (`part_id`) ON DELETE CASCADE,
   CONSTRAINT `internalrepairrecord_ibfk_3`
     FOREIGN KEY (`employee_id`)
-    REFERENCES `DBTEST`.`Employee` (`employee_id`))
+    REFERENCES `DBTEST`.`Employee` (`employee_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -217,13 +217,13 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`Rental` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `rental_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `rental_ibfk_2`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `DBTEST`.`Customer` (`customer_id`),
+    REFERENCES `DBTEST`.`Customer` (`customer_id`) ON DELETE CASCADE,
   CONSTRAINT `rental_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;

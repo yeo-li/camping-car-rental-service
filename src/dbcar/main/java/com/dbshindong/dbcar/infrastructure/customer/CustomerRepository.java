@@ -37,6 +37,9 @@ public class CustomerRepository {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return null;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return null;
 		}
 
 		return customer;
