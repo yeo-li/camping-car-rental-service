@@ -85,8 +85,6 @@ public class CustomerRepository {
 			pstmt.setInt(1, id);
 
 			int deleted = pstmt.executeUpdate();
-			if (deleted > 0)
-				System.out.printf("%d개 삭제 되었습니다.\n", deleted);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,7 +103,6 @@ public class CustomerRepository {
 		    pstmt.setString(7, customer.getEmail());
 
 		    int result = pstmt.executeUpdate();
-		    if (result > 0) System.out.printf("%d개 삭제 되었습니다.\n", result);
 		} catch (SQLException e) {
 		    e.printStackTrace();
 		}
@@ -125,10 +122,6 @@ public class CustomerRepository {
 			pstmt.setString(7, customer.getEmail());
 			
 			int result = pstmt.executeUpdate();
-			if(result > 0)
-				System.out.printf("고객 정보가 %d건 수정되었습니다.", result);
-			else
-				System.out.println("해당 고객 ID를 찾을 수 없습니다.");
 			
 		} catch(SQLException e) {
 			e.printStackTrace();
