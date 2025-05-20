@@ -83,5 +83,13 @@ public class Customer {
 		return email;
 	}
 	
+	@Override
+	public String toString() {
+	    return String.format(
+	        "{ \"username\": \"%s\", \"password\": \"%s\", \"license_number\": \"%s\", " +
+	        "\"name\": \"%s\", \"address\": \"%s\", \"phone\": \"%s\", \"email\": \"%s\" }",
+	        username, password, license_number, name, address, phone, email
+	    );
+	}
 	
 }
