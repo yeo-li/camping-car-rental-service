@@ -15,7 +15,7 @@ public class Customer {
 	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
 	
 	public Customer(int customer_id, String username, String password, String license_number, String name, String address, String phone, String email) {
-		validate(username, password, license_number, name, address, phone, email);
+		validate(customer_id, username, password, license_number, name, address, phone, email);
 		
 		this.customer_id = customer_id;
 		this.username = username;
@@ -27,7 +27,21 @@ public class Customer {
 		this.email = email;	
 	}
 	
-	private void validate(String username, String password, String license_number, String name, String address, String phone, String email) {
+	public Customer(String username, String password, String license_number, String name, String address, String phone, String email) {
+		validate(-1, username, password, license_number, name, address, phone, email);
+		
+		this.customer_id = -1;
+		this.username = username;
+		this.password = password;
+		this.license_number = license_number;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;	
+	}
+	
+	private void validate(int customer_id, String username, String password, String license_number, String name, String address, String phone, String email) {
+		Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
 		Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
 	    Objects.requireNonNull(password, String.format(NULL_MESSAGE, "password"));
 	    Objects.requireNonNull(license_number, String.format(NULL_MESSAGE, "license_number"));
