@@ -34,7 +34,7 @@ public class CustomerRepositoryTest {
 		새로운_사용자를_저장할_수_있어야_한다();
 		
 		// update Test
-		// 데이터를_업데이트_할_수_있어야_한다();
+		데이터를_업데이트_할_수_있어야_한다();
 		
 		System.out.println("\n[[CustomerRepositoryTest 완료]]");
 	}
@@ -76,5 +76,18 @@ public class CustomerRepositoryTest {
 		//then
 		Customer actual = customerRepository.findById(13);
 		AssertUtil.assertEqual("박성열", actual.getName(), "새로운 사용자를 저장할 수 있어야 한다.");
+	}
+	
+	private static void 데이터를_업데이트_할_수_있어야_한다() {
+		// given
+		Customer cs = customerRepository.findById(13);
+		Customer updateCust = new Customer("kimSeonWoo", cs.getPassword(), cs.getLicense_number(), "김선우", cs.getAddress(), cs.getPhone(), cs.getEmail());
+		
+		// when
+		customerRepository.update(13, updateCust);
+		
+		// then
+		Customer customer = customerRepository.findById(13);
+		AssertUtil.assertEqual("kimSeonWoo", customer.getUsername(), "데이터를 업데이트 할 수 있어야 한다.");
 	}
 }
