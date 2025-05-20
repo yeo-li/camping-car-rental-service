@@ -47,7 +47,7 @@ public class EmployeeRepositoryTest {
 
 	private static void 사용자의_아이디로_조회가_되어야_한다() {
 		Employee customer = EmployeeRepository.findById(1);
-		AssertUtil.assertEqual("임현우", customer.getName(), "사용자의 아이디로 조회가 되어야 한다.");
+		AssertUtil.assertEqual("조현우", customer.getName(), "사용자의 아이디로 조회가 되어야 한다.");
 	}
 
 	private static void 사용자의_아이디로_데이터가_삭제_되어야_한다() {
