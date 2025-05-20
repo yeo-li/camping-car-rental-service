@@ -88,5 +88,24 @@ public class CustomerRepository {
 			e.printStackTrace();
 		}
 	}
+	
+	public void save(Customer customer) {
+		String sql = "INSERT INTO Customer (username, password, license_number, name, address, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
+		try {
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		    pstmt.setString(1, customer.getUsername());
+		    pstmt.setString(2, customer.getPassword());
+		    pstmt.setString(3, customer.getLicense_number());
+		    pstmt.setString(4, customer.getName());
+		    pstmt.setString(5, customer.getAddress());
+		    pstmt.setString(6, customer.getPhone());
+		    pstmt.setString(7, customer.getEmail());
+
+		    int result = pstmt.executeUpdate();
+		    if (result > 0) System.out.printf("%d개 삭제 되었습니다.\n", result);
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+	}
 
 }
