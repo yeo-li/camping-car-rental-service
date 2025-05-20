@@ -15,7 +15,7 @@ public class CustomerRepository {
 	public Customer findById(int id) {
 		
 		Customer customer = null;
-		try(Connection conn = this.conn) {
+		try {
 			String sql = "SELECT * FROM Customer where customer_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
@@ -46,7 +46,7 @@ public class CustomerRepository {
 	public List<Customer> findAll() {
 		List<Customer> customers = new ArrayList<>();
 		
-		try(Connection conn = this.conn) {
+		try {
 			String sql = "SELECT * FROM Customer";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			
