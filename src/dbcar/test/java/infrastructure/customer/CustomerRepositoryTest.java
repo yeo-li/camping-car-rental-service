@@ -12,7 +12,7 @@ public class CustomerRepositoryTest {
 	static DatabaseInitService databaseInitService;
 	static CustomerRepository customerRepository;
 	public static void main(String[] args) {
-		System.out.println("[[CustomerRepositoryTest 초기 셋팅]]");
+		System.out.println("[[CustomerRepositoryTest 초기 팅]]");
 		
 		dc = new DBConnection("root", "1234");
 		databaseInitService = new DatabaseInitService();
@@ -28,6 +28,7 @@ public class CustomerRepositoryTest {
 		사용자의_아이디로_조회가_되어야_한다();
 		
 		// delete Test
+		사용자의_아이디로_데이터가_삭제_되어야_한다();
 		
 		// save Test
 		
@@ -45,5 +46,14 @@ public class CustomerRepositoryTest {
 	private static void 사용자의_아이디로_조회가_되어야_한다() {
 		Customer customer = customerRepository.findById(1);
 		AssertUtil.assertEqual("임현우", customer.getName(), "사용자의 아이디로 조회가 되어야 한다.");
+	}
+	
+	private static void 사용자의_아이디로_데이터가_삭제_되어야_한다() {
+		// when
+		customerRepository.delete(1);
+		Customer customer = customerRepository.findById(1);
+		
+		// then
+		AssertUtil.assertEqual(null, customer, "사용자의 아이디로 데이터가 삭제 되어야 한다.");
 	}
 }
