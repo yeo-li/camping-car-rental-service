@@ -113,7 +113,7 @@ public class EmployeeRepository {
 	}
 
 	public void update(int id, Employee employee) {
-		String sql = "UPDATE Employee SET username = ?, password = ?, license_number = ?, name = ?, address = ?, phone = ?, email = ? WHERE employee_id = ?";
+		String sql = "UPDATE Employee SET name = ?, phone = ?, address = ?, salary = ?, dependents = ?, department = ?, role = ? WHERE employee_id = ?";
 
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
