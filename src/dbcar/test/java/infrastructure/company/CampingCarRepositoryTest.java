@@ -1,0 +1,70 @@
+package dbcar.test.java.infrastructure.company;
+
+import java.sql.Date;
+import java.util.List;
+
+import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
+import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
+
+public class CampingCarRepositoryTest {
+	static DBConnection dc;
+	static DatabaseInitService databaseInitService;
+	static CampingCarRepository campingCarRepository;
+
+	public static void main(String[] args) {
+		System.out.println("[[CampingCarRepositoryTest 초기 세팅]]");
+
+		dc = new DBConnection("root", "1234");
+		databaseInitService = new DatabaseInitService();
+		campingCarRepository = new CampingCarRepository(DBConnection.getConnection());
+		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+
+		System.out.println("\n[[CampingCarRepositoryTest]]");
+
+		전체_데이터_조회가_되어야_한다();
+		사용자의_아이디로_조회가_되어야_한다();
+		사용자의_아이디로_데이터가_삭제_되어야_한다();
+		새로운_사용자를_저장할_수_있어야_한다();
+		데이터를_업데이트_할_수_있어야_한다();
+	}
+
+	private static void 전체_데이터_조회가_되어야_한다() {
+		List<CampingCar> cars = campingCarRepository.findAll();
+		AssertUtil.assertEqual(12, cars.size(), "전체 데이터가 조회되어야 한다.");
+	}
+
+	private static void 사용자의_아이디로_조회가_되어야_한다() {
+		CampingCar car = campingCarRepository.findById(1);
+		AssertUtil.assertEqual("썬무버-MPO", car.getName(), "사용자의 아이디로 조회가 되어야 한다.");
+	}
+
+	private static void 사용자의_아이디로_데이터가_삭제_되어야_한다() {
+		campingCarRepository.delete(1);
+		CampingCar car = campingCarRepository.findById(1);
+		AssertUtil.assertEqual(null, car, "사용자의 아이디로 데이터가 삭제 되어야 한다.");
+	}
+
+	private static void 새로운_사용자를_저장할_수_있어야_한다() {
+		CampingCar newCar = new CampingCar("에버그린-X1", "서울34나9999", 4, new byte[]{0x01, 0x02},
+				"작고 실용적인 캠핑카입니다.", 99999, 2, Date.valueOf("2025-01-01"));
+
+		campingCarRepository.save(newCar);
+
+		CampingCar actual = campingCarRepository.findById(13);
+		AssertUtil.assertEqual("에버그린-X1", actual.getName(), "새로운 사용자를 저장할 수 있어야 한다.");
+	}
+
+	private static void 데이터를_업데이트_할_수_있어야_한다() {
+		CampingCar oldCar = campingCarRepository.findById(13);
+		CampingCar updatedCar = new CampingCar("에버그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
+				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(), oldCar.getRegistered_date());
+
+		campingCarRepository.update(13, updatedCar);
+
+		CampingCar actual = campingCarRepository.findById(13);
+		AssertUtil.assertEqual("에버그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
+	}
+}
