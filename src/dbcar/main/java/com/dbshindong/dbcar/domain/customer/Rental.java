@@ -13,11 +13,11 @@ public class Rental {
 	private final int total_charge;
 	private final Date due_date;
 	private final String extra_charge_detail;
-	private final int extra_charge;
+	private final Integer extra_charge;
 
 	private static final String NULL_MESSAGE = "%s은(는) null이 들어갈 수 없습니다.";
 
-	public Rental(int rental_id, int car_id, int customer_id, int company_id, Date start_date, int rental_period,
+	public Rental(int rental_id, int car_id, int customer_id, int company_id, Date start_date, Integer rental_period,
 			int total_charge, Date due_date, String extra_charge_detail, int extra_charge) {
 		validate(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date);
 
@@ -34,9 +34,9 @@ public class Rental {
 	}
 
 	public Rental(int car_id, int customer_id, int company_id, Date start_date, int rental_period, int total_charge,
-			Date due_date, String extra_charge_detail, int extra_charge) {
+			Date due_date, String extra_charge_detail, Integer extra_charge) {
 		this.validate(-1, car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date);
-
+		this.rental_id = -1;
 		this.car_id = car_id;
 		this.customer_id = customer_id;
 		this.company_id = company_id;
@@ -96,7 +96,7 @@ public class Rental {
 		return extra_charge_detail;
 	}
 
-	public int getExtra_charge() {
+	public Integer getExtra_charge() {
 		return extra_charge;
 	}
 
