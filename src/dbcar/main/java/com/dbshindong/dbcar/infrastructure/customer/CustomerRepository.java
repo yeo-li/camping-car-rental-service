@@ -75,7 +75,7 @@ public class CustomerRepository {
 		return customers;
 	}
 
-	public void deleteById(int id) {
+	public void delete(int id) {
 		String sql = "DELETE FROM Customer WHERE customer_id = ?";
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);

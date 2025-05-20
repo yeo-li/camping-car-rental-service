@@ -27,8 +27,7 @@ public class Customer {
 		this.email = email;	
 	}
 	
-	private void validate(String username, String password, String license_number, String name, String address, String phone, String emial) {
-		Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
+	private void validate(String username, String password, String license_number, String name, String address, String phone, String email) {
 		Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
 	    Objects.requireNonNull(password, String.format(NULL_MESSAGE, "password"));
 	    Objects.requireNonNull(license_number, String.format(NULL_MESSAGE, "license_number"));
