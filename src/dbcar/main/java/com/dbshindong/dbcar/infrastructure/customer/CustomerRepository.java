@@ -107,5 +107,29 @@ public class CustomerRepository {
 		    e.printStackTrace();
 		}
 	}
+	
+	public void update(int id, Customer customer) {
+		String sql = "UPDATE Customer SET username = ?, password = ?, license_number = ?, name = ?, address = ?, phone = ?, email = ? WHERE customer_id = ?";
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, customer.getUsername());
+			pstmt.setString(2, customer.getPassword());
+			pstmt.setString(3, customer.getLicense_number());
+			pstmt.setString(4, customer.getName());
+			pstmt.setString(5, customer.getAddress());
+			pstmt.setString(6, customer.getPhone());
+			pstmt.setString(7, customer.getEmail());
+			
+			int result = pstmt.executeUpdate();
+			if(result > 0)
+				System.out.printf("고객 정보가 %d건 수정되었습니다.", result);
+			else
+				System.out.println("해당 고객 ID를 찾을 수 없습니다.");
+			
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
