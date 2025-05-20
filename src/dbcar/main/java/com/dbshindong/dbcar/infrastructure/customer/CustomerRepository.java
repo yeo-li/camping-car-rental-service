@@ -120,6 +120,7 @@ public class CustomerRepository {
 			pstmt.setString(5, customer.getAddress());
 			pstmt.setString(6, customer.getPhone());
 			pstmt.setString(7, customer.getEmail());
+			pstmt.setInt(8, id);
 			
 			int result = pstmt.executeUpdate();
 			
