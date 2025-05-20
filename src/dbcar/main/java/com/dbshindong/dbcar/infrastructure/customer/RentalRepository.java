@@ -95,7 +95,8 @@ public class RentalRepository {
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
 			pstmt.setString(8, rental.getExtra_charge_detail());
-			pstmt.setInt(9, rental.getExtra_charge());
+			if (rental.getExtra_charge() == null)
+				pstmt.setInt(9, 0);
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
