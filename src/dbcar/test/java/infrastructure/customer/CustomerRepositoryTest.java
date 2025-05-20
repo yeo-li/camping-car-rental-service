@@ -25,7 +25,7 @@ public class CustomerRepositoryTest {
 		전체_데이터_조회가_되어야_한다();
 		
 		// findById Test
-		// 사용자의_아이디로_조회가_되어야_한다();
+		사용자의_아이디로_조회가_되어야_한다();
 		
 		// delete Test
 		
@@ -40,5 +40,10 @@ public class CustomerRepositoryTest {
 	private static void 전체_데이터_조회가_되어야_한다() {
 		List<Customer> customers = customerRepository.findAll();
 		AssertUtil.assertEqual(12, customers.size(), "전체 데이터가 조회되어야 한다.");
+	}
+	
+	private static void 사용자의_아이디로_조회가_되어야_한다() {
+		Customer customer = customerRepository.findById(1);
+		AssertUtil.assertEqual("임현우", customer.getName(), "사용자의 아이디로 조회가 되어야 한다.");
 	}
 }
