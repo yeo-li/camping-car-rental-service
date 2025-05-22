@@ -38,7 +38,7 @@ public class DataDeleteService {
 			CampingCarRepository campingCarRepository, ExternalRepairRecordRepository externalRepairRecordRepository,
 			CustomerRepository customerRepository, PartRepository partRepository, EmployeeRepository employeeRepository,
 			InternalRepairRecordRepository internalRepairRecordRepository) {
-		this.campingCarCampanyRepository = campingCarCampanyRepository;
+		this.campingCarCompanyRepository = campingCarCampanyRepository;
 		this.externalRepairShopRepository = externalRepairShopRepository;
 		this.rentalRepository = rentalRepository;
 		this.campingCarRepository = campingCarRepository;
@@ -65,7 +65,7 @@ public class DataDeleteService {
 		try {
 			List<CampingCarCompany> companys = campingCarCompanyRepository.findByCondition(sql);
 			for (CampingCarCompany company : companys) {
-				campingCarRepository.delete(company.getCompany_id());
+				campingCarCompanyRepository.delete(company.getCompany_id());
 			}
 
 		} catch (SQLSyntaxErrorException e) {
