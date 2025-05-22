@@ -57,6 +57,37 @@ public class CampingCarCompanyRepository {
         }
         return null;
     }
+    
+    public List<CampingCarCompany> findByCondition(String condition) throws SQLSyntaxErrorException {
+        List<CampingCarCompany> companies = new ArrayList<>();
+
+        try {
+            String sql = "SELECT * FROM CampingCarCompany WHERE " + condition;
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int companyId = rs.getInt("company_id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                String phone = rs.getString("phone");
+                String managerName = rs.getString("manager_name");
+                String managerEmail = rs.getString("manager_email");
+
+                CampingCarCompany company = new CampingCarCompany(
+                    companyId, name, address, phone, managerName, managerEmail
+                );
+                companies.add(company);
+            }
+
+        } catch (SQLSyntaxErrorException e) {
+            throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return companies;
+    }
 
     public void save(CampingCarCompany company) {
         try {
