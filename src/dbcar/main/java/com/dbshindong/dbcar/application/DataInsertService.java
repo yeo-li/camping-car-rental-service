@@ -1,5 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.application;
 
+import java.sql.Date;
+
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
@@ -52,6 +55,21 @@ public class DataInsertService {
 
 	public void insertCampingCarCompany(CampingCarCompany company) {
 		campingCarCampanyRepository.save(company);
+	}
+	
+	public CampingCar creatCampingCar(String name, String plate_number, int capacity, byte[] image, String description,
+			int rental_price, int company_id, Date registered_date) {
+		try {
+			CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id, registered_date);
+			return car;
+		} catch (NullPointerException e) {
+			System.out.println("[error]CampingCar의 입력값이 올바르지 않습니다.");
+			return null;
+		}
+	}
+
+	public void insertCampingCar(CampingCar car) {
+		campingCarRepository.save(car);
 	}
 
 }
