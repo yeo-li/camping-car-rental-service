@@ -1,5 +1,9 @@
 package dbcar.main.java.com.dbshindong.dbcar.application;
 
+import java.sql.SQLSyntaxErrorException;
+import java.util.*;
+
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -35,6 +39,18 @@ public class DataDeleteService {
 		this.partRepository = partRepository;
 		this.employeeRepository = employeeRepository;
 		this.internalRepairRecordRepository = internalRepairRecordRepository;
+	}
+
+	public void deleteCampingCars(String sql) {
+		try {
+			List<CampingCar> cars = campingCarRepository.findByCondition(sql);
+			for (CampingCar car : cars) {
+				campingCarRepository.delete(car.getCar_id());
+			}
+
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
