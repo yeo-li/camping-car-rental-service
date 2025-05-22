@@ -40,6 +40,30 @@ public class InternalRepairRecordRepository {
 
 		return record;
 	}
+	
+	public List<InternalRepairRecord> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<InternalRepairRecord> list = new ArrayList<>();
+	    try {
+	        String sql = "SELECT * FROM InternalRepairRecord WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            int internal_repair_id = rs.getInt("internal_repair_id");
+	            int car_id = rs.getInt("car_id");
+	            int part_id = rs.getInt("part_id");
+	            Date repair_date = rs.getDate("repair_date");
+	            int duration_minutes = rs.getInt("duration_minutes");
+	            int employee_id = rs.getInt("employee_id");
+	            list.add(new InternalRepairRecord(internal_repair_id, car_id, part_id, repair_date, duration_minutes, employee_id));
+	        }
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
 	public List<InternalRepairRecord> findAll() {
 		List<InternalRepairRecord> records = new ArrayList<>();
