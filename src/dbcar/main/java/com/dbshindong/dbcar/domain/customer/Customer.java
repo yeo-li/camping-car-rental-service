@@ -1,0 +1,95 @@
+package dbcar.main.java.com.dbshindong.dbcar.domain.customer;
+
+import java.util.*;
+
+public class Customer {
+	private final int customer_id;
+	private final String username;
+	private final String password;
+	private final String license_number;
+	private final String name;
+	private final String address;
+	private final String phone;
+	private final String email;
+	
+	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
+	
+	public Customer(int customer_id, String username, String password, String license_number, String name, String address, String phone, String email) {
+		validate(customer_id, username, password, license_number, name, address, phone, email);
+		
+		this.customer_id = customer_id;
+		this.username = username;
+		this.password = password;
+		this.license_number = license_number;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;	
+	}
+	
+	public Customer(String username, String password, String license_number, String name, String address, String phone, String email) {
+		validate(-1, username, password, license_number, name, address, phone, email);
+		
+		this.customer_id = -1;
+		this.username = username;
+		this.password = password;
+		this.license_number = license_number;
+		this.name = name;
+		this.address = address;
+		this.phone = phone;
+		this.email = email;	
+	}
+	
+	private void validate(int customer_id, String username, String password, String license_number, String name, String address, String phone, String email) {
+		Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
+		Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
+	    Objects.requireNonNull(password, String.format(NULL_MESSAGE, "password"));
+	    Objects.requireNonNull(license_number, String.format(NULL_MESSAGE, "license_number"));
+	    Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
+	    Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
+	    Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
+	    Objects.requireNonNull(email, String.format(NULL_MESSAGE, "email"));
+	}
+
+	public int getCustomer_id() {
+		return customer_id;
+	}
+	
+	public String getUsername() {
+		return username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public String getLicense_number() {
+		return license_number;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+	
+	@Override
+	public String toString() {
+	    return String.format(
+	        "{ \"username\": \"%s\", \"password\": \"%s\", \"license_number\": \"%s\", " +
+	        "\"name\": \"%s\", \"address\": \"%s\", \"phone\": \"%s\", \"email\": \"%s\" }",
+	        username, password, license_number, name, address, phone, email
+	    );
+	}
+	
+}

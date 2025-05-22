@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCar` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `campingcar_ibfk_1`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -136,16 +136,16 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`ExternalRepairRecord` (
   INDEX `customer_id` (`customer_id` ASC) VISIBLE,
   CONSTRAINT `externalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_2`
     FOREIGN KEY (`shop_id`)
-    REFERENCES `DBTEST`.`ExternalRepairShop` (`shop_id`),
+    REFERENCES `DBTEST`.`ExternalRepairShop` (`shop_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`),
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE,
   CONSTRAINT `externalrepairrecord_ibfk_4`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `DBTEST`.`Customer` (`customer_id`))
+    REFERENCES `DBTEST`.`Customer` (`customer_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -184,13 +184,13 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`InternalRepairRecord` (
   INDEX `employee_id` (`employee_id` ASC) VISIBLE,
   CONSTRAINT `internalrepairrecord_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `internalrepairrecord_ibfk_2`
     FOREIGN KEY (`part_id`)
-    REFERENCES `DBTEST`.`Part` (`part_id`),
+    REFERENCES `DBTEST`.`Part` (`part_id`) ON DELETE CASCADE,
   CONSTRAINT `internalrepairrecord_ibfk_3`
     FOREIGN KEY (`employee_id`)
-    REFERENCES `DBTEST`.`Employee` (`employee_id`))
+    REFERENCES `DBTEST`.`Employee` (`employee_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -217,13 +217,13 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`Rental` (
   INDEX `company_id` (`company_id` ASC) VISIBLE,
   CONSTRAINT `rental_ibfk_1`
     FOREIGN KEY (`car_id`)
-    REFERENCES `DBTEST`.`CampingCar` (`car_id`),
+    REFERENCES `DBTEST`.`CampingCar` (`car_id`) ON DELETE CASCADE,
   CONSTRAINT `rental_ibfk_2`
     FOREIGN KEY (`customer_id`)
-    REFERENCES `DBTEST`.`Customer` (`customer_id`),
+    REFERENCES `DBTEST`.`Customer` (`customer_id`) ON DELETE CASCADE,
   CONSTRAINT `rental_ibfk_3`
     FOREIGN KEY (`company_id`)
-    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`))
+    REFERENCES `DBTEST`.`CampingCarCompany` (`company_id`) ON DELETE CASCADE)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_0900_ai_ci;
@@ -283,17 +283,17 @@ INSERT INTO Employee (name, phone, address, salary, dependents, department, role
 INSERT INTO Employee (name, phone, address, salary, dependents, department, role) VALUES ('최예린', '010-4869-8261', '인천시 부평구 산곡로 30', 5892000, 0, '정비팀', '정비');
 INSERT INTO Employee (name, phone, address, salary, dependents, department, role) VALUES ('임수빈', '010-2232-7639', '인천시 부평구 산곡로 33', 4265000, 0, '인사팀', '관리');
 INSERT INTO Employee (name, phone, address, salary, dependents, department, role) VALUES ('장예린', '010-7809-9823', '인천시 부평구 산곡로 36', 5699000, 2, '영업팀', '관리');
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소1', '부산시 해운대구 해운대로 7', NULL, '김현우', 'shop1@daum.net');
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소1', '부산시 해운대구 해운대로 7', '010-1234-5678', '김현우', 'shop1@daum.net');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소2', '부산시 해운대구 해운대로 14', '010-1684-9665', '김예린', 'shop2@gmail.com');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소3', '부산시 해운대구 해운대로 21', '010-8027-6985', '조도윤', 'shop3@gmail.com');
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소4', '부산시 해운대구 해운대로 28', NULL, '조하은', 'shop4@naver.com');
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소5', '부산시 해운대구 해운대로 35', NULL, '최민준', 'shop5@daum.net');
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소6', '부산시 해운대구 해운대로 42', '010-8479-3939', '정하은', NULL);
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소7', '부산시 해운대구 해운대로 49', NULL, '강예린', 'shop7@naver.com');
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소4', '부산시 해운대구 해운대로 28', '010-3235-6786', '조하은', 'shop4@naver.com');
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소5', '부산시 해운대구 해운대로 35', '010-4513-6164', '최민준', 'shop5@daum.net');
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소6', '부산시 해운대구 해운대로 42', '010-8479-3939', '정하은', 'shop6@daum.net');
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소7', '부산시 해운대구 해운대로 49', '010-5863-0129', '강예린', 'shop7@naver.com');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소8', '부산시 해운대구 해운대로 56', '010-1471-8679', '박도윤', 'shop8@gmail.com');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소9', '부산시 해운대구 해운대로 63', '010-2442-8529', '박서연', 'shop9@gmail.com');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소10', '부산시 해운대구 해운대로 70', '010-1472-7199', '박수빈', 'shop10@daum.net');
-INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소11', '부산시 해운대구 해운대로 77', '010-2043-9733', '최지우', NULL);
+INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소11', '부산시 해운대구 해운대로 77', '010-2043-9733', '최지우', 'shop11@daum.net');
 INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES ('정비소12', '부산시 해운대구 해운대로 84', '010-9896-8983', '조현우', 'shop12@naver.com');
 INSERT INTO Part (name, unit_price, stock_quantity, stock_date, supplier_name) VALUES ('에어컨 필터 587', 173109, 14, '2025-03-05', '부품상사1');
 INSERT INTO Part (name, unit_price, stock_quantity, stock_date, supplier_name) VALUES ('에어컨 필터 353', 132406, 86, '2025-03-09', '부품상사2');

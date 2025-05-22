@@ -1,0 +1,113 @@
+package dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
+
+public class ExternalRepairRecordRepository {
+	private final Connection conn;
+
+	public ExternalRepairRecordRepository(Connection conn) {
+		this.conn = conn;
+	}
+
+	public ExternalRepairRecord findById(int id) {
+		ExternalRepairRecord record = null;
+		String sql = "SELECT * FROM ExternalRepairRecord WHERE external_repair_id = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				record = extractRecord(rs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return null;
+		}
+		return record;
+	}
+
+	public List<ExternalRepairRecord> findAll() {
+		List<ExternalRepairRecord> records = new ArrayList<>();
+		String sql = "SELECT * FROM ExternalRepairRecord";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				records.add(extractRecord(rs));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return records;
+	}
+
+	public void save(ExternalRepairRecord record) {
+		String sql = "INSERT INTO ExternalRepairRecord (car_id, shop_id, company_id, customer_id, content, repair_date, cost, due_date, note) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, record.getCar_id());
+			pstmt.setInt(2, record.getShop_id());
+			pstmt.setInt(3, record.getCompany_id());
+			pstmt.setInt(4, record.getCustomer_id());
+			pstmt.setString(5, record.getContent());
+			pstmt.setDate(6, record.getRepair_date());
+			pstmt.setInt(7, record.getCost());
+			pstmt.setDate(8, record.getDue_date());
+			pstmt.setString(9, record.getNote());
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void update(int id, ExternalRepairRecord record) {
+		String sql = "UPDATE ExternalRepairRecord SET car_id = ?, shop_id = ?, company_id = ?, customer_id = ?, content = ?, repair_date = ?, cost = ?, due_date = ?, note = ? WHERE external_repair_id = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, record.getCar_id());
+			pstmt.setInt(2, record.getShop_id());
+			pstmt.setInt(3, record.getCompany_id());
+			pstmt.setInt(4, record.getCustomer_id());
+			pstmt.setString(5, record.getContent());
+			pstmt.setDate(6, record.getRepair_date());
+			pstmt.setInt(7, record.getCost());
+			pstmt.setDate(8, record.getDue_date());
+			pstmt.setString(9, record.getNote());
+			pstmt.setInt(10, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void delete(int id) {
+		String sql = "DELETE FROM ExternalRepairRecord WHERE external_repair_id = ?";
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, id);
+			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private ExternalRepairRecord extractRecord(ResultSet rs) throws SQLException {
+		int external_repair_id = rs.getInt("external_repair_id");
+		int car_id = rs.getInt("car_id");
+		int shop_id = rs.getInt("shop_id");
+		int company_id = rs.getInt("company_id");
+		int customer_id = rs.getInt("customer_id");
+		String content = rs.getString("content");
+		Date repair_date = rs.getDate("repair_date");
+		int cost = rs.getInt("cost");
+		Date due_date = rs.getDate("due_date");
+		String note = rs.getString("note");
+
+		return new ExternalRepairRecord(external_repair_id, car_id, shop_id, company_id, customer_id, content,
+			repair_date, cost, due_date, note);
+	}
+}
