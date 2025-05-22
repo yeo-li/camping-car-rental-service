@@ -128,5 +128,29 @@ public class CustomerRepository {
 			e.printStackTrace();
 		}
 	}
+	
+	public boolean isExistUser(String cust_name, String password) {
+		String sql = "SELECT count(*) as isCorrect "
+				+ "FROM customer "
+				+ "WHERE username = ? and password = ?;";
+		ResultSet result;
+		int cnt = 0;
+		try {
+		    PreparedStatement pstmt = conn.prepareStatement(sql);
+		    pstmt.setString(1, cust_name);
+		    pstmt.setString(2, password);
+		    
+
+		    result = pstmt.executeQuery();
+		    if(result.next()) {
+		    	cnt = result.getInt("isCorrect");
+		    }
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
+		
+		if(cnt == 1) return true;
+		else return false;
+	}
 
 }
