@@ -4,6 +4,7 @@ import java.sql.SQLSyntaxErrorException;
 import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -58,6 +59,18 @@ public class DataDeleteService {
 			List<CampingCar> cars = campingCarRepository.findByCondition(sql);
 			for (CampingCar car : cars) {
 				campingCarRepository.delete(car.getCar_id());
+			}
+
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void deleteEmployees(String sql) {
+		try {
+			List<Employee> employees = employeeRepository.findByCondition(sql);
+			for (Employee employee : employees) {
+				campingCarRepository.delete(employee.getEmployee_id());
 			}
 
 		} catch (SQLSyntaxErrorException e) {
