@@ -10,7 +10,7 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.Exter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.InternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
-public class DataMaintenanceService {
+public class DataUpdateService {
 	private final CampingCarCompanyRepository campingCarCampanyRepository;
 	private final ExternalRepairShopRepository externalRepairShopRepository;
 	private final RentalRepository rentalRepository;
@@ -21,7 +21,7 @@ public class DataMaintenanceService {
 	private final EmployeeRepository employeeRepository;
 	private final InternalRepairRecordRepository internalRepairRecordRepository;
 
-	public DataMaintenanceService(CampingCarCompanyRepository campingCarCampanyRepository,
+	public DataUpdateService(CampingCarCompanyRepository campingCarCampanyRepository,
 			ExternalRepairShopRepository externalRepairShopRepository, RentalRepository rentalRepository,
 			CampingCarRepository campingCarRepository, ExternalRepairRecordRepository externalRepairRecordRepository,
 			CustomerRepository customerRepository, PartRepository partRepository, EmployeeRepository employeeRepository,
