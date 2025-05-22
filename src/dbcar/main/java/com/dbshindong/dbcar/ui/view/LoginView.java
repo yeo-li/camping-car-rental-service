@@ -60,12 +60,20 @@ public class LoginView {
 			String password = userPWText.getText();
 			
 			boolean success = loginController.handleLogin(userID, password);
-			if(success) {//다른 뷰 생성 이후 연결 예정
+			if(success) {
 				JOptionPane.showMessageDialog(null, "로그인 성공!");
+				SwingUtilities.getWindowAncestor(panel).dispose();
+				new UserInitView();//중간 뷰이기 때문에 컨트롤러를 넣어줄 필요 없다.
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "등록되지 않은 ID나 잘못된 비밀번호를 입력하였습니다.");
 			}
+		});
+		
+		adminLoginButton.addActionListener(e -> {
+			JOptionPane.showMessageDialog(null, "관리자 접속");
+			SwingUtilities.getWindowAncestor(panel).dispose();
+			new AdminInitView();//중간 뷰이기 때문에 컨트롤러를 넣어줄 필요 없다.
 		});
 		
 	}
