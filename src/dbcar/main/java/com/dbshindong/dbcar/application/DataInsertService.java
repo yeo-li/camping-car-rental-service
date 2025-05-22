@@ -5,6 +5,7 @@ import java.sql.Date;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
+import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -87,6 +88,21 @@ public class DataInsertService {
 
 	public void insertEmployee(Employee employee) {
 		employeeRepository.save(employee);
+	}
+
+	public Customer creatCustomer(String username, String password, String license_number, String name, String address,
+			String phone, String email) {
+		try {
+			Customer customer = new Customer(username, password, license_number, name, address, phone, email);
+			return customer;
+		} catch (NullPointerException e) {
+			System.out.println("[error]Customer의 입력값이 올바르지 않습니다.");
+			return null;
+		}
+	}
+
+	public void insertCustomer(Customer customer) {
+		customerRepository.save(customer);
 	}
 
 }
