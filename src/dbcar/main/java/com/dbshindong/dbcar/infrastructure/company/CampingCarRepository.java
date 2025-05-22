@@ -44,6 +44,37 @@ public class CampingCarRepository {
 
         return car;
     }
+    
+    public List<CampingCar> findByCondition(String condition) {
+    	List<CampingCar> cars = new ArrayList<>();
+
+    	try {
+    		String sql = "SELECT * FROM CampingCar WHERE " + condition;
+    		PreparedStatement pstmt = conn.prepareStatement(sql);
+    		ResultSet rs = pstmt.executeQuery();
+
+    		while (rs.next()) {
+    			int car_id = rs.getInt("car_id");
+    			String name = rs.getString("name");
+    			String plate_number = rs.getString("plate_number");
+    			int capacity = rs.getInt("capacity");
+    			byte[] image = rs.getBytes("image");
+    			String description = rs.getString("description");
+    			int rental_price = rs.getInt("rental_price");
+    			int company_id = rs.getInt("company_id");
+    			Date registered_date = rs.getDate("registered_date");
+
+    			CampingCar car = new CampingCar(car_id, name, plate_number, capacity, image,
+    					description, rental_price, company_id, registered_date);
+    			cars.add(car);
+    		}
+
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+
+    	return cars;
+    }
 
     public List<CampingCar> findAll() {
     	List<CampingCar> cars = new ArrayList<>();
@@ -133,4 +164,5 @@ public class CampingCarRepository {
             e.printStackTrace();
         }
     }
+   
 }
