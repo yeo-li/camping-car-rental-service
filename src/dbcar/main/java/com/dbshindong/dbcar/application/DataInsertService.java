@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -56,11 +57,12 @@ public class DataInsertService {
 	public void insertCampingCarCompany(CampingCarCompany company) {
 		campingCarCampanyRepository.save(company);
 	}
-	
+
 	public CampingCar creatCampingCar(String name, String plate_number, int capacity, byte[] image, String description,
 			int rental_price, int company_id, Date registered_date) {
 		try {
-			CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id, registered_date);
+			CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id,
+					registered_date);
 			return car;
 		} catch (NullPointerException e) {
 			System.out.println("[error]CampingCar의 입력값이 올바르지 않습니다.");
@@ -70,6 +72,21 @@ public class DataInsertService {
 
 	public void insertCampingCar(CampingCar car) {
 		campingCarRepository.save(car);
+	}
+
+	public Employee creatEmployee(String name, String phone, String address, int salary, int dependents,
+			String department, String role) {
+		try {
+			Employee employee = new Employee(name, phone, address, salary, dependents, department, role);
+			return employee;
+		} catch (NullPointerException e) {
+			System.out.println("[error]Employee의 입력값이 올바르지 않습니다.");
+			return null;
+		}
+	}
+
+	public void insertEmployee(Employee employee) {
+		employeeRepository.save(employee);
 	}
 
 }
