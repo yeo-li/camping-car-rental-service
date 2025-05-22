@@ -37,6 +37,9 @@ public class CustomerRepositoryTest {
 		// update Test
 		데이터를_업데이트_할_수_있어야_한다();
 
+		// isExistUser Test
+		유저를_아이디와_비밀번호로_찾는다();
+
 	}
 
 	private static void 전체_데이터_조회가_되어야_한다() {
@@ -83,5 +86,13 @@ public class CustomerRepositoryTest {
 		// then
 		Customer customer = customerRepository.findById(13);
 		AssertUtil.assertEqual("kimSeonWoo", customer.getUsername(), "데이터를 업데이트 할 수 있어야 한다.");
+	}
+	
+	private static void 유저를_아이디와_비밀번호로_찾는다() {//#20
+		boolean res = customerRepository.isExistUser("user2", "pw2");
+		boolean res2 = customerRepository.isExistUser("asd", "lalala");
+		AssertUtil.assertEqual(true, res, "유저를 아이디와 비밀번호로 찾는다.");
+		AssertUtil.assertEqual(false, res2, "아이디와 비밀번호가 일치하지 않거나 존재하지 않는 회원입니다.");
+		
 	}
 }
