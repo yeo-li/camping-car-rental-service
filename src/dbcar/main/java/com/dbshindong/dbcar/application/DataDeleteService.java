@@ -52,5 +52,17 @@ public class DataDeleteService {
 			e.printStackTrace();
 		}
 	}
+	
+	public void deleteCampingCarCompanys(String sql) {
+		try {
+			List<CampingCar> cars = campingCarRepository.findByCondition(sql);
+			for (CampingCar car : cars) {
+				campingCarRepository.delete(car.getCar_id());
+			}
+
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
