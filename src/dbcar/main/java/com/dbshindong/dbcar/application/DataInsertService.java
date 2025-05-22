@@ -7,6 +7,7 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
+import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -120,6 +121,22 @@ public class DataInsertService {
 
 	public void insertRental(Rental rental) {
 		rentalRepository.save(rental);
+	}
+
+	public ExternalRepairRecord creatExternalRepairRecord(int car_id, int shop_id, int company_id, int customer_id,
+			String content, Date repair_date, int cost, Date due_date, String note) {
+		try {
+			ExternalRepairRecord record = new ExternalRepairRecord(car_id, shop_id, company_id, customer_id, content,
+					repair_date, cost, due_date, note);
+			return record;
+		} catch (NullPointerException e) {
+			System.out.println("[error]ExternalRepairRecord의 입력값이 올바르지 않습니다.");
+			return null;
+		}
+	}
+
+	public void insertExternalRepairRecord(ExternalRepairRecord record) {
+		externalRepairRecordRepository.save(record);
 	}
 
 }
