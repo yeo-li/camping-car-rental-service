@@ -45,7 +45,7 @@ public class CampingCarRepository {
         return car;
     }
     
-    public List<CampingCar> findByCondition(String condition) {
+    public List<CampingCar> findByCondition(String condition) throws SQLSyntaxErrorException {
     	List<CampingCar> cars = new ArrayList<>();
 
     	try {
@@ -69,6 +69,8 @@ public class CampingCarRepository {
     			cars.add(car);
     		}
 
+    	} catch (SQLSyntaxErrorException e) {
+    		throw new SQLSyntaxErrorException("조건식의 문법이 올바르지 않습니다.");
     	} catch (SQLException e) {
     		e.printStackTrace();
     	}
