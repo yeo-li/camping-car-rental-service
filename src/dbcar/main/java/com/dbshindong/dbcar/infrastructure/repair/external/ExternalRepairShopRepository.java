@@ -61,6 +61,30 @@ public class ExternalRepairShopRepository {
 		}
 		return shop;
 	}
+	
+	public List<ExternalRepairShop> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<ExternalRepairShop> list = new ArrayList<>();
+	    try {
+	        String sql = "SELECT * FROM ExternalRepairShop WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            int shop_id = rs.getInt("shop_id");
+	            String name = rs.getString("name");
+	            String address = rs.getString("address");
+	            String phone = rs.getString("phone");
+	            String manager_name = rs.getString("manager_name");
+	            String manager_email = rs.getString("manager_email");
+	            list.add(new ExternalRepairShop(shop_id, name, address, phone, manager_name, manager_email));
+	        }
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
 	public void delete(int id) {
 		try {

@@ -64,6 +64,30 @@ public class PartRepository {
 
 		return part;
 	}
+	
+	public List<Part> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<Part> list = new ArrayList<>();
+	    try {
+	        String sql = "SELECT * FROM Part WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            int part_id = rs.getInt("part_id");
+	            String name = rs.getString("name");
+	            int unit_price = rs.getInt("unit_price");
+	            int stock_quantity = rs.getInt("stock_quantity");
+	            Date stock_date = rs.getDate("stock_date");
+	            String supplier_name = rs.getString("supplier_name");
+	            list.add(new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name));
+	        }
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
 	public void save(Part part) {
 		String sql = "INSERT INTO Part (name, unit_price, stock_quantity, stock_date, supplier_name) VALUES (?, ?, ?, ?, ?)";
