@@ -42,6 +42,34 @@ public class RentalRepository {
 		}
 		return rental;
 	}
+	
+	public List<Rental> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<Rental> list = new ArrayList<>();
+	    try {
+	        String sql = "SELECT * FROM Rental WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            int rental_id = rs.getInt("rental_id");
+	            int car_id = rs.getInt("car_id");
+	            int customer_id = rs.getInt("customer_id");
+	            int company_id = rs.getInt("company_id");
+	            Date start_date = rs.getDate("start_date");
+	            int rental_period = rs.getInt("rental_period");
+	            int total_charge = rs.getInt("total_charge");
+	            Date due_date = rs.getDate("due_date");
+	            String extra_charges = rs.getString("extra_charges");
+	            int extra_charge_amount = rs.getInt("extra_charge_amount");
+	            list.add(new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date, extra_charges, extra_charge_amount));
+	        }
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
 	public List<Rental> findAll() {
 		List<Rental> rentals = new ArrayList<>();

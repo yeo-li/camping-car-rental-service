@@ -29,6 +29,34 @@ public class ExternalRepairRecordRepository {
 		}
 		return record;
 	}
+	
+	public List<ExternalRepairRecord> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<ExternalRepairRecord> list = new ArrayList<>();
+	    try {
+	        String sql = "SELECT * FROM ExternalRepairRecord WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            int external_repair_id = rs.getInt("external_repair_id");
+	            int car_id = rs.getInt("car_id");
+	            int shop_id = rs.getInt("shop_id");
+	            int company_id = rs.getInt("company_id");
+	            int customer_id = rs.getInt("customer_id");
+	            String content = rs.getString("content");
+	            Date repair_date = rs.getDate("repair_date");
+	            int cost = rs.getInt("cost");
+	            Date due_date = rs.getDate("due_date");
+	            String note = rs.getString("note");
+	            list.add(new ExternalRepairRecord(external_repair_id, car_id, shop_id, company_id, customer_id, content, repair_date, cost, due_date, note));
+	        }
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
 	public List<ExternalRepairRecord> findAll() {
 		List<ExternalRepairRecord> records = new ArrayList<>();
