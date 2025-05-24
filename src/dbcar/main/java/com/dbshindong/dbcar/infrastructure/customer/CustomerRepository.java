@@ -129,28 +129,41 @@ public class CustomerRepository {
 		}
 	}
 	
-	public boolean isExistUser(String cust_name, String password) {
-		String sql = "SELECT count(*) as isCorrect "
-				+ "FROM customer "
-				+ "WHERE username = ? and password = ?;";
-		ResultSet result;
-		int cnt = 0;
-		try {
-		    PreparedStatement pstmt = conn.prepareStatement(sql);
-		    pstmt.setString(1, cust_name);
-		    pstmt.setString(2, password);
-		    
-
-		    result = pstmt.executeQuery();
-		    if(result.next()) {
-		    	cnt = result.getInt("isCorrect");
-		    }
-		} catch (SQLException e) {
-		    e.printStackTrace();
-		}
+	
+	public List<Customer> findByUsername(String userID){
+		List<Customer> customers = new ArrayList<>();
 		
-		if(cnt == 1) return true;
-		else return false;
+		String sql = "SELECT *, password FROM customer Where username = ?;";
+		ResultSet rs;
+		
+		try {
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, userID);
+			rs = pstmt.executeQuery();
+			
+			while (rs.next()) {
+				int customer_id = rs.getInt("customer_id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String license_number = rs.getString("license_number");
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String phone = rs.getString("phone");
+				String email = rs.getString("email");
+
+				Customer customer = new Customer(customer_id, username, password, license_number, name, address, phone,
+						email);
+				customers.add(customer);
+			}
+			
+			
+		}catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return customers;
+		
+		
 	}
+
 
 }
