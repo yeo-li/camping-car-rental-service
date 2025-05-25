@@ -1,9 +1,11 @@
 package dbcar.main.java.com.dbshindong.dbcar.application;
 
+import java.sql.SQLSyntaxErrorException;
 import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
+import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairShopRepository;
@@ -28,8 +30,26 @@ public class RepairRecordFetchService {
 		this.partRepository = partRepository;
 	}
 
-	public List<CampingCar> getCampingCars() {
+	public List<CampingCar> fetchCampingCars() {
 		return campingCarRepository.findAll();
+	}
+
+	public List<ExternalRepairRecord> fetchExternalRepairRecord(int carId) {
+		try {
+			return externalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public List<InternalRepairRecord> fetchInternalRepairRecord(int carId) {
+		try {
+			return internalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 }
