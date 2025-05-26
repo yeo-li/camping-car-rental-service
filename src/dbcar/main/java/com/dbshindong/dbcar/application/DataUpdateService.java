@@ -22,6 +22,7 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepai
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -34,32 +35,19 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartR
 
 public class DataUpdateService {
 
-	private final CampingCarCompanyRepository campingCarCompanyRepository;
-	private final CampingCarRepository campingCarRepository;
-	private final CustomerRepository customerRepository;
-	private final EmployeeRepository employeeRepository;
-	private final ExternalRepairShopRepository externalRepairShopRepository;
-	private final ExternalRepairRecordRepository externalRepairRecordRepository;
-	private final InternalRepairRecordRepository internalRepairRecordRepository;
-	private final PartRepository partRepository;
-	private final RentalRepository rentalRepository;
-
-	public DataUpdateService(CampingCarRepository campingCarRepository,
-			CampingCarCompanyRepository campingCarCompanyRepository, EmployeeRepository employeeRepository,
-			CustomerRepository customerRepository, RentalRepository rentalRepository,
-			ExternalRepairRecordRepository externalRepairRecordRepository,
-			ExternalRepairShopRepository externalRepairShopRepository,
-			InternalRepairRecordRepository internalRepairRecordRepository, PartRepository partRepository) {
-		this.campingCarCompanyRepository = campingCarCompanyRepository;
-		this.campingCarRepository = campingCarRepository;
-		this.customerRepository = customerRepository;
-		this.employeeRepository = employeeRepository;
-		this.externalRepairShopRepository = externalRepairShopRepository;
-		this.externalRepairRecordRepository = externalRepairRecordRepository;
-		this.internalRepairRecordRepository = internalRepairRecordRepository;
-		this.partRepository = partRepository;
-		this.rentalRepository = rentalRepository;
-	}
+	private final CampingCarCompanyRepository campingCarCompanyRepository = new CampingCarCompanyRepository(
+			DBConnection.getConnection());
+	private final ExternalRepairShopRepository externalRepairShopRepository = new ExternalRepairShopRepository(
+			DBConnection.getConnection());
+	private final RentalRepository rentalRepository = new RentalRepository(DBConnection.getConnection());
+	private final CampingCarRepository campingCarRepository = new CampingCarRepository(DBConnection.getConnection());
+	private final ExternalRepairRecordRepository externalRepairRecordRepository = new ExternalRepairRecordRepository(
+			DBConnection.getConnection());
+	private final CustomerRepository customerRepository = new CustomerRepository(DBConnection.getConnection());
+	private final PartRepository partRepository = new PartRepository(DBConnection.getConnection());
+	private final EmployeeRepository employeeRepository = new EmployeeRepository(DBConnection.getConnection());
+	private final InternalRepairRecordRepository internalRepairRecordRepository = new InternalRepairRecordRepository(
+			DBConnection.getConnection());
 
 	public void updateCampingCars(UpdateCampingCarRequest request, String conditionSql) {
 		try {
