@@ -10,6 +10,7 @@ public class DBConnection {
 	//public static void main (String[] args) {
 	public DBConnection(String user, String pw) {// ID와 pw를 불러와서 DB에 연결합니다.
 		try {
+			System.out.println("DB 연결 시도");
 			Class.forName("com.mysql.cj.jdbc.Driver"); // MySQL 드라이버 로드
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBTEST", user,pw); // JDBC 연결
 			System.out.println("DB 연결 완료");
