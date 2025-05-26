@@ -25,6 +25,7 @@ public class SqlExecutorTest {
 		infra = new SqlExecutor(dc.getConnection());
 
 		SELECT문을_조회하고_결과를_반환해야_한다();
+		조인된_테이블의_속성은_유지_되어야_한다();
 	}
 
 	static public void SELECT문을_조회하고_결과를_반환해야_한다() {
@@ -47,6 +48,19 @@ public class SqlExecutorTest {
 
 		// then
 		AssertUtil.assertEqual(12, actual.size(), "SELECT문을 조회하고 결과를 반환해야 한다.");
+	}
+	
+	static public void 조인된_테이블의_속성은_유지_되어야_한다() {
+		String sql = "select * from part, internalrepairrecord;";
+		
+		List<Map<String, Object>> actual = null;
+		try {
+			actual = infra.findData(sql);
+		} catch (SQLSyntaxErrorException e) {
+			e.printStackTrace();
+		}
+		
+		AssertUtil.assertEqual(12, actual.getFirst().size(), "조인된 테이블의 속성은 유지 되어야 한다.");
 	}
 
 }
