@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.application;
 
+import java.sql.SQLSyntaxErrorException;
 import java.util.List;
+import java.util.Map;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
@@ -12,6 +14,8 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepai
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.SqlExecutor;
+
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -23,6 +27,7 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.Inter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
 public class DataFetchService {
+
 	private final CampingCarCompanyRepository campingCarCompanyRepository = new CampingCarCompanyRepository(
 			DBConnection.getConnection());
 	private final ExternalRepairShopRepository externalRepairShopRepository = new ExternalRepairShopRepository(
@@ -36,6 +41,7 @@ public class DataFetchService {
 	private final EmployeeRepository employeeRepository = new EmployeeRepository(DBConnection.getConnection());
 	private final InternalRepairRecordRepository internalRepairRecordRepository = new InternalRepairRecordRepository(
 			DBConnection.getConnection());
+	private final SqlExecutor sqlExecutor = new SqlExecutor(DBConnection.getConnection());
 
 	public List<CampingCarCompany> fetchAllCampingCarCompanies() {
 		return campingCarCompanyRepository.findAll();
@@ -71,5 +77,9 @@ public class DataFetchService {
 
 	public List<Part> fetchAllParts() {
 		return partRepository.findAll();
+	}
+
+	public List<Map<String, Object>> fetchData(String selectSql) throws SQLSyntaxErrorException {
+		return sqlExecutor.findData(selectSql);
 	}
 }
