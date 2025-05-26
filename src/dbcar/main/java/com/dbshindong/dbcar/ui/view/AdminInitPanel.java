@@ -5,11 +5,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-public class AdminInitView {
+public class AdminInitPanel extends JPanel{
 	//private UserInitController UserInitController;
 	
 			//public UserInitView(UserInitController UserInitController) {
-			public AdminInitView() {
+			public AdminInitPanel() {
 				//this.UserInitController = UserInitController;
 				createUI();
 			}
