@@ -41,15 +41,7 @@ public class DataUpdateServiceTest {
 		DatabaseInitService initService = new DatabaseInitService();
 		initService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
 
-		DataUpdateService updateService = new DataUpdateService(new CampingCarRepository(DBConnection.getConnection()),
-				new CampingCarCompanyRepository(DBConnection.getConnection()),
-				new EmployeeRepository(DBConnection.getConnection()),
-				new CustomerRepository(DBConnection.getConnection()),
-				new RentalRepository(DBConnection.getConnection()),
-				new ExternalRepairRecordRepository(DBConnection.getConnection()),
-				new ExternalRepairShopRepository(DBConnection.getConnection()),
-				new InternalRepairRecordRepository(DBConnection.getConnection()),
-				new PartRepository(DBConnection.getConnection()));
+		DataUpdateService updateService = new DataUpdateService();
 
 		updateCampingCar테스트(updateService);
 		updateCampingCarCompany테스트(updateService);

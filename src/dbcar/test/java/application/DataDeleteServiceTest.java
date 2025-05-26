@@ -23,17 +23,7 @@ public class DataDeleteServiceTest {
         DatabaseInitService initService = new DatabaseInitService();
         initService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
 
-        DataDeleteService deleteService = new DataDeleteService(
-            new CampingCarCompanyRepository(DBConnection.getConnection()),
-            new ExternalRepairShopRepository(DBConnection.getConnection()),
-            new RentalRepository(DBConnection.getConnection()),
-            new CampingCarRepository(DBConnection.getConnection()),
-            new ExternalRepairRecordRepository(DBConnection.getConnection()),
-            new CustomerRepository(DBConnection.getConnection()),
-            new PartRepository(DBConnection.getConnection()),
-            new EmployeeRepository(DBConnection.getConnection()),
-            new InternalRepairRecordRepository(DBConnection.getConnection())
-        );
+        DataDeleteService deleteService = new DataDeleteService();
 
         deleteCampingCar테스트(deleteService);
         deleteCampingCarCompany테스트(deleteService);
