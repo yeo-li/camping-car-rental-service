@@ -5,6 +5,7 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
+import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairRecordRepository;
@@ -42,7 +43,7 @@ public class RepairRecordFetchService {
 			return null;
 		}
 	}
-	
+
 	public List<InternalRepairRecord> fetchInternalRepairRecord(int carId) {
 		try {
 			return internalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
@@ -50,6 +51,10 @@ public class RepairRecordFetchService {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public ExternalRepairShop fetchExternalRepairShop(int shopId) {
+			return externalRepairShopRepository.findById(shopId);
 	}
 
 }
