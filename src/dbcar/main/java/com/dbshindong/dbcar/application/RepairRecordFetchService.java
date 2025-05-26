@@ -57,7 +57,7 @@ public class RepairRecordFetchService {
 	public ExternalRepairShop fetchExternalRepairShop(int shopId) {
 		return externalRepairShopRepository.findById(shopId);
 	}
-	
+
 	public Part fetchPart(int partId) {
 		return partRepository.findById(partId);
 	}
