@@ -2,24 +2,19 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
 
-public class UserInitView {
+public class UserInitPanel extends JPanel {
 	
-		public UserInitView() {//UI 선택지 제공자이므로 controller/service가 필요 없다.
+		public UserInitPanel() {//UI 선택지 제공자이므로 controller/service가 필요 없다.
 		
 			createUI();
 		}
 		
 		public void createUI() {
-			JFrame frame = new JFrame("환영합니다!");//초기 화면
-			frame.setSize(800,600);
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			
-			JPanel panel = new JPanel();//화면에 패널 추가
-			frame.add(panel);
+			setLayout(null);
 			
-			addUserInitComponent(panel);
+			addUserInitComponent(this);
 			
-			frame.setVisible(true);
 			
 			
 		}
