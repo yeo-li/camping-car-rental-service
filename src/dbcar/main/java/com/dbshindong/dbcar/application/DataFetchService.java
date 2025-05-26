@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.application;
 
+import java.sql.SQLSyntaxErrorException;
 import java.util.List;
+import java.util.Map;
 
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
@@ -11,6 +13,7 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepai
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.SqlExecutor;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -31,12 +34,13 @@ public class DataFetchService {
 	private final PartRepository partRepository;
 	private final EmployeeRepository employeeRepository;
 	private final InternalRepairRecordRepository internalRepairRecordRepository;
+	private final SqlExecutor sqlExecutor;
 
 	public DataFetchService(CampingCarCompanyRepository campingCarCompanyRepository,
 			ExternalRepairShopRepository externalRepairShopRepository, RentalRepository rentalRepository,
 			CampingCarRepository campingCarRepository, ExternalRepairRecordRepository externalRepairRecordRepository,
 			CustomerRepository customerRepository, PartRepository partRepository, EmployeeRepository employeeRepository,
-			InternalRepairRecordRepository internalRepairRecordRepository) {
+			InternalRepairRecordRepository internalRepairRecordRepository, SqlExecutor sqlExecutor) {
 		this.campingCarCompanyRepository = campingCarCompanyRepository;
 		this.externalRepairShopRepository = externalRepairShopRepository;
 		this.rentalRepository = rentalRepository;
@@ -46,6 +50,7 @@ public class DataFetchService {
 		this.partRepository = partRepository;
 		this.employeeRepository = employeeRepository;
 		this.internalRepairRecordRepository = internalRepairRecordRepository;
+		this.sqlExecutor = sqlExecutor;
 	}
 
 	public List<CampingCarCompany> fetchAllCampingCarCompanies() {
@@ -82,5 +87,9 @@ public class DataFetchService {
 
 	public List<Part> fetchAllParts() {
 		return partRepository.findAll();
+	}
+
+	public List<Map<String, Object>> fetchData(String selectSql) throws SQLSyntaxErrorException {
+		return sqlExecutor.findData(selectSql);
 	}
 }
