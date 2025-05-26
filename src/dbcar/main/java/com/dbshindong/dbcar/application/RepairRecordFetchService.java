@@ -7,6 +7,7 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
+import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairShopRepository;
@@ -54,7 +55,11 @@ public class RepairRecordFetchService {
 	}
 
 	public ExternalRepairShop fetchExternalRepairShop(int shopId) {
-			return externalRepairShopRepository.findById(shopId);
+		return externalRepairShopRepository.findById(shopId);
+	}
+	
+	public Part fetchPart(int partId) {
+		return partRepository.findById(partId);
 	}
 
 }
