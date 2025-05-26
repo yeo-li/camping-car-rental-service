@@ -105,9 +105,9 @@ public class SqlQueryView extends JPanel {
 				data[i][j] = row.get(columns[j]);
 			}
 		}
-		
+
 		// 테이블 명 분리
-		for(int i = 0; i < columns.length; i++) {
+		for (int i = 0; i < columns.length; i++) {
 			columns[i] = columns[i].substring(columns[i].indexOf('_') + 1);
 		}
 
