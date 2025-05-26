@@ -2,6 +2,9 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.admin;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
+
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +13,7 @@ public class SqlQueryView extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
+	private final SqlQueryController controller = new SqlQueryController();
 	private final JTextArea sqlInputArea;
 	private final JButton executeButton;
 	private final JTable resultTable;
@@ -32,6 +36,16 @@ public class SqlQueryView extends JPanel {
 		JScrollPane inputScroll = new JScrollPane(sqlInputArea);
 
 		executeButton = new JButton("SQL 실행");
+		// 🎯 버튼 클릭 → 컨트롤러 실행
+        executeButton.addActionListener(e -> {
+            String sql = sqlInputArea.getText().trim();
+            try {
+                List<Map<String, Object>> result = controller.handleQuery(sql);
+                renderTable(result);
+            } catch (Exception ex) {
+                showError(ex.getMessage());
+            }
+        });
 
 		// 하단 입력 영역
 		JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -73,6 +87,33 @@ public class SqlQueryView extends JPanel {
 		resultTable.setModel(new DefaultTableModel(rowData, columnNames));
 		messageLabel.setText("✅ 결과: " + result.size() + "건");
 	}
+	
+	private void renderTable(List<Map<String, Object>> result) {
+        if (result.isEmpty()) {
+            messageLabel.setText("📭 해당 데이터가 없습니다.");
+            resultTable.setModel(new DefaultTableModel());
+            return;
+        }
+
+        Map<String, Object> firstRow = result.get(0);
+        String[] columns = firstRow.keySet().toArray(new String[0]);
+
+        Object[][] data = new Object[result.size()][columns.length];
+        for (int i = 0; i < result.size(); i++) {
+            Map<String, Object> row = result.get(i);
+            for (int j = 0; j < columns.length; j++) {
+                data[i][j] = row.get(columns[j]);
+            }
+        }
+
+        resultTable.setModel(new DefaultTableModel(data, columns));
+        messageLabel.setText("✅ 결과: " + result.size() + "건");
+    }
+
+    private void showError(String message) {
+        messageLabel.setText("⚠️ 오류 발생");
+        JOptionPane.showMessageDialog(this, message, "오류", JOptionPane.ERROR_MESSAGE);
+    }
 
 	public void showError(String message) {
 		messageLabel.setText("⚠️ 오류 발생");
