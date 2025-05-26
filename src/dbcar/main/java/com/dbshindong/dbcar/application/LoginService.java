@@ -13,21 +13,20 @@ public class LoginService {
 		this.customerRepository = customerRepository;
 	}
 	
-	public boolean login(String userId, String password) {
-		boolean loginResult = isExistUser(userId, password);
-		return loginResult;
+	public Customer login(String userId, String password) {
+		return findValidUser(userId, password);
 	}
 	
-	public boolean isExistUser(String userId, String password) {
+	public Customer findValidUser(String userId, String password) {
 		List<Customer> res = customerRepository.findByUsername(userId);
 		
-		for(Customer custmer : res) {
-			if(custmer.getPassword().equals(password)) {
-				System.out.println(custmer.getPassword());
-				return true;
+		for(Customer customer : res) {
+			if(customer.getPassword().equals(password)) {
+				System.out.println(customer.getPassword());
+				return customer;
 			}
 		}
-		return false;
+		return null;
 		
 	}
 	
