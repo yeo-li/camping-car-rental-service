@@ -1,6 +1,5 @@
 package dbcar.test.java.application;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdateCampingCarCompanyRequest;
 import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdateCampingCarRequest;
 import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdateCustomerRequest;
@@ -11,6 +10,7 @@ import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdateInternalRepair
 import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdatePartRequest;
 import dbcar.main.java.com.dbshindong.dbcar.application.dto.UpdateRentalRequest;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
@@ -20,7 +20,6 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepai
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -33,15 +32,17 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.Inter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
 public class DataUpdateServiceTest {
+	static AppConfig ac = AppConfig.getInstance();
+
 	public static void main(String[] args) {
 		System.out.println("[[DataUpdateServiceTest 시작]]");
 
 		// 초기화
-		DBConnection dc = new DBConnection("root", "1234");
-		DatabaseInitService initService = new DatabaseInitService();
-		initService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
 
-		DataUpdateService updateService = new DataUpdateService();
+		DataUpdateService updateService = ac.dataUpdateService();
 
 		updateCampingCar테스트(updateService);
 		updateCampingCarCompany테스트(updateService);
@@ -60,7 +61,7 @@ public class DataUpdateServiceTest {
 
 		service.updateCampingCars(updateCar, "car_id = 1");
 
-		CampingCarRepository repo = new CampingCarRepository(DBConnection.getConnection());
+		CampingCarRepository repo = ac.campingCarRepository();
 		CampingCar car = repo.findById(1);
 		AssertUtil.assertEqual("수정된 캠핑카", car.getName(), "캠핑카 이름이 수정되어야 한다.");
 		AssertUtil.assertEqual("서울99가9999", car.getPlate_number(), "차량 번호판이 수정되어야 한다.");
@@ -73,7 +74,7 @@ public class DataUpdateServiceTest {
 
 		service.updateCampingCarCompanies(updatedCompany, "company_id = 1");
 
-		CampingCarCompanyRepository repo = new CampingCarCompanyRepository(DBConnection.getConnection());
+		CampingCarCompanyRepository repo = ac.campingCarCompanyRepository();
 		CampingCarCompany company = repo.findById(1);
 		AssertUtil.assertEqual("수정회사", company.getName(), "회사 이름이 수정되어야 한다.");
 		AssertUtil.assertEqual("홍팀장", company.getManager_name(), "매니저 이름이 수정되어야 한다.");
@@ -85,7 +86,7 @@ public class DataUpdateServiceTest {
 
 		service.updateEmployees(updateEmp, "employee_id = 1");
 
-		EmployeeRepository repo = new EmployeeRepository(DBConnection.getConnection());
+		EmployeeRepository repo = ac.employeeRepository();
 		Employee emp = repo.findById(1);
 		AssertUtil.assertEqual("수정된직원", emp.getName(), "직원 이름이 수정되어야 한다.");
 		AssertUtil.assertEqual("010-1111-2222", emp.getPhone(), "직원 전화번호가 수정되어야 한다.");
@@ -98,7 +99,7 @@ public class DataUpdateServiceTest {
 
 		service.updateCustomers(updateCustomer, "customer_id = 1");
 
-		CustomerRepository repo = new CustomerRepository(DBConnection.getConnection());
+		CustomerRepository repo = ac.customerRepository();
 		Customer customer = repo.findById(1);
 		AssertUtil.assertEqual("updatedUser", customer.getUsername(), "사용자 이름이 수정되어야 한다.");
 		AssertUtil.assertEqual("홍길동", customer.getName(), "이름이 수정되어야 한다.");
@@ -110,7 +111,7 @@ public class DataUpdateServiceTest {
 
 		service.updateExternalRepairShops(updated, "shop_id = 1");
 
-		ExternalRepairShopRepository repo = new ExternalRepairShopRepository(DBConnection.getConnection());
+		ExternalRepairShopRepository repo = ac.externalRepairShopRepository();
 		ExternalRepairShop shop = repo.findById(1);
 		AssertUtil.assertEqual("수정정비소", shop.getName(), "정비소 이름이 수정되어야 한다.");
 		AssertUtil.assertEqual("정수리", shop.getManager_name(), "매니저 이름이 수정되어야 한다.");
@@ -122,7 +123,7 @@ public class DataUpdateServiceTest {
 
 		service.updateExternalRepairRecords(updated, "external_repair_id = 1");
 
-		ExternalRepairRecordRepository repo = new ExternalRepairRecordRepository(DBConnection.getConnection());
+		ExternalRepairRecordRepository repo = ac.externalRepairRecordRepository();
 		ExternalRepairRecord record = repo.findById(1);
 		AssertUtil.assertEqual("수정내용", record.getContent(), "수리 내용이 수정되어야 한다.");
 		AssertUtil.assertEqual("메모", record.getNote(), "메모가 수정되어야 한다.");
@@ -134,7 +135,7 @@ public class DataUpdateServiceTest {
 
 		service.updateInternalRepairRecords(updated, "internal_repair_id = 1");
 
-		InternalRepairRecordRepository repo = new InternalRepairRecordRepository(DBConnection.getConnection());
+		InternalRepairRecordRepository repo = ac.internalRepairRecordRepository();
 		InternalRepairRecord record = repo.findById(1);
 		AssertUtil.assertEqual(120, record.getDuration_minutes(), "수리 시간이 수정되어야 한다.");
 	}
@@ -145,7 +146,7 @@ public class DataUpdateServiceTest {
 
 		service.updateParts(updated, "part_id = 1");
 
-		PartRepository repo = new PartRepository(DBConnection.getConnection());
+		PartRepository repo = ac.partRepository();
 		Part part = repo.findById(1);
 		AssertUtil.assertEqual("수정부품", part.getName(), "부품 이름이 수정되어야 한다.");
 	}
@@ -156,7 +157,7 @@ public class DataUpdateServiceTest {
 
 		service.updateRentals(updated, "rental_id = 1");
 
-		RentalRepository repo = new RentalRepository(DBConnection.getConnection());
+		RentalRepository repo = ac.rentalRepository();
 		Rental rental = repo.findById(1);
 		AssertUtil.assertEqual("기타비용", rental.getExtra_charge_detail(), "추가 요금 세부사이 수정되어야 한다.");
 		AssertUtil.assertEqual(700000, rental.getTotal_charge(), "총 요금이 수정되어야 한다.");

@@ -11,7 +11,6 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepai
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -23,19 +22,33 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.Inter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
 public class DataInsertService {
-	private final CampingCarCompanyRepository campingCarCompanyRepository = new CampingCarCompanyRepository(
-			DBConnection.getConnection());
-	private final ExternalRepairShopRepository externalRepairShopRepository = new ExternalRepairShopRepository(
-			DBConnection.getConnection());
-	private final RentalRepository rentalRepository = new RentalRepository(DBConnection.getConnection());
-	private final CampingCarRepository campingCarRepository = new CampingCarRepository(DBConnection.getConnection());
-	private final ExternalRepairRecordRepository externalRepairRecordRepository = new ExternalRepairRecordRepository(
-			DBConnection.getConnection());
-	private final CustomerRepository customerRepository = new CustomerRepository(DBConnection.getConnection());
-	private final PartRepository partRepository = new PartRepository(DBConnection.getConnection());
-	private final EmployeeRepository employeeRepository = new EmployeeRepository(DBConnection.getConnection());
-	private final InternalRepairRecordRepository internalRepairRecordRepository = new InternalRepairRecordRepository(
-			DBConnection.getConnection());
+	private final CampingCarCompanyRepository campingCarCompanyRepository;
+	private final ExternalRepairShopRepository externalRepairShopRepository;
+	private final RentalRepository rentalRepository;
+	private final CampingCarRepository campingCarRepository;
+	private final ExternalRepairRecordRepository externalRepairRecordRepository;
+
+	private final CustomerRepository customerRepository;
+	private final PartRepository partRepository;
+	private final EmployeeRepository employeeRepository;
+	private final InternalRepairRecordRepository internalRepairRecordRepository;
+
+	public DataInsertService(CampingCarCompanyRepository campingCarCompanyRepository,
+			ExternalRepairShopRepository externalRepairShopRepository, RentalRepository rentalRepository,
+			CampingCarRepository campingCarRepository, ExternalRepairRecordRepository externalRepairRecordRepository,
+			CustomerRepository customerRepository, PartRepository partRepository, EmployeeRepository employeeRepository,
+			InternalRepairRecordRepository internalRepairRecordRepository) {
+		super();
+		this.campingCarCompanyRepository = campingCarCompanyRepository;
+		this.externalRepairShopRepository = externalRepairShopRepository;
+		this.rentalRepository = rentalRepository;
+		this.campingCarRepository = campingCarRepository;
+		this.externalRepairRecordRepository = externalRepairRecordRepository;
+		this.customerRepository = customerRepository;
+		this.partRepository = partRepository;
+		this.employeeRepository = employeeRepository;
+		this.internalRepairRecordRepository = internalRepairRecordRepository;
+	}
 
 	public CampingCarCompany createCampingCarCompany(String name, String address, String phone, String manager_name,
 			String manager_email) {

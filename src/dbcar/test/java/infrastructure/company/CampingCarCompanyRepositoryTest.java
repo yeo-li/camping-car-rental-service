@@ -2,24 +2,21 @@ package dbcar.test.java.infrastructure.company;
 
 import java.util.List;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 
 public class CampingCarCompanyRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static CampingCarCompanyRepository companyRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[CampingCarCompanyRepositoryTest 초기 세팅]]");
-
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		companyRepository = new CampingCarCompanyRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		companyRepository = ac.campingCarCompanyRepository();
 
 		System.out.println("\n[[CampingCarCompanyRepositoryTest]]");
 
@@ -47,7 +44,8 @@ public class CampingCarCompanyRepositoryTest {
 	}
 
 	private static void 새로운_회사를_저장할_수_있어야_한다() {
-		CampingCarCompany company = new CampingCarCompany("소프트캠핑 3000", "서울 강서구 강서로 300", "010-9999-9999", "이강우", "kangwoo@example.com");
+		CampingCarCompany company = new CampingCarCompany("소프트캠핑 3000", "서울 강서구 강서로 300", "010-9999-9999", "이강우",
+				"kangwoo@example.com");
 		companyRepository.save(company);
 
 		CampingCarCompany saved = companyRepository.findById(13);
@@ -56,7 +54,8 @@ public class CampingCarCompanyRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		CampingCarCompany existing = companyRepository.findById(13);
-		CampingCarCompany updated = new CampingCarCompany("하드캠핑 3000", existing.getAddress(), existing.getPhone(), existing.getManager_name(), existing.getManager_email());
+		CampingCarCompany updated = new CampingCarCompany("하드캠핑 3000", existing.getAddress(), existing.getPhone(),
+				existing.getManager_name(), existing.getManager_email());
 
 		companyRepository.update(13, updated);
 		CampingCarCompany company = companyRepository.findById(13);
