@@ -3,24 +3,22 @@ package dbcar.test.java.infrastructure.repair.external;
 import java.sql.Date;
 import java.util.List;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairRecordRepository;
 
 public class ExternalRepairRecordRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static ExternalRepairRecordRepository externalRepairRecordRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[ExternalRepairRecordRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		externalRepairRecordRepository = new ExternalRepairRecordRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		externalRepairRecordRepository = ac.externalRepairRecordRepository();
 
 		System.out.println("\n[[ExternalRepairRecordRepositoryTest]]");
 
@@ -48,8 +46,8 @@ public class ExternalRepairRecordRepositoryTest {
 	}
 
 	private static void 새로운_레코드를_저장할_수_있어야_한다() {
-		ExternalRepairRecord record = new ExternalRepairRecord(
-				1, 1, 1, 1, "새로운 외부 수리 내용", Date.valueOf("2025-06-10"), 123456, Date.valueOf("2025-07-10"), null);
+		ExternalRepairRecord record = new ExternalRepairRecord(1, 1, 1, 1, "새로운 외부 수리 내용", Date.valueOf("2025-06-10"),
+				123456, Date.valueOf("2025-07-10"), null);
 
 		externalRepairRecordRepository.save(record);
 		ExternalRepairRecord actual = externalRepairRecordRepository.findById(13);
@@ -58,9 +56,9 @@ public class ExternalRepairRecordRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		ExternalRepairRecord oldRecord = externalRepairRecordRepository.findById(13);
-		ExternalRepairRecord updated = new ExternalRepairRecord(
-				oldRecord.getCar_id(), oldRecord.getShop_id(), oldRecord.getCompany_id(), oldRecord.getCustomer_id(),
-				"수정된 수리 내용", oldRecord.getRepair_date(), oldRecord.getCost(), oldRecord.getDue_date(), "집가고싶");
+		ExternalRepairRecord updated = new ExternalRepairRecord(oldRecord.getCar_id(), oldRecord.getShop_id(),
+				oldRecord.getCompany_id(), oldRecord.getCustomer_id(), "수정된 수리 내용", oldRecord.getRepair_date(),
+				oldRecord.getCost(), oldRecord.getDue_date(), "집가고싶");
 
 		externalRepairRecordRepository.update(13, updated);
 		ExternalRepairRecord result = externalRepairRecordRepository.findById(13);

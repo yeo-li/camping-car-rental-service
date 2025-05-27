@@ -4,24 +4,22 @@ import java.sql.Date;
 import java.util.List;
 import java.sql.*;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 
 public class CampingCarRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static CampingCarRepository campingCarRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[CampingCarRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		campingCarRepository = new CampingCarRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		campingCarRepository = ac.campingCarRepository();
 
 		System.out.println("\n[[CampingCarRepositoryTest]]");
 
