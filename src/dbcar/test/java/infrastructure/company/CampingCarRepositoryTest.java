@@ -2,6 +2,7 @@ package dbcar.test.java.infrastructure.company;
 
 import java.sql.Date;
 import java.util.List;
+import java.sql.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
@@ -27,6 +28,8 @@ public class CampingCarRepositoryTest {
 		사용자의_아이디로_데이터가_삭제_되어야_한다();
 		새로운_사용자를_저장할_수_있어야_한다();
 		데이터를_업데이트_할_수_있어야_한다();
+		조건식을_입력받아_데이터를_조회할_수_있어야_한다();
+		조건식의_문법이_틀리면_오류를_발생시켜야_한다();
 	}
 
 	private static void 전체_데이터_조회가_되어야_한다() {
@@ -65,5 +68,42 @@ public class CampingCarRepositoryTest {
 
 		CampingCar actual = campingCarRepository.findById(13);
 		AssertUtil.assertEqual("에버그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
+	}
+
+	private static void 조건식을_입력받아_데이터를_조회할_수_있어야_한다() {
+
+		// given
+		String sql = "car_id > 4";
+
+		// when
+		List<CampingCar> cars = null;
+		try {
+			cars = campingCarRepository.findByCondition(sql);	
+		} catch(SQLSyntaxErrorException e) {
+			
+		}
+		
+
+		// then
+		int actual = cars.size();
+		AssertUtil.assertEqual(9, actual, "조건식을 입력받아 데이터를 조회할 수 있어야 한다.");
+	}
+
+	private static void 조건식의_문법이_틀리면_오류를_발생시켜야_한다() {
+
+		// given
+		String sql = "name lik '다이나믹%'";
+
+		// when
+		List<CampingCar> cars = null;
+		try {
+			cars = campingCarRepository.findByCondition(sql);
+		} catch (SQLSyntaxErrorException e) {
+			AssertUtil.assertEqual(-1, -1, "조건식의 문법이 틀리면 오류를 발생시켜야 한다.");
+			return;
+		}
+
+		// then
+		AssertUtil.assertEqual(0, -1, "조건식의 문법이 틀리면 오류를 발생시켜야 한다.");
 	}
 }
