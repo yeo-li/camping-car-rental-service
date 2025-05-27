@@ -3,23 +3,22 @@ package dbcar.test.java.infrastructure.customer;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.customer.CustomerRepository;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 import java.util.*;
 
 public class CustomerRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static CustomerRepository customerRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[CustomerRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		customerRepository = new CustomerRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
-
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		customerRepository = ac.customerRepository();
 		System.out.println("\n[[CustomerRepositoryTest]]");
 
 		// findAll Test
@@ -87,12 +86,12 @@ public class CustomerRepositoryTest {
 		Customer customer = customerRepository.findById(13);
 		AssertUtil.assertEqual("kimSeonWoo", customer.getUsername(), "데이터를 업데이트 할 수 있어야 한다.");
 	}
-	
-	private static void 유저를_아이디로_조회할_수_있어야_한다() {//#20
+
+	private static void 유저를_아이디로_조회할_수_있어야_한다() {// #20
 		List<Customer> res = customerRepository.findByUsername("user2");
 		List<Customer> res2 = customerRepository.findByUsername("asd");
 		AssertUtil.assertEqual(res.get(0).getName(), "임준서", "유저를 아이디와 비밀번호로 찾는다.");
 		AssertUtil.assertEqual(res2.isEmpty(), true, "아이디와 비밀번호가 일치하지 않거나 존재하지 않는 회원입니다.");
-		
+
 	}
 }

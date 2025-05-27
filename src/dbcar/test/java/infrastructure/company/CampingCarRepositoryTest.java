@@ -5,22 +5,22 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 
 public class CampingCarRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static CampingCarRepository campingCarRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[CampingCarRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		campingCarRepository = new CampingCarRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		campingCarRepository = ac.campingCarRepository();
 
 		System.out.println("\n[[CampingCarRepositoryTest]]");
 
@@ -48,8 +48,8 @@ public class CampingCarRepositoryTest {
 	}
 
 	private static void 새로운_사용자를_저장할_수_있어야_한다() {
-		CampingCar newCar = new CampingCar("에버그린-X1", "서울34나9999", 4, new byte[]{0x01, 0x02},
-				"작고 실용적인 캠핑카입니다.", 99999, 2, Date.valueOf("2025-01-01"));
+		CampingCar newCar = new CampingCar("에버그린-X1", "서울34나9999", 4, new byte[] { 0x01, 0x02 }, "작고 실용적인 캠핑카입니다.",
+				99999, 2, Date.valueOf("2025-01-01"));
 
 		campingCarRepository.save(newCar);
 
@@ -60,7 +60,8 @@ public class CampingCarRepositoryTest {
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		CampingCar oldCar = campingCarRepository.findById(13);
 		CampingCar updatedCar = new CampingCar("에버그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
-				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(), oldCar.getRegistered_date());
+				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(),
+				oldCar.getRegistered_date());
 
 		campingCarRepository.update(13, updatedCar);
 
