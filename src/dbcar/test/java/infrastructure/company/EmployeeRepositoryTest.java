@@ -2,25 +2,22 @@ package dbcar.test.java.infrastructure.company;
 
 import java.util.List;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
 
 public class EmployeeRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static EmployeeRepository EmployeeRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[EmployeeRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		EmployeeRepository = new EmployeeRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
-
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		EmployeeRepository = ac.employeeRepository();
 		System.out.println("\n[[EmployeeRepositoryTest]]");
 
 		// findAll Test
@@ -29,7 +26,7 @@ public class EmployeeRepositoryTest {
 		// findById Test
 		사용자의_아이디로_조회가_되어야_한다();
 
-		// delete Test
+		// delete Tests
 		사용자의_아이디로_데이터가_삭제_되어야_한다();
 
 		// save Test
@@ -61,8 +58,7 @@ public class EmployeeRepositoryTest {
 
 	private static void 새로운_사용자를_저장할_수_있어야_한다() {
 		// given
-		Employee employee = new Employee("박성열", "010-3075-3014", "광진구 천호대로", 60000000, 2, "인사팀",
-				"인사");
+		Employee employee = new Employee("박성열", "010-3075-3014", "광진구 천호대로", 60000000, 2, "인사팀", "인사");
 
 		// when
 		EmployeeRepository.save(employee);
@@ -75,8 +71,8 @@ public class EmployeeRepositoryTest {
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		// given
 		Employee em = EmployeeRepository.findById(13);
-		Employee updateEmp = new Employee("김선우", em.getPhone(), em.getAddress(), 70000000,
-				em.getDependents(), em.getDepartment(), em.getRole());
+		Employee updateEmp = new Employee("김선우", em.getPhone(), em.getAddress(), 70000000, em.getDependents(),
+				em.getDepartment(), em.getRole());
 
 		// when
 		EmployeeRepository.update(13, updateEmp);
