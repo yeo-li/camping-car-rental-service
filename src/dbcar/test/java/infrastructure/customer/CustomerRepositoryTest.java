@@ -1,7 +1,5 @@
 package dbcar.test.java.infrastructure.customer;
 
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.customer.CustomerRepository;

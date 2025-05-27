@@ -88,7 +88,6 @@ public class EmployeeRepository {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 
-			int deleted = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

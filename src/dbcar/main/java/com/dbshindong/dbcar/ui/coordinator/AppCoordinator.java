@@ -35,7 +35,7 @@ public class AppCoordinator {
 	}
 
 	public void showAdminInitView() {
-		AdminInitPanel view = new UserInitPanel();
+		AdminInitPanel view = new AdminInitPanel();
 		frame.setContentPane(view);
 		frame.revalidate();
 	}

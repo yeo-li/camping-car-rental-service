@@ -1,13 +1,9 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.controller;
 
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 
 import dbcar.main.java.com.dbshindong.dbcar.application.LoginService;
 import dbcar.main.java.com.dbshindong.dbcar.application.factory.LoginServiceFactory;
-import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
-import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.customer.CustomerRepository;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
 public class LoginController {
