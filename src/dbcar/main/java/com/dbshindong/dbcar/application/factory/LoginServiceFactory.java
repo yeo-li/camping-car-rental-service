@@ -12,7 +12,6 @@ public class LoginServiceFactory {
 	public LoginService create(String DBId, String password) {
 		System.out.println(DBId + password);
 		ac.dbConnection().setConnection(DBId, password);
-
 		return ac.loginService();
 
 	}
