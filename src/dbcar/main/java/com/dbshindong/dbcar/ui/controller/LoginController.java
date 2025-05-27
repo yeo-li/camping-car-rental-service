@@ -23,7 +23,7 @@ public class LoginController {
 		try {
 		LoginService service = LoginServiceFactory.create(DBID, DBPassword);
 		if(DBID.equals("root")) {
-			//this.coordinator.showAdminInitView();//중간 뷰이기 때문에 컨트롤러를 넣어줄 필요 없다.
+			this.coordinator.showAdminInitView();//중간 뷰이기 때문에 컨트롤러를 넣어줄 필요 없다.
 		}
 		else {
 			if(service.login(userId, userPassword) == null) {
