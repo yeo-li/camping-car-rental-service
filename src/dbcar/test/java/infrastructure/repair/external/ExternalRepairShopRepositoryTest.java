@@ -4,22 +4,22 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairShopRepository;
 
 public class ExternalRepairShopRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static ExternalRepairShopRepository externalRepairShopRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[ExternalRepairShopRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		externalRepairShopRepository = new ExternalRepairShopRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		externalRepairShopRepository = ac.externalRepairShopRepository();
 
 		System.out.println("\n[[ExternalRepairShopRepositoryTest]]");
 
@@ -55,7 +55,8 @@ public class ExternalRepairShopRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		ExternalRepairShop origin = externalRepairShopRepository.findById(13);
-		ExternalRepairShop updated = new ExternalRepairShop("업데이트정비소", origin.getAddress(), origin.getPhone(), origin.getManager_name(), origin.getManager_email());
+		ExternalRepairShop updated = new ExternalRepairShop("업데이트정비소", origin.getAddress(), origin.getPhone(),
+				origin.getManager_name(), origin.getManager_email());
 		externalRepairShopRepository.update(13, updated);
 		ExternalRepairShop after = externalRepairShopRepository.findById(13);
 		AssertUtil.assertEqual("업데이트정비소", after.getName(), "데이터를 업데이트 할 수 있어야 한다.");
