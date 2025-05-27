@@ -33,10 +33,13 @@ public class AppCoordinator {
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
-	/*
-	 * public void showAdminInitView() { AdminInitPanel view = new UserInitPanel();
-	 * frame.setContentPane(view); frame.revalidate(); }
-	 */
+
+	public void showAdminInitView() {
+		AdminInitPanel view = new UserInitPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
 	/*
 	 * public void showCampingCarQueryView(Customer user) { CampingCarRepository
 	 * campingCarRepository = new CampingCarRepository(this.conn);
