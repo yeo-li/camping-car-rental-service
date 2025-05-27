@@ -3,23 +3,24 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.admin;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
-public class SqlQueryView extends JPanel {
+public class SqlQueryPanel extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
-	private final SqlQueryController controller = new SqlQueryController();
+	private AppConfig ac = AppConfig.getInstance();
 	private final JTextArea sqlInputArea;
 	private final JButton executeButton;
 	private final JTable resultTable;
 	private final JLabel messageLabel;
 
-	public SqlQueryView() {
+	public SqlQueryPanel() {
 		setLayout(new BorderLayout(10, 10));
 
 		// 메시지 라벨
@@ -40,7 +41,8 @@ public class SqlQueryView extends JPanel {
 		executeButton.addActionListener(e -> {
 			String sql = sqlInputArea.getText().trim();
 			try {
-				List<Map<String, Object>> result = controller.handleQuery(sql);
+				List<Map<String, Object>> result = ac.sqlQueryController().handleQuery(sql);
+
 				renderTable(result);
 			} catch (Exception ex) {
 				showError(ex.getMessage());
@@ -116,12 +118,7 @@ public class SqlQueryView extends JPanel {
 	}
 
 	private void showError(String message) {
-		messageLabel.setText("⚠️ 오류 발생");
+		messageLabel.setText("❌ 오류 발생");
 		JOptionPane.showMessageDialog(this, message, "오류", JOptionPane.ERROR_MESSAGE);
-	}
-
-	// 컨트롤러가 버튼 이벤트 연결할 수 있도록
-	public JButton getExecuteButton() {
-		return executeButton;
 	}
 }
