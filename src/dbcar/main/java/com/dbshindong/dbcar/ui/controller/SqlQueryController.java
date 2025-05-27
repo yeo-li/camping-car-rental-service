@@ -8,7 +8,11 @@ import java.util.Map;
 
 public class SqlQueryController {
 
-	private final DataFetchService dataFetchService = new DataFetchService();
+	private final DataFetchService dataFetchService;
+
+	public SqlQueryController(DataFetchService dataFetchService) {
+		this.dataFetchService = dataFetchService;
+	}
 
 	public List<Map<String, Object>> handleQuery(String sql) throws SQLSyntaxErrorException {
 		validateSql(sql);
