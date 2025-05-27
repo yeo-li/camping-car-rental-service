@@ -13,12 +13,16 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.Exter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairShopRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.InternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
 public class AppConfig {
 
 	private static final AppConfig INSTANCE = new AppConfig();
 
 	private DBConnection dbConnection;
+
+	public AppCoordinator appCoordinator;
 
 	private CustomerRepository customerRepository;
 	private CampingCarRepository campingCarRepository;
@@ -34,12 +38,21 @@ public class AppConfig {
 	private LoginService loginService;
 	private LoginServiceFactory loginServiceFactory;
 
+	private LoginController loginController;
+
 	private AppConfig() {
 
 	}
 
 	public static AppConfig getInstance() {
 		return INSTANCE;
+	}
+
+	public AppCoordinator appCoordinator() {
+		if (appCoordinator == null) {
+			appCoordinator = new AppCoordinator();
+		}
+		return appCoordinator;
 	}
 
 	public DBConnection dbConnection() {
@@ -143,6 +156,14 @@ public class AppConfig {
 		}
 
 		return loginServiceFactory;
+	}
+
+	public LoginController loginController() {
+		if (loginController == null) {
+			loginController = new LoginController(this.loginServiceFactory(), this.appCoordinator());
+		}
+
+		return loginController;
 	}
 
 }
