@@ -14,7 +14,7 @@ public class loginViewTest {
 
 		System.out.println("[[LoginVeiwTest 초기 세팅]]");
 		System.out.println("\n[[LoginVeiwTest]]");
-        AppCoordinator cd = new AppCoordinator();//dbconnection은 코디네이터에서 관리. 
-        cd.start();
+		AppCoordinator cd = new AppCoordinator();// dbconnection은 코디네이터에서 관리.
+		cd.start();
 	}
 }

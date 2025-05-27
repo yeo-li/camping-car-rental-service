@@ -1,9 +1,15 @@
 package dbcar.main.java.com.dbshindong.dbcar.config;
 
+import dbcar.main.java.com.dbshindong.dbcar.application.DataDeleteService;
+import dbcar.main.java.com.dbshindong.dbcar.application.DataFetchService;
+import dbcar.main.java.com.dbshindong.dbcar.application.DataInsertService;
+import dbcar.main.java.com.dbshindong.dbcar.application.DataUpdateService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.application.LoginService;
+import dbcar.main.java.com.dbshindong.dbcar.application.RepairRecordFetchService;
 import dbcar.main.java.com.dbshindong.dbcar.application.factory.LoginServiceFactory;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
+import dbcar.main.java.com.dbshindong.dbcar.infrastructure.SqlExecutor;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarCompanyRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.EmployeeRepository;
@@ -33,10 +39,16 @@ public class AppConfig {
 	private ExternalRepairRecordRepository externalRepairRecordRepository;
 	private InternalRepairRecordRepository internalRepairRecordRepository;
 	private PartRepository partRepository;
+	private SqlExecutor sqlExecutor;
 
 	private DatabaseInitService databaseInitService;
 	private LoginService loginService;
 	private LoginServiceFactory loginServiceFactory;
+	private DataDeleteService dataDeleteService;
+	private DataFetchService dataFetchService;
+	private DataInsertService dataInsertService;
+	private DataUpdateService dataUpdateService;
+	private RepairRecordFetchService repairRecordFetchService;
 
 	private LoginController loginController;
 
@@ -134,6 +146,14 @@ public class AppConfig {
 		return partRepository;
 	}
 
+	public SqlExecutor sqlExecutor() {
+		if (sqlExecutor == null) {
+			sqlExecutor = new SqlExecutor(dbConnection().getConnection());
+		}
+
+		return sqlExecutor;
+	}
+
 	public DatabaseInitService databaseInitService() {
 		if (databaseInitService == null) {
 			databaseInitService = new DatabaseInitService();
@@ -157,6 +177,62 @@ public class AppConfig {
 
 		return loginServiceFactory;
 	}
+
+	public DataDeleteService dataDeleteService() {
+		if (dataDeleteService == null) {
+			dataDeleteService = new DataDeleteService(this.campingCarCompanyRepository(),
+					this.externalRepairShopRepository(), this.rentalRepository(), this.campingCarRepository(),
+					this.externalRepairRecordRepository(), this.customerRepository(), this.partRepository(),
+					this.employeeRepository(), this.internalRepairRecordRepository());
+		}
+
+		return dataDeleteService;
+	}
+
+	public DataFetchService dataFetchService() {
+		if (dataFetchService == null) {
+			dataFetchService = new DataFetchService(this.campingCarCompanyRepository(),
+					this.externalRepairShopRepository(), this.rentalRepository(), this.campingCarRepository(),
+					this.externalRepairRecordRepository(), this.customerRepository(), this.partRepository(),
+					this.employeeRepository(), this.internalRepairRecordRepository(), this.sqlExecutor());
+		}
+
+		return dataFetchService;
+	}
+
+	public DataInsertService dataInsertService() {
+		if (dataInsertService == null) {
+			dataInsertService = new DataInsertService(this.campingCarCompanyRepository(),
+					this.externalRepairShopRepository(), this.rentalRepository(), this.campingCarRepository(),
+					this.externalRepairRecordRepository(), this.customerRepository(), this.partRepository(),
+					this.employeeRepository(), this.internalRepairRecordRepository());
+		}
+
+		return dataInsertService;
+	}
+
+	public DataUpdateService dataUpdateService() {
+		if (dataUpdateService == null) {
+			dataUpdateService = new DataUpdateService(this.campingCarCompanyRepository(),
+					this.externalRepairShopRepository(), this.rentalRepository(), this.campingCarRepository(),
+					this.externalRepairRecordRepository(), this.customerRepository(), this.partRepository(),
+					this.employeeRepository(), this.internalRepairRecordRepository());
+		}
+
+		return dataUpdateService;
+	}
+
+	public RepairRecordFetchService repairRecordFetchService() {
+		if (repairRecordFetchService == null) {
+			repairRecordFetchService = new RepairRecordFetchService(this.campingCarRepository(),
+					this.externalRepairRecordRepository(), this.externalRepairShopRepository(),
+					this.internalRepairRecordRepository(), this.partRepository());
+		}
+
+		return repairRecordFetchService;
+	}
+
+	// controller
 
 	public LoginController loginController() {
 		if (loginController == null) {

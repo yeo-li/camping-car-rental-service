@@ -45,32 +45,31 @@ public class CustomerRepository {
 		return customer;
 
 	}
-	
-	public List<Customer> findByCondition(String condition) throws SQLSyntaxErrorException {
-	    List<Customer> list = new ArrayList<>();
-	    try {
-	        String sql = "SELECT * FROM Customer WHERE " + condition;
-	        PreparedStatement pstmt = conn.prepareStatement(sql);
-	        ResultSet rs = pstmt.executeQuery();
-	        while (rs.next()) {
-	            int customer_id = rs.getInt("customer_id");
-	            String username = rs.getString("username");
-	            String password = rs.getString("password");
-	            String license_number = rs.getString("license_number");
-	            String name = rs.getString("name");
-	            String address = rs.getString("address");
-	            String phone = rs.getString("phone");
-	            String email = rs.getString("email");
-	            list.add(new Customer(customer_id, username, password, license_number, name, address, phone, email));
-	        }
-	    } catch (SQLSyntaxErrorException e) {
-	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return list;
-	}
 
+	public List<Customer> findByCondition(String condition) throws SQLSyntaxErrorException {
+		List<Customer> list = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM Customer WHERE " + condition;
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int customer_id = rs.getInt("customer_id");
+				String username = rs.getString("username");
+				String password = rs.getString("password");
+				String license_number = rs.getString("license_number");
+				String name = rs.getString("name");
+				String address = rs.getString("address");
+				String phone = rs.getString("phone");
+				String email = rs.getString("email");
+				list.add(new Customer(customer_id, username, password, license_number, name, address, phone, email));
+			}
+		} catch (SQLSyntaxErrorException e) {
+			throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	public List<Customer> findAll() {
 		List<Customer> customers = new ArrayList<>();
@@ -109,7 +108,7 @@ public class CustomerRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
-
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -146,6 +145,7 @@ public class CustomerRepository {
 			pstmt.setString(7, customer.getEmail());
 			pstmt.setInt(8, id);
 
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
