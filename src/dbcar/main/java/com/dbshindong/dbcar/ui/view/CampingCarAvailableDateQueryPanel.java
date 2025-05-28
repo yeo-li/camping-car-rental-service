@@ -1,18 +1,22 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
@@ -28,6 +32,9 @@ public class CampingCarAvailableDateQueryPanel extends JPanel {
 	public CampingCarAvailableDateQueryPanel(int car_id) {
 
 		this.car_id = car_id;
+		
+		
+		
 		
 		createUI();
 	}
@@ -50,8 +57,11 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		reservationButton.setBounds(presetx - 32, 65, 155, 25);
 		panel.add(reservationButton);
 		
-		JTextField tableTitle = new JTextField("  대여 가능 일자");
+		JLabel tableTitle = new JLabel("대여 가능 일자");
+		tableTitle.setHorizontalAlignment(SwingConstants.CENTER);
 		tableTitle.setBounds(presetx, 25, 100, 40);
+		tableTitle.setFont(new Font("SansSerif", Font.BOLD, 14));
+
 		panel.add(tableTitle);
 		
 		
@@ -94,10 +104,20 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 					);
 					
 			if(result == JOptionPane.YES_OPTION) {
-				//RentalRepository
+				List<LocalDate> selected = new ArrayList<>();
+				for (int i = 0; i < table.getRowCount(); i++) {
+				    Boolean isChecked = (Boolean) table.getValueAt(i, 0);
+				    if (Boolean.TRUE.equals(isChecked)) {
+				        String dateStr = (String) table.getValueAt(i, 1);
+				        selected.add(LocalDate.parse(dateStr)); // yyyy-MM-dd 형식 파싱
+				    }
+				}
+				ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
+				JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
+				ac.appCoordinator().showCampingCarQueryView();
 			}
 			else {
-			
+				JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
 			}
 					
 		});
