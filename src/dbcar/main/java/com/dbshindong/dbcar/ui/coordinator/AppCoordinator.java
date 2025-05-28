@@ -39,6 +39,12 @@ public class AppCoordinator {
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
+	
+	public void showAllTableView() {
+		AllTableViewerPanel panel = new AllTableViewerPanel();
+		frame.setContentPane(panel);
+		frame.revalidate();
+	}
 
 	/*
 	 * public void showCampingCarQueryView(Customer user) { CampingCarRepository
