@@ -40,6 +40,12 @@ public class AppCoordinator {
 		frame.revalidate();
 	}
 
+	public void showRepairRecordView() {
+		RepairRecordPanel view = new RepairRecordPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
 	/*
 	 * public void showCampingCarQueryView(Customer user) { CampingCarRepository
 	 * campingCarRepository = new CampingCarRepository(this.conn);
