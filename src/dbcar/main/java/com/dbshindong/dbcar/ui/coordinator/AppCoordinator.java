@@ -21,6 +21,13 @@ public class AppCoordinator {
 		showLoginView();
 		frame.setVisible(true);
 	}
+	
+	public void setUser(String userID) {
+		this.user = userID;
+	}
+	public String getUser() {
+		return this.user;
+	}
 
 	public void showLoginView() {
 		LoginPanel view = new LoginPanel(ac.loginController(), ac.appCoordinator());
