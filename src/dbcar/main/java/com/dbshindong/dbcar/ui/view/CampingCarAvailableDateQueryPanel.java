@@ -112,9 +112,14 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 				        selected.add(LocalDate.parse(dateStr)); // yyyy-MM-dd 형식 파싱
 				    }
 				}
-				ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
-				JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
-				ac.appCoordinator().showCampingCarQueryView();
+				Boolean res = ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
+				if(res) {
+					JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
+					ac.appCoordinator().showCampingCarQueryView();
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "예약에 실패했습니다.\n일정을 확인해 주세요.");
+				}
 			}
 			else {
 				JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
