@@ -22,23 +22,24 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.Inter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
 public class DataInsertService {
-	private final CampingCarCompanyRepository campingCarCampanyRepository;
+	private final CampingCarCompanyRepository campingCarCompanyRepository;
 	private final ExternalRepairShopRepository externalRepairShopRepository;
 	private final RentalRepository rentalRepository;
 	private final CampingCarRepository campingCarRepository;
 	private final ExternalRepairRecordRepository externalRepairRecordRepository;
+
 	private final CustomerRepository customerRepository;
 	private final PartRepository partRepository;
 	private final EmployeeRepository employeeRepository;
 	private final InternalRepairRecordRepository internalRepairRecordRepository;
 
-	public DataInsertService(CampingCarCompanyRepository campingCarCampanyRepository,
+	public DataInsertService(CampingCarCompanyRepository campingCarCompanyRepository,
 			ExternalRepairShopRepository externalRepairShopRepository, RentalRepository rentalRepository,
 			CampingCarRepository campingCarRepository, ExternalRepairRecordRepository externalRepairRecordRepository,
 			CustomerRepository customerRepository, PartRepository partRepository, EmployeeRepository employeeRepository,
 			InternalRepairRecordRepository internalRepairRecordRepository) {
 		super();
-		this.campingCarCampanyRepository = campingCarCampanyRepository;
+		this.campingCarCompanyRepository = campingCarCompanyRepository;
 		this.externalRepairShopRepository = externalRepairShopRepository;
 		this.rentalRepository = rentalRepository;
 		this.campingCarRepository = campingCarRepository;
@@ -61,7 +62,7 @@ public class DataInsertService {
 	}
 
 	public void insertCampingCarCompany(CampingCarCompany company) {
-		campingCarCampanyRepository.save(company);
+		campingCarCompanyRepository.save(company);
 	}
 
 	public CampingCar createCampingCar(String name, String plate_number, int capacity, byte[] image, String description,

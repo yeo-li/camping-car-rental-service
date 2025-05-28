@@ -3,24 +3,22 @@ package dbcar.test.java.infrastructure.repair.internal;
 import java.sql.Date;
 import java.util.List;
 
-import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
-import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 
 public class PartRepositoryTest {
-	static DBConnection dc;
-	static DatabaseInitService databaseInitService;
+	static AppConfig ac = AppConfig.getInstance();
 	static PartRepository partRepository;
 
 	public static void main(String[] args) {
 		System.out.println("[[PartRepositoryTest 초기 세팅]]");
 
-		dc = new DBConnection("root", "1234");
-		databaseInitService = new DatabaseInitService();
-		partRepository = new PartRepository(DBConnection.getConnection());
-		databaseInitService.initDatabase(DBConnection.getConnection(), "dbcar/main/java/resources/DatabaseInit.sql");
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+		partRepository = ac.partRepository();
 
 		System.out.println("\n[[PartRepositoryTest]]");
 
@@ -57,7 +55,8 @@ public class PartRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		Part origin = partRepository.findById(13);
-		Part update = new Part("수정된 부품", 12345, origin.getStock_quantity(), origin.getStock_date(), origin.getSupplier_name());
+		Part update = new Part("수정된 부품", 12345, origin.getStock_quantity(), origin.getStock_date(),
+				origin.getSupplier_name());
 
 		partRepository.update(13, update);
 

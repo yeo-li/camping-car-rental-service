@@ -10,4 +10,12 @@ public class AssertUtil {
             System.out.println("✅ 성공: " + message);
         }
     }
+    
+    public static void assertNull(Object expected, String message) {
+        if (!Objects.equals(expected, null)) {
+            System.out.println("❌ 실패: " + message + " ("+expected+" is not null)");
+        } else {
+            System.out.println("✅ 성공: " + message);
+        }
+    }
 }

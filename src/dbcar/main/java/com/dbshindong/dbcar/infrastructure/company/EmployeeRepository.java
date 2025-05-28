@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +50,39 @@ public class EmployeeRepository {
 		return employee;
 
 	}
+	
+	public List<Employee> findByCondition(String condition) throws SQLSyntaxErrorException {
+	    List<Employee> employees = new ArrayList<>();
+
+	    try {
+	        String sql = "SELECT * FROM Employee WHERE " + condition;
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            int employeeId = rs.getInt("employee_id");
+	            String name = rs.getString("name");
+	            String phone = rs.getString("phone");
+	            String address = rs.getString("address");
+	            int salary = rs.getInt("salary");
+	            int dependents = rs.getInt("dependents");
+	            String department = rs.getString("department");
+	            String role = rs.getString("role");
+
+	            Employee emp = new Employee(
+	                employeeId, name, phone, address, salary, dependents, department, role
+	            );
+	            employees.add(emp);
+	        }
+
+	    } catch (SQLSyntaxErrorException e) {
+	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return employees;
+	}
 
 	public List<Employee> findAll() {
 		List<Employee> employees = new ArrayList<>();
@@ -87,8 +121,7 @@ public class EmployeeRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
-
-			int deleted = pstmt.executeUpdate();
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
