@@ -15,32 +15,26 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.customer.RentalRepository;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDateQueryController;
 
 
-public class CampingCarAvailableDateQueryView extends JDialog {
-	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
+public class CampingCarAvailableDateQueryPanel extends JPanel {
+	
 	private int car_id;
-	private LocalDate today;
-	public CampingCarAvailableDateQueryView(JFrame parent, CampingCarAvailableDateQueryController campingCarAvailableDateQueryController, int car_id) {
-		super(parent, true);
-		this.campingCarAvailableDateQueryController = campingCarAvailableDateQueryController;
+	private AppConfig ac = AppConfig.getInstance();
+	
+	public CampingCarAvailableDateQueryPanel(int car_id) {
+
 		this.car_id = car_id;
-		this.today = LocalDate.now(); //테스트 위해 수정 가능
+		
 		createUI();
 	}
 	
 	public void createUI() {
-		setTitle("가능한 일정 목록");
-		setSize(800,600);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
-		JPanel panel = new JPanel();
-		add(panel);
-		addCampingCarAvailableDateQueryComponent(panel);
-		
-		setVisible(true);
+		setLayout(null);
+		addCampingCarAvailableDateQueryComponent(this);
 	}
 private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		
@@ -61,7 +55,7 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		panel.add(tableTitle);
 		
 		
-		List<LocalDate> availList = campingCarAvailableDateQueryController.handleQuery(car_id, today);
+		List<LocalDate> availList = ac.campingCarAvailableDateQueryController().handleQuery(car_id);
 		String[] columnNames = {"선택","날짜"};
 		Object[][] data = new Object[availList.size()][2];
 		
