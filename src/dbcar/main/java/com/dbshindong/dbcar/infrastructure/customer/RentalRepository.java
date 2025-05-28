@@ -126,6 +126,9 @@ public class RentalRepository {
 			pstmt.setString(8, rental.getExtra_charge_detail());
 			if (rental.getExtra_charge() == null)
 				pstmt.setInt(9, 0);
+			else {
+				pstmt.setInt(9,rental.getExtra_charge());
+			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
