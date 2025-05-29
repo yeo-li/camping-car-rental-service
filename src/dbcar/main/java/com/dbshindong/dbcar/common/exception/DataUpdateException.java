@@ -6,7 +6,7 @@ public class DataUpdateException extends RepositoryException {
 		super(message, e);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public DataUpdateException(String message) {
 		super(message);
 		// TODO Auto-generated constructor stub
