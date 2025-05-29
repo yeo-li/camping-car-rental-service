@@ -2,6 +2,8 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidCampingCarCompanyException;
+
 public class CampingCarCompany {
 	private final int company_id;
 	private final String name;
@@ -35,12 +37,21 @@ public class CampingCarCompany {
 
 	private void validate(int company_id, String name, String address, String phone, String manager_name,
 			String manager_email) {
-		Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-		Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-		Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
-		Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
-		Objects.requireNonNull(manager_name, String.format(NULL_MESSAGE, "manager_name"));
-		Objects.requireNonNull(manager_email, String.format(NULL_MESSAGE, "manager_email"));
+		try {
+			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
+			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
+			Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
+			Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
+			Objects.requireNonNull(manager_name, String.format(NULL_MESSAGE, "manager_name"));
+			Objects.requireNonNull(manager_email, String.format(NULL_MESSAGE, "manager_email"));
+		} catch (NullPointerException e) {
+			throw new InvalidCampingCarCompanyException(e.getMessage(), e);
+		}
+
+		if (!isValidEmail(manager_email)) {
+			throw new InvalidCampingCarCompanyException("이메일 형식이 올바르지 않습니다.");
+		}
+
 	}
 
 	@Override
@@ -74,4 +85,15 @@ public class CampingCarCompany {
 	public String getManager_email() {
 		return manager_email;
 	}
+
+	private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@" + // local-part
+			"[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // domain
+
+	public static boolean isValidEmail(String email) {
+		if (email == null || email.isBlank()) {
+			return false;
+		}
+		return email.matches(EMAIL_REGEX);
+	}
+
 }

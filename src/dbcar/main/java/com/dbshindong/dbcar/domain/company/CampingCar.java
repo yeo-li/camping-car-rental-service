@@ -51,7 +51,7 @@ public class CampingCar {
 
 	private void validate(int car_id, String name, String plate_number, int capacity, byte[] image, String description,
 			int rental_price, int company_id, String registered_date) {
-		
+
 		// null 유효성 검증
 		try {
 			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
