@@ -94,23 +94,23 @@ public class ExternalRepairRecord {
 		}
 	}
 
-	public int getExternal_repair_id() {
+	public Integer getExternal_repair_id() {
 		return external_repair_id;
 	}
 
-	public int getCar_id() {
+	public Integer getCar_id() {
 		return car_id;
 	}
 
-	public int getShop_id() {
+	public Integer getShop_id() {
 		return shop_id;
 	}
 
-	public int getCompany_id() {
+	public Integer getCompany_id() {
 		return company_id;
 	}
 
-	public int getCustomer_id() {
+	public Integer getCustomer_id() {
 		return customer_id;
 	}
 
@@ -122,7 +122,7 @@ public class ExternalRepairRecord {
 		return repair_date;
 	}
 
-	public int getCost() {
+	public Integer getCost() {
 		return cost;
 	}
 

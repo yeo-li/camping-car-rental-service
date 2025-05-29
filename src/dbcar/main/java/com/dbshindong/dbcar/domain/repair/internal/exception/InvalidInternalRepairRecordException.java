@@ -9,4 +9,9 @@ public class InvalidInternalRepairRecordException extends ConstraintViolationExc
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidInternalRepairRecordException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }
