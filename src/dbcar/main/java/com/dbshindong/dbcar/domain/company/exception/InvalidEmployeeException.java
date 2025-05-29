@@ -9,4 +9,9 @@ public class InvalidEmployeeException extends ConstraintViolationException {
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidEmployeeException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }
