@@ -126,6 +126,7 @@ public class CustomerRepository {
 			pstmt.setString(6, customer.getPhone());
 			pstmt.setString(7, customer.getEmail());
 
+			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

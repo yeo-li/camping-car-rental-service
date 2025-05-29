@@ -123,7 +123,7 @@ public class DataInsertService {
 		}
 	}
 
-	public void insertRental(Rental rental) {
+	public void insertRental(Rental rental) throws Exception {
 		rentalRepository.save(rental);
 	}
 
