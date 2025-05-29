@@ -9,4 +9,9 @@ public class InvalidRentalException extends ConstraintViolationException {
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidRentalException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }

@@ -10,4 +10,14 @@ public class Validator {
 		}
 		return email.matches(EMAIL_REGEX);
 	}
+
+	public static boolean isValidDate(String date) {
+		try {
+			java.sql.Date.valueOf(date);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
+
+		return true;
+	}
 }
