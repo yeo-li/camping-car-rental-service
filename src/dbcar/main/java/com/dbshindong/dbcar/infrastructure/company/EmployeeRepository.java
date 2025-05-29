@@ -53,7 +53,7 @@ public class EmployeeRepository {
 
 	}
 
-	public List<Employee> findByCondition(String condition) throws SQLSyntaxErrorException {
+	public List<Employee> findByCondition(String condition) {
 		List<Employee> employees = new ArrayList<>();
 
 		try {
@@ -61,7 +61,7 @@ public class EmployeeRepository {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
-			while (rs.next()) {
+			if (rs.next()) {
 				int employeeId = rs.getInt("employee_id");
 				String name = rs.getString("name");
 				String phone = rs.getString("phone");
