@@ -50,9 +50,9 @@ public class ExternalRepairRecordRepository {
 				int company_id = rs.getInt("company_id");
 				int customer_id = rs.getInt("customer_id");
 				String content = rs.getString("content");
-				Date repair_date = rs.getDate("repair_date");
+				String repair_date = rs.getDate("repair_date").toString();
 				int cost = rs.getInt("cost");
-				Date due_date = rs.getDate("due_date");
+				String due_date = rs.getDate("due_date").toString();
 				String note = rs.getString("note");
 				list.add(new ExternalRepairRecord(external_repair_id, car_id, shop_id, company_id, customer_id, content,
 						repair_date, cost, due_date, note));
@@ -155,9 +155,9 @@ public class ExternalRepairRecordRepository {
 		int company_id = rs.getInt("company_id");
 		int customer_id = rs.getInt("customer_id");
 		String content = rs.getString("content");
-		Date repair_date = rs.getDate("repair_date");
+		String repair_date = rs.getDate("repair_date").toString();
 		int cost = rs.getInt("cost");
-		Date due_date = rs.getDate("due_date");
+		String due_date = rs.getDate("due_date").toString();
 		String note = rs.getString("note");
 
 		return new ExternalRepairRecord(external_repair_id, car_id, shop_id, company_id, customer_id, content,

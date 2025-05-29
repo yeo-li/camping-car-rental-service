@@ -110,7 +110,7 @@ public class CampingCarInsertPanel extends JPanel {
 				String description = descriptionField.getText().trim();
 				int rentalPrice = Integer.parseInt(rentalPriceField.getText().trim());
 				int companyId = Integer.parseInt(companyIdField.getText().trim());
-				Date regDate = Date.valueOf(registeredDateField.getText().trim());
+				String regDate = Date.valueOf(registeredDateField.getText().trim()).toString();
 
 				if (imageData == null) {
 					JOptionPane.showMessageDialog(this, "이미지를 업로드해주세요.", "\u2757 오류", JOptionPane.ERROR_MESSAGE);

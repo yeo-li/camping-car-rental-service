@@ -51,7 +51,7 @@ public class CampingCarRepositoryTest {
 
 	private static void 새로운_사용자를_저장할_수_있어야_한다() {
 		CampingCar newCar = new CampingCar("에버그린-X1", "서울34나9999", 4, new byte[] { 0x01, 0x02 }, "작고 실용적인 캠핑카입니다.",
-				99999, 2, Date.valueOf("2025-01-01"));
+				99999, 2, "2025-01-01");
 
 		campingCarRepository.save(newCar);
 
@@ -63,7 +63,7 @@ public class CampingCarRepositoryTest {
 		CampingCar oldCar = campingCarRepository.findById(13);
 		CampingCar updatedCar = new CampingCar("에버그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
 				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(),
-				oldCar.getRegistered_date());
+				oldCar.getRegistered_date().toString());
 
 		campingCarRepository.update(13, updatedCar);
 

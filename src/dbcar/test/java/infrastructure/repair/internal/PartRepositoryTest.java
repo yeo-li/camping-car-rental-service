@@ -46,7 +46,7 @@ public class PartRepositoryTest {
 	}
 
 	private static void 새로운_부품을_저장할_수_있어야_한다() {
-		Part part = new Part("테스트 부품", 99999, 10, Date.valueOf("2025-07-01"), "테스트공급자");
+		Part part = new Part("테스트 부품", 99999, 10, "2025-07-01", "테스트공급자");
 		partRepository.save(part);
 
 		Part actual = partRepository.findById(13);
@@ -55,7 +55,7 @@ public class PartRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		Part origin = partRepository.findById(13);
-		Part update = new Part("수정된 부품", 12345, origin.getStock_quantity(), origin.getStock_date(),
+		Part update = new Part("수정된 부품", 12345, origin.getStock_quantity(), origin.getStock_date().toString(),
 				origin.getSupplier_name());
 
 		partRepository.update(13, update);

@@ -30,7 +30,7 @@ public class InternalRepairRecordRepository {
 				int internal_repair_id = rs.getInt("internal_repair_id");
 				int car_id = rs.getInt("car_id");
 				int part_id = rs.getInt("part_id");
-				Date repair_date = rs.getDate("repair_date");
+				String repair_date = rs.getDate("repair_date").toString();
 				int duration_minutes = rs.getInt("duration_minutes");
 				int employee_id = rs.getInt("employee_id");
 
@@ -57,7 +57,7 @@ public class InternalRepairRecordRepository {
 				int internal_repair_id = rs.getInt("internal_repair_id");
 				int car_id = rs.getInt("car_id");
 				int part_id = rs.getInt("part_id");
-				Date repair_date = rs.getDate("repair_date");
+				String repair_date = rs.getDate("repair_date").toString();
 				int duration_minutes = rs.getInt("duration_minutes");
 				int employee_id = rs.getInt("employee_id");
 				list.add(new InternalRepairRecord(internal_repair_id, car_id, part_id, repair_date, duration_minutes,
@@ -85,7 +85,7 @@ public class InternalRepairRecordRepository {
 				int internal_repair_id = rs.getInt("internal_repair_id");
 				int car_id = rs.getInt("car_id");
 				int part_id = rs.getInt("part_id");
-				Date repair_date = rs.getDate("repair_date");
+				String repair_date = rs.getDate("repair_date").toString();
 				int duration_minutes = rs.getInt("duration_minutes");
 				int employee_id = rs.getInt("employee_id");
 

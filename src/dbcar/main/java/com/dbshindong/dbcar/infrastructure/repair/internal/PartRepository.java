@@ -31,7 +31,7 @@ public class PartRepository {
 				String name = rs.getString("name");
 				int unit_price = rs.getInt("unit_price");
 				int stock_quantity = rs.getInt("stock_quantity");
-				Date stock_date = rs.getDate("stock_date");
+				String stock_date = rs.getDate("stock_date").toString();
 				String supplier_name = rs.getString("supplier_name");
 
 				Part part = new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name);
@@ -60,7 +60,7 @@ public class PartRepository {
 				String name = rs.getString("name");
 				int unit_price = rs.getInt("unit_price");
 				int stock_quantity = rs.getInt("stock_quantity");
-				Date stock_date = rs.getDate("stock_date");
+				String stock_date = rs.getDate("stock_date").toString();
 				String supplier_name = rs.getString("supplier_name");
 
 				return new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name);
@@ -86,7 +86,7 @@ public class PartRepository {
 				String name = rs.getString("name");
 				int unit_price = rs.getInt("unit_price");
 				int stock_quantity = rs.getInt("stock_quantity");
-				Date stock_date = rs.getDate("stock_date");
+				String stock_date = rs.getDate("stock_date").toString();
 				String supplier_name = rs.getString("supplier_name");
 				list.add(new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name));
 			}
