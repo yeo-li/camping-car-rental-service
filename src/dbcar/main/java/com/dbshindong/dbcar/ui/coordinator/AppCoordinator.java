@@ -18,6 +18,7 @@ import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.InternalRepairRe
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.PartInsertPanel;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.RentalInsertPanel;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.TableEntrySelectorPanel;
+import dbcar.main.java.com.dbshindong.dbcar.ui.view.admin.SqlQueryPanel;
 
 public class AppCoordinator {
 
@@ -175,6 +176,12 @@ public class AppCoordinator {
 		tableContentPanel.removeAll();
 		tableContentPanel.revalidate();
 		tableContentPanel.repaint();
+	}
+
+	public void showSqlQueryView() {
+		SqlQueryPanel view = new SqlQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
 	}
 
 	/*

@@ -20,6 +20,7 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.Exter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.InternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
 public class AppConfig {
@@ -51,6 +52,7 @@ public class AppConfig {
 	private RepairRecordFetchService repairRecordFetchService;
 
 	private LoginController loginController;
+	private SqlQueryController sqlQueryController;
 
 	private AppConfig() {
 
@@ -240,6 +242,14 @@ public class AppConfig {
 		}
 
 		return loginController;
+	}
+
+	public SqlQueryController sqlQueryController() {
+		if (sqlQueryController == null) {
+			sqlQueryController = new SqlQueryController(this.dataFetchService());
+		}
+
+		return sqlQueryController;
 	}
 
 }
