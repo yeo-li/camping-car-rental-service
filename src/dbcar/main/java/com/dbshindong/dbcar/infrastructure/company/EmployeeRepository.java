@@ -8,6 +8,11 @@ import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
 
 public class EmployeeRepository {
@@ -36,52 +41,50 @@ public class EmployeeRepository {
 				String department = rs.getString("department");
 				String role = rs.getString("role");
 
-				employee = new Employee(employee_id, name, phone, address, salary, dependents, department, role);
+				return new Employee(employee_id, name, phone, address, salary, dependents, department, role);
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullPointerException e) {
-			e.printStackTrace();
-			return null;
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
-		return employee;
+		throw new DataNotFoundException("조회된 데이터가 없습니다.");
 
 	}
-	
+
 	public List<Employee> findByCondition(String condition) throws SQLSyntaxErrorException {
-	    List<Employee> employees = new ArrayList<>();
+		List<Employee> employees = new ArrayList<>();
 
-	    try {
-	        String sql = "SELECT * FROM Employee WHERE " + condition;
-	        PreparedStatement pstmt = conn.prepareStatement(sql);
-	        ResultSet rs = pstmt.executeQuery();
+		try {
+			String sql = "SELECT * FROM Employee WHERE " + condition;
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
 
-	        while (rs.next()) {
-	            int employeeId = rs.getInt("employee_id");
-	            String name = rs.getString("name");
-	            String phone = rs.getString("phone");
-	            String address = rs.getString("address");
-	            int salary = rs.getInt("salary");
-	            int dependents = rs.getInt("dependents");
-	            String department = rs.getString("department");
-	            String role = rs.getString("role");
+			while (rs.next()) {
+				int employeeId = rs.getInt("employee_id");
+				String name = rs.getString("name");
+				String phone = rs.getString("phone");
+				String address = rs.getString("address");
+				int salary = rs.getInt("salary");
+				int dependents = rs.getInt("dependents");
+				String department = rs.getString("department");
+				String role = rs.getString("role");
 
-	            Employee emp = new Employee(
-	                employeeId, name, phone, address, salary, dependents, department, role
-	            );
-	            employees.add(emp);
-	        }
+				Employee emp = new Employee(employeeId, name, phone, address, salary, dependents, department, role);
+				employees.add(emp);
+			}
 
-	    } catch (SQLSyntaxErrorException e) {
-	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
+		} catch (SQLException e) {
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
+		}
 
-	    return employees;
+		return employees;
 	}
 
 	public List<Employee> findAll() {
@@ -108,9 +111,10 @@ public class EmployeeRepository {
 			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
-		} catch (NullPointerException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
 		return employees;
@@ -121,9 +125,14 @@ public class EmployeeRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataDeleteException("삭제 대상이 존재하지 않습니다.");
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataDeleteException("데이터 삭제 중 오류가 발생했습니다.", e);
 		}
 	}
 
@@ -141,7 +150,7 @@ public class EmployeeRepository {
 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}
 	}
 
@@ -159,10 +168,14 @@ public class EmployeeRepository {
 			pstmt.setString(7, employee.getRole());
 			pstmt.setInt(8, id);
 
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataUpdateException("업데이트 대상이 존재하지 않습니다.");
+			}
 
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataUpdateException("데이터 업데이트 중 오류가 발생했습니다.", e);
 		}
 	}
 }
