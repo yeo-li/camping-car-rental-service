@@ -102,7 +102,10 @@ public class CampingCarCompanyRepository {
 			pstmt.setString(3, company.getPhone());
 			pstmt.setString(4, company.getManager_name());
 			pstmt.setString(5, company.getManager_email());
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			if (result == 0) {
+				throw new DataInsertException("데이터 저장에 실패했습니다.");
+			}
 		} catch (SQLException e) {
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}

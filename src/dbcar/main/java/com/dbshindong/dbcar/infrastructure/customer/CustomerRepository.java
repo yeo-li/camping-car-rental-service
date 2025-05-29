@@ -136,7 +136,10 @@ public class CustomerRepository {
 			pstmt.setString(6, customer.getPhone());
 			pstmt.setString(7, customer.getEmail());
 
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			if (result == 0) {
+				throw new DataInsertException("데이터 저장에 실패했습니다.");
+			}
 		} catch (SQLException e) {
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}

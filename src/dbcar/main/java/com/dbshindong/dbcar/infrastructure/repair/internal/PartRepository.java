@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 
 public class PartRepository {
@@ -64,30 +65,29 @@ public class PartRepository {
 
 		return part;
 	}
-	
-	public List<Part> findByCondition(String condition) throws SQLSyntaxErrorException {
-	    List<Part> list = new ArrayList<>();
-	    try {
-	        String sql = "SELECT * FROM Part WHERE " + condition;
-	        PreparedStatement pstmt = conn.prepareStatement(sql);
-	        ResultSet rs = pstmt.executeQuery();
-	        while (rs.next()) {
-	            int part_id = rs.getInt("part_id");
-	            String name = rs.getString("name");
-	            int unit_price = rs.getInt("unit_price");
-	            int stock_quantity = rs.getInt("stock_quantity");
-	            Date stock_date = rs.getDate("stock_date");
-	            String supplier_name = rs.getString("supplier_name");
-	            list.add(new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name));
-	        }
-	    } catch (SQLSyntaxErrorException e) {
-	        throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
-	    } catch (SQLException e) {
-	        e.printStackTrace();
-	    }
-	    return list;
-	}
 
+	public List<Part> findByCondition(String condition) throws SQLSyntaxErrorException {
+		List<Part> list = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM Part WHERE " + condition;
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int part_id = rs.getInt("part_id");
+				String name = rs.getString("name");
+				int unit_price = rs.getInt("unit_price");
+				int stock_quantity = rs.getInt("stock_quantity");
+				Date stock_date = rs.getDate("stock_date");
+				String supplier_name = rs.getString("supplier_name");
+				list.add(new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name));
+			}
+		} catch (SQLSyntaxErrorException e) {
+			throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
 	public void save(Part part) {
 		String sql = "INSERT INTO Part (name, unit_price, stock_quantity, stock_date, supplier_name) VALUES (?, ?, ?, ?, ?)";
@@ -100,7 +100,10 @@ public class PartRepository {
 			pstmt.setDate(4, part.getStock_date());
 			pstmt.setString(5, part.getSupplier_name());
 
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			if (result == 0) {
+				throw new DataInsertException("데이터 저장에 실패했습니다.");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

@@ -4,6 +4,7 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 
 public class InternalRepairRecordRepository {
@@ -113,7 +114,10 @@ public class InternalRepairRecordRepository {
 			pstmt.setInt(4, record.getDuration_minutes());
 			pstmt.setInt(5, record.getEmployee_id());
 
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+			if (result == 0) {
+				throw new DataInsertException("데이터 저장에 실패했습니다.");
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
