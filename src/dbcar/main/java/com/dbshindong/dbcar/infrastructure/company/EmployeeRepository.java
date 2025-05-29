@@ -23,8 +23,6 @@ public class EmployeeRepository {
 	}
 
 	public Employee findById(int id) {
-
-		Employee employee = null;
 		try {
 			String sql = "SELECT * FROM Employee where employee_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
