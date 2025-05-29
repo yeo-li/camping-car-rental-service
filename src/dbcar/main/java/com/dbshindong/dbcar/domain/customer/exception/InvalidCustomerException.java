@@ -9,4 +9,9 @@ public class InvalidCustomerException extends ConstraintViolationException {
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidCustomerException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }

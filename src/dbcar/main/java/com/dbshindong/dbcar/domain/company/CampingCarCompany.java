@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.Validator;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidCampingCarCompanyException;
 
 public class CampingCarCompany {
@@ -48,7 +49,7 @@ public class CampingCarCompany {
 			throw new InvalidCampingCarCompanyException(e.getMessage(), e);
 		}
 
-		if (!isValidEmail(manager_email)) {
+		if (!Validator.isValidEmail(manager_email)) {
 			throw new InvalidCampingCarCompanyException("이메일 형식이 올바르지 않습니다.");
 		}
 
@@ -86,14 +87,5 @@ public class CampingCarCompany {
 		return manager_email;
 	}
 
-	private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@" + // local-part
-			"[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // domain
-
-	public static boolean isValidEmail(String email) {
-		if (email == null || email.isBlank()) {
-			return false;
-		}
-		return email.matches(EMAIL_REGEX);
-	}
 
 }
