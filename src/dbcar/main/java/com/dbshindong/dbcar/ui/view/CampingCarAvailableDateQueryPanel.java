@@ -53,6 +53,11 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		logoutButton.setBounds(800-80, 0, 80, 25);
 		panel.add(logoutButton);
 		
+		JButton prevButton = new JButton("Prev");
+		prevButton.setBounds(0, 0, 80, 25);
+		panel.add(prevButton);
+		
+		
 		JButton reservationButton = new JButton("reservation");
 		reservationButton.setBounds(presetx - 32, 65, 155, 25);
 		panel.add(reservationButton);
@@ -95,9 +100,13 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		table.getColumn("선택").setPreferredWidth(40);
 		table.getColumn("날짜").setPreferredWidth(760);
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 100, 800, 500);
+		scrollPane.setBounds((800-750)/2, 100, 750, 450);
 		panel.add(scrollPane);
 		
+		
+		prevButton.addActionListener(e ->{
+			ac.appCoordinator().showCampingCarQueryView();
+		});
 		reservationButton.addActionListener( e -> {
 			int result = JOptionPane.showConfirmDialog(
 					null, "예약을 확정하시겠습니까?","예약 확인",JOptionPane.YES_NO_OPTION
@@ -114,8 +123,8 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 				}
 				Boolean res = ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
 				if(res) {
-					JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
 					ac.appCoordinator().showCampingCarQueryView();
+					JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "예약에 실패했습니다.\n일정을 확인해 주세요.");
