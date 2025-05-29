@@ -3,6 +3,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.coordinator;
 import javax.swing.JFrame;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.*;
+import dbcar.main.java.com.dbshindong.dbcar.ui.view.admin.SqlQueryPanel;
 
 public class AppCoordinator {
 
@@ -36,6 +37,12 @@ public class AppCoordinator {
 
 	public void showAdminInitView() {
 		AdminInitPanel view = new AdminInitPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
+	public void showSqlQueryView() {
+		SqlQueryPanel view = new SqlQueryPanel();
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
