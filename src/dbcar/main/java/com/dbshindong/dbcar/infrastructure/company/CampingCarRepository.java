@@ -48,10 +48,10 @@ public class CampingCarRepository {
 			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
-		throw new DataNotFoundException("조회된 데이터가 없습니다.");
+		return null;
 	}
 
-	public List<CampingCar> findByCondition(String condition) throws SQLSyntaxErrorException {
+	public List<CampingCar> findByCondition(String condition) {
 		List<CampingCar> cars = new ArrayList<>();
 
 		try {

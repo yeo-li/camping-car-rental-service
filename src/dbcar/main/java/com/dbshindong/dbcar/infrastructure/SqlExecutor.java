@@ -1,12 +1,9 @@
 package dbcar.main.java.com.dbshindong.dbcar.infrastructure;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
-import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 
 public class SqlExecutor {
 	private final Connection conn;

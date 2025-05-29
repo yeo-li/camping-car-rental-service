@@ -62,15 +62,13 @@ public class DataUpdateService {
 	}
 
 	public void updateCampingCars(UpdateCampingCarRequest request, String conditionSql) {
-		try {
-			List<CampingCar> cars = campingCarRepository.findByCondition(conditionSql);
-			for (CampingCar car : cars) {
-				CampingCar updateCar = createUpdateCampingCar(car, request);
-				campingCarRepository.update(car.getCar_id(), updateCar);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<CampingCar> cars = campingCarRepository.findByCondition(conditionSql);
+		for (CampingCar car : cars) {
+			CampingCar updateCar = createUpdateCampingCar(car, request);
+			campingCarRepository.update(car.getCar_id(), updateCar);
 		}
+
 	}
 
 	private CampingCar createUpdateCampingCar(CampingCar car, UpdateCampingCarRequest request) {
@@ -88,14 +86,10 @@ public class DataUpdateService {
 	}
 
 	public void updateCampingCarCompanies(UpdateCampingCarCompanyRequest request, String conditionSql) {
-		try {
-			List<CampingCarCompany> list = campingCarCompanyRepository.findByCondition(conditionSql);
-			for (CampingCarCompany item : list) {
-				CampingCarCompany updateCompany = createUpdateCampingCarCompany(item, request);
-				campingCarCompanyRepository.update(item.getCompany_id(), updateCompany);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<CampingCarCompany> list = campingCarCompanyRepository.findByCondition(conditionSql);
+		for (CampingCarCompany item : list) {
+			CampingCarCompany updateCompany = createUpdateCampingCarCompany(item, request);
+			campingCarCompanyRepository.update(item.getCompany_id(), updateCompany);
 		}
 	}
 
@@ -110,15 +104,13 @@ public class DataUpdateService {
 	}
 
 	public void updateCustomers(UpdateCustomerRequest request, String conditionSql) {
-		try {
-			List<Customer> list = customerRepository.findByCondition(conditionSql);
-			for (Customer item : list) {
-				Customer updateCustomer = createUpdateCustomer(item, request);
-				customerRepository.update(item.getCustomer_id(), updateCustomer);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Customer> list = customerRepository.findByCondition(conditionSql);
+		for (Customer item : list) {
+			Customer updateCustomer = createUpdateCustomer(item, request);
+			customerRepository.update(item.getCustomer_id(), updateCustomer);
 		}
+
 	}
 
 	private Customer createUpdateCustomer(Customer entity, UpdateCustomerRequest request) {
@@ -134,15 +126,13 @@ public class DataUpdateService {
 	}
 
 	public void updateEmployees(UpdateEmployeeRequest request, String conditionSql) {
-		try {
-			List<Employee> list = employeeRepository.findByCondition(conditionSql);
-			for (Employee item : list) {
-				Employee updateEmployee = createUpdateEmployee(item, request);
-				employeeRepository.update(item.getEmployee_id(), updateEmployee);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Employee> list = employeeRepository.findByCondition(conditionSql);
+		for (Employee item : list) {
+			Employee updateEmployee = createUpdateEmployee(item, request);
+			employeeRepository.update(item.getEmployee_id(), updateEmployee);
 		}
+
 	}
 
 	private Employee createUpdateEmployee(Employee entity, UpdateEmployeeRequest request) {
@@ -157,15 +147,13 @@ public class DataUpdateService {
 	}
 
 	public void updateExternalRepairShops(UpdateExternalRepairShopRequest request, String conditionSql) {
-		try {
-			List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
-			for (ExternalRepairShop item : list) {
-				ExternalRepairShop updateShop = createUpdateExternalRepairShop(item, request);
-				externalRepairShopRepository.update(item.getShop_id(), updateShop);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
+		for (ExternalRepairShop item : list) {
+			ExternalRepairShop updateShop = createUpdateExternalRepairShop(item, request);
+			externalRepairShopRepository.update(item.getShop_id(), updateShop);
 		}
+
 	}
 
 	private ExternalRepairShop createUpdateExternalRepairShop(ExternalRepairShop entity,
@@ -179,15 +167,13 @@ public class DataUpdateService {
 	}
 
 	public void updateExternalRepairRecords(UpdateExternalRepairRecordRequest request, String conditionSql) {
-		try {
-			List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
-			for (ExternalRepairRecord item : list) {
-				ExternalRepairRecord updateRecord = createUpdateExternalRepairRecord(item, request);
-				externalRepairRecordRepository.update(item.getExternal_repair_id(), updateRecord);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
+		for (ExternalRepairRecord item : list) {
+			ExternalRepairRecord updateRecord = createUpdateExternalRepairRecord(item, request);
+			externalRepairRecordRepository.update(item.getExternal_repair_id(), updateRecord);
 		}
+
 	}
 
 	private ExternalRepairRecord createUpdateExternalRepairRecord(ExternalRepairRecord entity,
@@ -206,15 +192,13 @@ public class DataUpdateService {
 	}
 
 	public void updateInternalRepairRecords(UpdateInternalRepairRecordRequest request, String conditionSql) {
-		try {
-			List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
-			for (InternalRepairRecord item : list) {
-				InternalRepairRecord updateRecord = createUpdateInternalRepairRecord(item, request);
-				internalRepairRecordRepository.update(item.getInternal_repair_id(), updateRecord);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
+		for (InternalRepairRecord item : list) {
+			InternalRepairRecord updateRecord = createUpdateInternalRepairRecord(item, request);
+			internalRepairRecordRepository.update(item.getInternal_repair_id(), updateRecord);
 		}
+
 	}
 
 	private InternalRepairRecord createUpdateInternalRepairRecord(InternalRepairRecord entity,
@@ -229,15 +213,13 @@ public class DataUpdateService {
 	}
 
 	public void updateParts(UpdatePartRequest request, String conditionSql) {
-		try {
-			List<Part> list = partRepository.findByCondition(conditionSql);
-			for (Part item : list) {
-				Part updatePart = createUpdatePart(item, request);
-				partRepository.update(item.getPart_id(), updatePart);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Part> list = partRepository.findByCondition(conditionSql);
+		for (Part item : list) {
+			Part updatePart = createUpdatePart(item, request);
+			partRepository.update(item.getPart_id(), updatePart);
 		}
+
 	}
 
 	private Part createUpdatePart(Part entity, UpdatePartRequest request) {
@@ -251,15 +233,13 @@ public class DataUpdateService {
 	}
 
 	public void updateRentals(UpdateRentalRequest request, String conditionSql) {
-		try {
-			List<Rental> list = rentalRepository.findByCondition(conditionSql);
-			for (Rental item : list) {
-				Rental updateRental = createUpdateRental(item, request);
-				rentalRepository.update(item.getRental_id(), updateRental);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Rental> list = rentalRepository.findByCondition(conditionSql);
+		for (Rental item : list) {
+			Rental updateRental = createUpdateRental(item, request);
+			rentalRepository.update(item.getRental_id(), updateRental);
 		}
+
 	}
 
 	private Rental createUpdateRental(Rental entity, UpdateRentalRequest request) {

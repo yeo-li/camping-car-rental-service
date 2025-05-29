@@ -5,6 +5,7 @@ import java.util.List;
 import java.sql.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.RepositoryException;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
@@ -77,12 +78,8 @@ public class CampingCarRepositoryTest {
 
 		// when
 		List<CampingCar> cars = null;
-		try {
-			cars = campingCarRepository.findByCondition(sql);	
-		} catch(SQLSyntaxErrorException e) {
-			
-		}
-		
+
+		cars = campingCarRepository.findByCondition(sql);
 
 		// then
 		int actual = cars.size();
@@ -98,7 +95,7 @@ public class CampingCarRepositoryTest {
 		List<CampingCar> cars = null;
 		try {
 			cars = campingCarRepository.findByCondition(sql);
-		} catch (SQLSyntaxErrorException e) {
+		} catch (RepositoryException e) {
 			AssertUtil.assertEqual(-1, -1, "조건식의 문법이 틀리면 오류를 발생시켜야 한다.");
 			return;
 		}

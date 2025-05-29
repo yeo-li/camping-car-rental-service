@@ -38,11 +38,8 @@ public class SqlExecutorTest {
 
 		// when
 		List<Map<String, Object>> actual = null;
-		try {
-			actual = infra.findData(sql);
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
-		}
+
+		actual = infra.findData(sql);
 
 		// then
 		AssertUtil.assertEqual(12, actual.size(), "SELECT문을 조회하고 결과를 반환해야 한다.");
@@ -52,11 +49,8 @@ public class SqlExecutorTest {
 		String sql = "select * from part, internalrepairrecord;";
 
 		List<Map<String, Object>> actual = null;
-		try {
-			actual = infra.findData(sql);
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
-		}
+
+		actual = infra.findData(sql);
 
 		AssertUtil.assertEqual(12, actual.getFirst().size(), "조인된 테이블의 속성은 유지 되어야 한다.");
 	}

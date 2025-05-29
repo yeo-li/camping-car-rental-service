@@ -44,11 +44,11 @@ public class CustomerRepository {
 			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
-		throw new DataNotFoundException("조회된 데이터가 없습니다.");
+		return null;
 
 	}
 
-	public List<Customer> findByCondition(String condition) throws SQLSyntaxErrorException {
+	public List<Customer> findByCondition(String condition) {
 		List<Customer> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Customer WHERE " + condition;
