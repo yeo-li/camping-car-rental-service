@@ -9,4 +9,9 @@ public class InvalidExternalRepairRecordException extends ConstraintViolationExc
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidExternalRepairRecordException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }

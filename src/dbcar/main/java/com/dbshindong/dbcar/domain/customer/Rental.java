@@ -90,15 +90,15 @@ public class Rental {
 			throw new InvalidRentalException("캠핑카 대여 회사 아이디의 입력값이 올바르지 않습니다.");
 		}
 
-		if (rental_period < 0) {
+		if (rental_period <= 0) {
 			throw new InvalidRentalException("대여기간의 입력값이 올바르지 않습니다.");
 		}
 
-		if (total_charge < 0) {
+		if (total_charge <= 0) {
 			throw new InvalidRentalException("청구요금의 입력값이 올바르지 않습니다.");
 		}
 
-		if (extra_charge < 0) {
+		if (extra_charge <= 0) {
 			throw new InvalidRentalException("기타청구요금의 입력값이 올바르지 않습니다.");
 		}
 

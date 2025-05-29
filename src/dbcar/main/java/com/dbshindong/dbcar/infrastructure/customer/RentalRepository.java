@@ -37,8 +37,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				return new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge,
-						due_date, extra_charge_detail, extra_charge);
+				return new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
+						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 			}
 		} catch (SQLException e) {
 			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
@@ -67,8 +67,8 @@ public class RentalRepository {
 				Date due_date = rs.getDate("due_date");
 				String extra_charges = rs.getString("extra_charges");
 				int extra_charge_amount = rs.getInt("extra_charge_amount");
-				list.add(new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge,
-						due_date, extra_charges, extra_charge_amount));
+				list.add(new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
+						total_charge, due_date.toString(), extra_charges, extra_charge_amount));
 			}
 		} catch (SQLException e) {
 			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
@@ -99,8 +99,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period,
-						total_charge, due_date, extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
+						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {

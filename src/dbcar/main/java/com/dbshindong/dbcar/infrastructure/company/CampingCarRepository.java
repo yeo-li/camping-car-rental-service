@@ -38,7 +38,7 @@ public class CampingCarRepository {
 				Date registered_date = rs.getDate("registered_date");
 
 				return new CampingCar(car_id, name, plate_number, capacity, image, description, rental_price,
-						company_id, registered_date);
+						company_id, registered_date.toString());
 			}
 
 		} catch (SQLException e) {
@@ -71,7 +71,7 @@ public class CampingCarRepository {
 				Date registered_date = rs.getDate("registered_date");
 
 				CampingCar car = new CampingCar(car_id, name, plate_number, capacity, image, description, rental_price,
-						company_id, registered_date);
+						company_id, registered_date.toString());
 				cars.add(car);
 			}
 
@@ -105,7 +105,7 @@ public class CampingCarRepository {
 				Date registered_date = rs.getDate("registered_date");
 
 				CampingCar car = new CampingCar(car_id, name, plate_number, capacity, image, description, rental_price,
-						company_id, registered_date);
+						company_id, registered_date.toString());
 				cars.add(car);
 			}
 
