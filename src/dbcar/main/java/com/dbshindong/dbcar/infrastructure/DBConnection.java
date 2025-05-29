@@ -34,4 +34,16 @@ public class DBConnection {
 		return this.conn;
 	}
 
+	public void close() {
+		if (conn != null) {
+			try {
+				conn.close();
+				conn = null;
+				System.out.println("DB 연결 종료");
+			} catch (SQLException e) {
+				throw new DatabaseConnectionException("DB 연결 종료 중 오류 발생", e);
+			}
+		}
+	}
+
 }
