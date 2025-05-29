@@ -7,20 +7,20 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidCamp
 import java.sql.*;
 
 public class CampingCar {
-	private final int car_id;
+	private final Integer car_id;
 	private final String name;
 	private final String plate_number;
-	private final int capacity;
+	private final Integer capacity;
 	private final byte[] image;
 	private final String description;
-	private final int rental_price;
-	private final int company_id;
+	private final Integer rental_price;
+	private final Integer company_id;
 	private final Date registered_date;
 
 	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
 
-	public CampingCar(int car_id, String name, String plate_number, int capacity, byte[] image, String description,
-			int rental_price, int company_id, String registered_date) {
+	public CampingCar(Integer car_id, String name, String plate_number, Integer capacity, byte[] image,
+			String description, int rental_price, Integer company_id, String registered_date) {
 		this.validate(car_id, name, plate_number, capacity, image, description, rental_price, company_id,
 				registered_date);
 
@@ -35,8 +35,8 @@ public class CampingCar {
 		this.registered_date = java.sql.Date.valueOf(registered_date);
 	}
 
-	public CampingCar(String name, String plate_number, int capacity, byte[] image, String description,
-			int rental_price, int company_id, String registered_date) {
+	public CampingCar(String name, String plate_number, Integer capacity, byte[] image, String description,
+			Integer rental_price, Integer company_id, String registered_date) {
 		this.validate(-1, name, plate_number, capacity, image, description, rental_price, company_id, registered_date);
 		this.car_id = -1;
 		this.name = name;
@@ -49,8 +49,8 @@ public class CampingCar {
 		this.registered_date = java.sql.Date.valueOf(registered_date);
 	}
 
-	private void validate(int car_id, String name, String plate_number, int capacity, byte[] image, String description,
-			int rental_price, int company_id, String registered_date) {
+	private void validate(Integer car_id, String name, String plate_number, Integer capacity, byte[] image,
+			String description, Integer rental_price, Integer company_id, String registered_date) {
 
 		// null 유효성 검증
 		try {
@@ -69,7 +69,15 @@ public class CampingCar {
 
 		// 수용인원 음수 유효성 검증
 		if (capacity < 0) {
-			throw new InvalidCampingCarException("capacity의 값은 양수여야합니다.");
+			throw new InvalidCampingCarException("수용인원의 입력값이 올바르지 않습니다.");
+		}
+
+		if (rental_price < 0) {
+			throw new InvalidCampingCarException("랜탈 비용의 입력값이 올바르지 않습니다.");
+		}
+
+		if (company_id < 0) {
+			throw new InvalidCampingCarException("수용인원의 입력값이 올바르지 않습니다.");
 		}
 
 		// Date type 유효성 검증
@@ -90,7 +98,7 @@ public class CampingCar {
 				+ "  \"registered_date\": \"" + registered_date + "\"\n" + "}";
 	}
 
-	public int getCar_id() {
+	public Integer getCar_id() {
 		return car_id;
 	}
 
@@ -102,7 +110,7 @@ public class CampingCar {
 		return plate_number;
 	}
 
-	public int getCapacity() {
+	public Integer getCapacity() {
 		return capacity;
 	}
 
@@ -114,11 +122,11 @@ public class CampingCar {
 		return description;
 	}
 
-	public int getRental_price() {
+	public Integer getRental_price() {
 		return rental_price;
 	}
 
-	public int getCompany_id() {
+	public Integer getCompany_id() {
 		return company_id;
 	}
 

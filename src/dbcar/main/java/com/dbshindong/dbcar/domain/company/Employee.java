@@ -58,11 +58,11 @@ public class Employee {
 		}
 
 		if (salary < 0) {
-			throw new InvalidEmployeeException("급여는 0원 이상이어야 합니다.");
+			throw new InvalidEmployeeException("급여의 입력값이 올바르지 않습니다.");
 		}
 
 		if (dependents < 0) {
-			throw new InvalidEmployeeException("부양가족 수는 0명 이상이어야 합니다.");
+			throw new InvalidEmployeeException("부양가족 수의 입력값이 올바르지 않습니다");
 		}
 
 		// role은 관리, 사무, 정비 중 하나여야함
