@@ -4,7 +4,11 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 
 public class PartRepository {
@@ -34,7 +38,10 @@ public class PartRepository {
 				parts.add(part);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
 		return parts;
@@ -42,7 +49,6 @@ public class PartRepository {
 
 	public Part findById(int id) {
 		String sql = "SELECT * FROM Part WHERE part_id = ?";
-		Part part = null;
 
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -57,16 +63,19 @@ public class PartRepository {
 				Date stock_date = rs.getDate("stock_date");
 				String supplier_name = rs.getString("supplier_name");
 
-				part = new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name);
+				return new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 
-		return part;
+		throw new DataNotFoundException("조회된 데이터가 없습니다.");
 	}
 
-	public List<Part> findByCondition(String condition) throws SQLSyntaxErrorException {
+	public List<Part> findByCondition(String condition) {
 		List<Part> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Part WHERE " + condition;
@@ -81,11 +90,13 @@ public class PartRepository {
 				String supplier_name = rs.getString("supplier_name");
 				list.add(new Part(part_id, name, unit_price, stock_quantity, stock_date, supplier_name));
 			}
-		} catch (SQLSyntaxErrorException e) {
-			throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
+
 		return list;
 	}
 
@@ -105,7 +116,7 @@ public class PartRepository {
 				throw new DataInsertException("데이터 저장에 실패했습니다.");
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}
 	}
 
@@ -121,9 +132,14 @@ public class PartRepository {
 			pstmt.setString(5, part.getSupplier_name());
 			pstmt.setInt(6, id);
 
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataUpdateException("업데이트 대상이 존재하지 않습니다.");
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataUpdateException("데이터 업데이트 중 오류가 발생했습니다.", e);
 		}
 	}
 
@@ -133,9 +149,14 @@ public class PartRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataDeleteException("삭제 대상이 존재하지 않습니다.");
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataDeleteException("데이터 삭제 중 오류가 발생했습니다.", e);
 		}
 	}
 }
