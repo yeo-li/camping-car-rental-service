@@ -8,5 +8,10 @@ public class InvalidCampingCarException extends ConstraintViolationException {
 		super(message);
 		// TODO Auto-generated constructor stub
 	}
+	
+	public InvalidCampingCarException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
 
 }
