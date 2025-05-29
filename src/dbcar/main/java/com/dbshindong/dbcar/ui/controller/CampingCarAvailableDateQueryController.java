@@ -26,13 +26,16 @@ public class CampingCarAvailableDateQueryController {
 	
 	public Boolean saveReservation(List<LocalDate> target, int car_id) {
 		
+		System.out.println(car_id);
+		
 		if(target.size() == 0) return false;
 		
 		try {
 		this.campingCarAvailableDateQueryService.insertRental(car_id, target);
 		return true;
 		} catch(Exception e){
-		return false;
+			System.out.println(e);
+			return false;
 		}
 	}
 }
