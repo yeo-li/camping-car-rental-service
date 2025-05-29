@@ -9,4 +9,9 @@ public class InvalidExternalRepairShopException extends ConstraintViolationExcep
 		// TODO Auto-generated constructor stub
 	}
 
+	public InvalidExternalRepairShopException(String message, Exception e) {
+		super(message, e);
+		// TODO Auto-generated constructor stub
+	}
+
 }
