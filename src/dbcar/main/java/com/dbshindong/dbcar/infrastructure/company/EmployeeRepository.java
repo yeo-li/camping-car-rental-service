@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class EmployeeRepository {
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				int employee_id = rs.getInt("employee_id");
 				String name = rs.getString("name");
 				String phone = rs.getString("phone");
