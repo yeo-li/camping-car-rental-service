@@ -1,8 +1,14 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableCellRenderer;
+
+import java.awt.Component;
+import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
@@ -31,7 +37,7 @@ public class CampingCarQueryPanel extends JPanel {
 		logoutButton.setBounds(800 - 155 - 80, 0, 80, 25);
 		add(logoutButton);
 
-		JTextField tableTitle = new JTextField("     캠핑카 목록");
+		JLabel tableTitle = new JLabel("캠핑카 목록");
 		tableTitle.setBounds(presetx, 25, 100, 40);
 		add(tableTitle);
 
@@ -55,15 +61,22 @@ public class CampingCarQueryPanel extends JPanel {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
+			@Override
+	        public TableCellRenderer getCellRenderer(int row, int column) {
+	            if (column == 3) return new SwingImageRenderer();
+	            return super.getCellRenderer(row, column);
+	        }
 		};
 
+		table.setRowHeight(60);
 		table.getColumn("모델명").setPreferredWidth(70);
 		table.getColumn("탑승인원").setPreferredWidth(50);
 		table.getColumn("가격").setPreferredWidth(40);
-		table.getColumn("상세정보").setPreferredWidth(240);
+		table.getColumn("상세정보").setPreferredWidth(190);
 
 		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds(0, 100, 800, 500);
+		scrollPane.setBounds((800-750)/2, 100, 750, 450);
+		
 		add(scrollPane);
 
 		table.addMouseListener(new MouseAdapter() {
@@ -71,11 +84,30 @@ public class CampingCarQueryPanel extends JPanel {
 			public void mouseClicked(MouseEvent e) {
 				int selectedRow = table.getSelectedRow();
 				if (selectedRow >= 0) {
-					ac.campingCarQueryController().onCarSelected(selectedRow);
+					ac.campingCarQueryController().onCarSelected(selectedRow + 1);
 				}
 			}
 		});
 
 	
 	}
+	
+	static class SwingImageRenderer extends DefaultTableCellRenderer {
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                       boolean hasFocus, int row, int column) {
+            JLabel label = new JLabel();
+            label.setHorizontalAlignment(JLabel.CENTER);
+            if (value instanceof byte[]) {
+                try {
+                    ImageIcon icon = new ImageIcon((byte[]) value); // pure Swing
+                    Image scaled = icon.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
+                    label.setIcon(new ImageIcon(scaled));
+                } catch (Exception e) {
+                    label.setText("이미지 오류");
+                }
+            }
+            return label;
+        }
+    }
 }
