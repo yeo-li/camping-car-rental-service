@@ -145,6 +145,7 @@ public class RentalRepository {
 			pstmt.setString(8, rental.getExtra_charge_detail());
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
+			}
 			else {
 				pstmt.setInt(9,rental.getExtra_charge());
 			} 
@@ -200,8 +201,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period,
-						total_charge, due_date, extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
+						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {
