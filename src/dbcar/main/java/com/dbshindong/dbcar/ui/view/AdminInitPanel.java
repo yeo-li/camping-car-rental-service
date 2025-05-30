@@ -61,7 +61,6 @@ public class AdminInitPanel extends JPanel {
 				"⚠ 데이터베이스 초기화 경고", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
 
 		if (result == JOptionPane.OK_OPTION) {
-			// 실제 초기화 로직 실행
 			ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
 					"dbcar/main/java/resources/DatabaseInit.sql");
 			JOptionPane.showMessageDialog(this, "데이터베이스가 성공적으로 초기화되었습니다.");
