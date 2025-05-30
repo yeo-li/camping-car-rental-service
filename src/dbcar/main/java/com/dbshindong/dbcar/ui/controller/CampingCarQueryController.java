@@ -16,9 +16,17 @@ public class CampingCarQueryController {
 	}
 	
 	public List<CampingCar> handleQuery(){
-		return campingCarQueryService.CampingCarQuery();
+		try {
+			return campingCarQueryService.CampingCarQuery();
+		}catch(Exception ex) {
+			throw(ex);
+		}
 	}
 	public void onCarSelected(int id) {
-		this.coordinator.showCampingCarAvailableDateQueryView(id);
+		try {
+			this.coordinator.showCampingCarAvailableDateQueryView(id);
+		}catch(Exception ex) {
+			throw(ex);
+		}
 	}
 }

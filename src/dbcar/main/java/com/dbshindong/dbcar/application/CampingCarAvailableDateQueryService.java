@@ -21,6 +21,7 @@ public class CampingCarAvailableDateQueryService {
 	}
 	
 	public List<LocalDate> findRentalDateById(int id, LocalDate today){
+		try {
 		List<Rental> queryResult = rentalRepository.findByCarId(id);
 		List<LocalDate> avail = new ArrayList<LocalDate>();
 		
@@ -45,46 +46,53 @@ public class CampingCarAvailableDateQueryService {
 	        }
 		}
 		return avail;
+		} catch(Exception ex) {
+			throw(ex);
+		}
 	}
 	public void insertRental(int carid, List<LocalDate> target) {
-		LocalDate start = target.get(0);
-		LocalDate end = target.get(0);
-		LocalDate prev = null;
-		CampingCar car = ac.campingCarRepository().findById(carid);
-		Customer me = ac.customerRepository().findByUsername(ac.appCoordinator().getUser()).getFirst();
-		
-		int car_id = carid;
-		int customer_id = me.getCustomer_id();
-		int company_id = car.getCompany_id();
-		Date start_date;
-		int rental_period = 1;
-		int total_charge = car.getRental_price();
-		Date due_date;
-		String extra_charge_detail = "";
-		Integer extra_charge = 0;
-		
-		Rental rent;
-		
-		for (int i = 1; i <= target.size(); i++) {
-		    boolean isEnd = i == target.size();
-		    boolean isBreak = !isEnd && !target.get(i - 1).plusDays(1).equals(target.get(i));
-
-		    if (isBreak || isEnd) {
-		        // 저장
-		        start_date = Date.valueOf(start);
-		        due_date = Date.valueOf(end);
-		        rent = new Rental(car_id, customer_id, company_id, start_date.toString(), rental_period, total_charge * rental_period, due_date.toString(), extra_charge_detail, extra_charge);
-		        ac.rentalRepository().save(rent);
-
-		        if (!isEnd) {
-		            start = target.get(i);
-		            end = start;
-		            rental_period = 1;
-		        }
-		    } else {
-		        end = target.get(i);
-		        rental_period++;
-		    }
+		try {
+			LocalDate start = target.get(0);
+			LocalDate end = target.get(0);
+			LocalDate prev = null;
+			CampingCar car = ac.campingCarRepository().findById(carid);
+			Customer me = ac.customerRepository().findByUsername(ac.appCoordinator().getUser()).getFirst();
+			
+			int car_id = carid;
+			int customer_id = me.getCustomer_id();
+			int company_id = car.getCompany_id();
+			Date start_date;
+			int rental_period = 1;
+			int total_charge = car.getRental_price();
+			Date due_date;
+			String extra_charge_detail = "";
+			Integer extra_charge = 0;
+			
+			Rental rent;
+			
+			for (int i = 1; i <= target.size(); i++) {
+			    boolean isEnd = i == target.size();
+			    boolean isBreak = !isEnd && !target.get(i - 1).plusDays(1).equals(target.get(i));
+	
+			    if (isBreak || isEnd) {
+			        // 저장
+			        start_date = Date.valueOf(start);
+			        due_date = Date.valueOf(end);
+			        rent = new Rental(car_id, customer_id, company_id, start_date.toString(), rental_period, total_charge * rental_period, due_date.toString(), extra_charge_detail, extra_charge);
+			        ac.rentalRepository().save(rent);
+	
+			        if (!isEnd) {
+			            start = target.get(i);
+			            end = start;
+			            rental_period = 1;
+			        }
+			    } else {
+			        end = target.get(i);
+			        rental_period++;
+			    }
+			}
+		}catch(Exception ex) {
+			throw(ex);
 		}
 	}
 }
