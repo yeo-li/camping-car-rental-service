@@ -4,6 +4,11 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 
 public class RentalRepository {
@@ -14,14 +19,13 @@ public class RentalRepository {
 	}
 
 	public Rental findById(int id) {
-		Rental rental = null;
 		try {
 			String sql = "SELECT * FROM Rental WHERE rental_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
+			if (rs.next()) {
 				int rental_id = rs.getInt("rental_id");
 				int car_id = rs.getInt("car_id");
 				int customer_id = rs.getInt("customer_id");
@@ -33,17 +37,20 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge,
-						due_date, extra_charge_detail, extra_charge);
+				return new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
+						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
-			return null;
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
-		return rental;
+
+		return null;
 	}
 
-	public List<Rental> findByCondition(String condition) throws SQLSyntaxErrorException {
+	public List<Rental> findByCondition(String condition) {
 		List<Rental> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Rental WHERE " + condition;
@@ -60,14 +67,16 @@ public class RentalRepository {
 				Date due_date = rs.getDate("due_date");
 				String extra_charges = rs.getString("extra_charges");
 				int extra_charge_amount = rs.getInt("extra_charge_amount");
-				list.add(new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period, total_charge,
-						due_date, extra_charges, extra_charge_amount));
+				list.add(new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
+						total_charge, due_date.toString(), extra_charges, extra_charge_amount));
 			}
-		} catch (SQLSyntaxErrorException e) {
-			throw new SQLSyntaxErrorException("조건식 문법 오류: " + e.getMessage());
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
+
 		return list;
 	}
 
@@ -90,12 +99,15 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period,
-						total_charge, due_date, extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
+						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 		return rentals;
 	}
@@ -105,13 +117,18 @@ public class RentalRepository {
 			String sql = "DELETE FROM Rental WHERE rental_id = ?";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, id);
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataDeleteException("삭제 대상이 존재하지 않습니다.");
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataDeleteException("데이터 삭제 중 오류가 발생했습니다.", e);
 		}
 	}
 
-	public void save(Rental rental) throws Exception {
+	public void save(Rental rental) {
 		try {
 			String sql = "INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date, extra_charges, extra_charge_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 			PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -123,11 +140,14 @@ public class RentalRepository {
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
 			pstmt.setString(8, rental.getExtra_charge_detail());
-			if (rental.getExtra_charge() == null)
+			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
+			} else {
+				pstmt.setInt(9, rental.getExtra_charge());
+			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
-			throw new Exception("[rentalRepository:save] 오류발생");
+			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}
 	}
 
@@ -145,9 +165,14 @@ public class RentalRepository {
 			pstmt.setString(8, rental.getExtra_charge_detail());
 			pstmt.setInt(9, rental.getExtra_charge());
 			pstmt.setInt(10, id);
-			pstmt.executeUpdate();
+			int result = pstmt.executeUpdate();
+
+			if (result == 0) {
+				throw new DataUpdateException("업데이트 대상이 존재하지 않습니다.");
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new DataUpdateException("데이터 업데이트 중 오류가 발생했습니다.", e);
 		}
 	}
 }

@@ -72,10 +72,10 @@ public class RentalInsertPanel extends JPanel {
 				int carId = Integer.parseInt(carIdField.getText().trim());
 				int customerId = Integer.parseInt(customerIdField.getText().trim());
 				int companyId = Integer.parseInt(companyIdField.getText().trim());
-				Date startDate = Date.valueOf(startDateField.getText().trim());
+				String startDate = Date.valueOf(startDateField.getText().trim()).toString();
 				int rentalPeriod = Integer.parseInt(rentalPeriodField.getText().trim());
 				int totalCharge = Integer.parseInt(totalChargeField.getText().trim());
-				Date dueDate = Date.valueOf(dueDateField.getText().trim());
+				String dueDate = Date.valueOf(dueDateField.getText().trim()).toString();
 				String extraDetail = extraChargesField.getText().trim();
 				Integer extraAmount = extraChargeAmountField.getText().isEmpty() ? null
 						: Integer.parseInt(extraChargeAmountField.getText().trim());

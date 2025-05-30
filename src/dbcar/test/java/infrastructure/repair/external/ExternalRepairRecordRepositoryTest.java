@@ -46,8 +46,8 @@ public class ExternalRepairRecordRepositoryTest {
 	}
 
 	private static void 새로운_레코드를_저장할_수_있어야_한다() {
-		ExternalRepairRecord record = new ExternalRepairRecord(1, 1, 1, 1, "새로운 외부 수리 내용", Date.valueOf("2025-06-10"),
-				123456, Date.valueOf("2025-07-10"), null);
+		ExternalRepairRecord record = new ExternalRepairRecord(1, 1, 1, 1, "새로운 외부 수리 내용", "2025-06-10", 123456,
+				"2025-07-10", null);
 
 		externalRepairRecordRepository.save(record);
 		ExternalRepairRecord actual = externalRepairRecordRepository.findById(13);
@@ -57,8 +57,8 @@ public class ExternalRepairRecordRepositoryTest {
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		ExternalRepairRecord oldRecord = externalRepairRecordRepository.findById(13);
 		ExternalRepairRecord updated = new ExternalRepairRecord(oldRecord.getCar_id(), oldRecord.getShop_id(),
-				oldRecord.getCompany_id(), oldRecord.getCustomer_id(), "수정된 수리 내용", oldRecord.getRepair_date(),
-				oldRecord.getCost(), oldRecord.getDue_date(), "집가고싶");
+				oldRecord.getCompany_id(), oldRecord.getCustomer_id(), "수정된 수리 내용",
+				oldRecord.getRepair_date().toString(), oldRecord.getCost(), oldRecord.getDue_date().toString(), "집가고싶");
 
 		externalRepairRecordRepository.update(13, updated);
 		ExternalRepairRecord result = externalRepairRecordRepository.findById(13);
