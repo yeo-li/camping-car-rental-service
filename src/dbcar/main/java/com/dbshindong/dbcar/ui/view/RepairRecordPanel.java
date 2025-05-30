@@ -21,6 +21,7 @@ public class RepairRecordPanel extends JPanel {
 	private JRadioButton internalRadio, externalRadio;
 	private DefaultTableModel carModel, recordModel, detailModel;
 	private JLabel noRecordLabel, noDetailLabel;
+	private JScrollPane detailScroll;
 
 	public RepairRecordPanel() {
 		setLayout(new BorderLayout());
@@ -67,8 +68,8 @@ public class RepairRecordPanel extends JPanel {
 		};
 		detailTable = new JTable(detailModel);
 		detailTable.setFillsViewportHeight(true);
-		JScrollPane detailScroll = new JScrollPane(detailTable);
-		detailScroll.setBorder(new TitledBorder("세부 정보"));
+		detailScroll = new JScrollPane(detailTable);
+		detailScroll.setBorder(new TitledBorder("부품 세부 정보"));
 
 		// 좌측 전체
 		JSplitPane leftSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, recordScroll, detailScroll);
@@ -125,8 +126,14 @@ public class RepairRecordPanel extends JPanel {
 			}
 		});
 
-		internalRadio.addActionListener(e -> clearTables());
-		externalRadio.addActionListener(e -> clearTables());
+		internalRadio.addActionListener(e -> {
+			clearTables();
+			updateDetailTitle("부품 세부 정보");
+		});
+		externalRadio.addActionListener(e -> {
+			clearTables();
+			updateDetailTitle("외부 정비소 세부 정보");
+		});
 	}
 
 	private void clearTables() {
@@ -134,6 +141,11 @@ public class RepairRecordPanel extends JPanel {
 		detailModel.setRowCount(0);
 		recordModel.setColumnIdentifiers(new Object[] {});
 		detailModel.setColumnIdentifiers(new Object[] {});
+	}
+
+	private void updateDetailTitle(String title) {
+		detailScroll.setBorder(new TitledBorder(title));
+		detailScroll.repaint();
 	}
 
 	private void loadRepairRecords(int carId) {
