@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
@@ -56,7 +58,7 @@ public class LoginPanel extends JPanel {
 			try {
 				loginController.handleLogin("user1", "user1", userID, password);// 추후 user1으로 수정 필요
 			} catch(Exception ex) {
-				showError(ex.getMessage());
+				GlobalExceptionHandler.handle(ex);
 			}
 
 		});
@@ -66,14 +68,12 @@ public class LoginPanel extends JPanel {
 			try {
 			loginController.handleLogin("root", "1234", null, null);
 			} catch (Exception ex) {
-				showError(ex.getMessage());
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
 	}
 	
-	private void showError(String message) {
-		JOptionPane.showMessageDialog(this, message, "오류", JOptionPane.ERROR_MESSAGE);
-	}
+	
 
 }

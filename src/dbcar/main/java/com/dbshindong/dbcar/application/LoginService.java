@@ -35,9 +35,9 @@ public class LoginService {
 		return null;
 		}
 		catch(InvalidCustomerException e){
-			System.out.println("s");
 			throw(e);
 		}
+		
 	}
 
 }
