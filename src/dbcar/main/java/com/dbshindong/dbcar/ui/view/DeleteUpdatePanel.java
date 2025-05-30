@@ -198,7 +198,7 @@ public class DeleteUpdatePanel extends JPanel {
 							values.get("description"),
 							values.get("rental_price") == null ? null : Integer.parseInt(values.get("rental_price")),
 							values.get("company_id") == null ? null : Integer.parseInt(values.get("company_id")),
-							values.get("registered_date") == null ? null : Date.valueOf(values.get("registered_date"))),
+							values.get("registered_date") == null ? null : values.get("registered_date")),
 							condition);
 				case "Customer" -> ac.dataUpdateService()
 						.updateCustomers(new UpdateCustomerRequest(values.get("username"), values.get("password"),
@@ -214,22 +214,21 @@ public class DeleteUpdatePanel extends JPanel {
 						new UpdateExternalRepairShopRequest(values.get("name"), values.get("address"),
 								values.get("phone"), values.get("manager_name"), values.get("manager_email")),
 						condition);
-				case "ExternalRepairRecord" -> ac.dataUpdateService()
-						.updateExternalRepairRecords(new UpdateExternalRepairRecordRequest(
-								values.get("car_id") == null ? null : Integer.parseInt(values.get("car_id")),
-								values.get("shop_id") == null ? null : Integer.parseInt(values.get("shop_id")),
-								values.get("company_id") == null ? null : Integer.parseInt(values.get("company_id")),
-								values.get("customer_id") == null ? null : Integer.parseInt(values.get("customer_id")),
-								values.get("content"),
-								values.get("repair_date") == null ? null : Date.valueOf(values.get("repair_date")),
-								values.get("cost") == null ? null : Integer.parseInt(values.get("cost")),
-								values.get("due_date") == null ? null : Date.valueOf(values.get("due_date")),
-								values.get("note")), condition);
+				case "ExternalRepairRecord" ->
+					ac.dataUpdateService().updateExternalRepairRecords(new UpdateExternalRepairRecordRequest(
+							values.get("car_id") == null ? null : Integer.parseInt(values.get("car_id")),
+							values.get("shop_id") == null ? null : Integer.parseInt(values.get("shop_id")),
+							values.get("company_id") == null ? null : Integer.parseInt(values.get("company_id")),
+							values.get("customer_id") == null ? null : Integer.parseInt(values.get("customer_id")),
+							values.get("content"), values.get("repair_date") == null ? null : values.get("repair_date"),
+							values.get("cost") == null ? null : Integer.parseInt(values.get("cost")),
+							values.get("due_date") == null ? null : values.get("due_date"), values.get("note")),
+							condition);
 				case "InternalRepairRecord" -> ac.dataUpdateService().updateInternalRepairRecords(
 						new UpdateInternalRepairRecordRequest(
 								values.get("car_id") == null ? null : Integer.parseInt(values.get("car_id")),
 								values.get("part_id") == null ? null : Integer.parseInt(values.get("part_id")),
-								values.get("repair_date") == null ? null : Date.valueOf(values.get("repair_date")),
+								values.get("repair_date") == null ? null : values.get("repair_date"),
 								values.get("duration_minutes") == null ? null
 										: Integer.parseInt(values.get("duration_minutes")),
 								values.get("employee_id") == null ? null : Integer.parseInt(values.get("employee_id"))),
@@ -239,17 +238,17 @@ public class DeleteUpdatePanel extends JPanel {
 								values.get("unit_price") == null ? null : Integer.parseInt(values.get("unit_price")),
 								values.get("stock_quantity") == null ? null
 										: Integer.parseInt(values.get("stock_quantity")),
-								values.get("stock_date") == null ? null : Date.valueOf(values.get("stock_date")),
+								values.get("stock_date") == null ? null : values.get("stock_date"),
 								values.get("supplier_name")), condition);
 				case "Rental" -> ac.dataUpdateService().updateRentals(new UpdateRentalRequest(
 						values.get("car_id") == null ? null : Integer.parseInt(values.get("car_id")),
 						values.get("customer_id") == null ? null : Integer.parseInt(values.get("customer_id")),
 						values.get("company_id") == null ? null : Integer.parseInt(values.get("company_id")),
-						values.get("start_date") == null ? null : Date.valueOf(values.get("start_date")),
+						values.get("start_date") == null ? null : "start_date",
 						values.get("rental_period") == null ? null : Integer.parseInt(values.get("rental_period")),
 						values.get("total_charge") == null ? null : Integer.parseInt(values.get("total_charge")),
-						values.get("due_date") == null ? null : Date.valueOf(values.get("due_date")),
-						values.get("extra_charges"), values.get("extra_charge_amount") == null ? null
+						values.get("due_date") == null ? null : values.get("due_date"), values.get("extra_charges"),
+						values.get("extra_charge_amount") == null ? null
 								: Integer.parseInt(values.get("extra_charge_amount"))),
 						condition);
 				}
