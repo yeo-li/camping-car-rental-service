@@ -73,7 +73,7 @@ public class CampingCarAvailableDateQueryService {
 		        // 저장
 		        start_date = Date.valueOf(start);
 		        due_date = Date.valueOf(end);
-		        rent = new Rental(car_id, customer_id, company_id, start_date, rental_period, total_charge * rental_period, due_date, extra_charge_detail, extra_charge);
+		        rent = new Rental(car_id, customer_id, company_id, start_date.toString(), rental_period, total_charge * rental_period, due_date.toString(), extra_charge_detail, extra_charge);
 		        ac.rentalRepository().save(rent);
 
 		        if (!isEnd) {
