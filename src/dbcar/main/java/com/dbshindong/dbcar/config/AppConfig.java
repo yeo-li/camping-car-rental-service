@@ -24,6 +24,7 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartR
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDateQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
 public class AppConfig {
@@ -57,9 +58,11 @@ public class AppConfig {
 	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
 	
 	private LoginController loginController;
+  
 	private CampingCarQueryController campingCarQueryController;
 	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
-	
+	private SqlQueryController sqlQueryController;
+
 
 	private AppConfig() {
 
@@ -278,5 +281,13 @@ public class AppConfig {
 		return campingCarAvailableDateQueryController;
 	}
 	
+
+	public SqlQueryController sqlQueryController() {
+		if (sqlQueryController == null) {
+			sqlQueryController = new SqlQueryController(this.dataFetchService());
+		}
+
+		return sqlQueryController;
+	}
 
 }
