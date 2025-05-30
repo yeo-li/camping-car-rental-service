@@ -6,6 +6,7 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 
 public class AllTableViewerPanel extends JPanel {
@@ -55,7 +56,7 @@ public class AllTableViewerPanel extends JPanel {
 				List<T> list = fetchFunction.get();
 				renderObjectTable(list);
 			} catch (Exception ex) {
-				showError(ex.getMessage());
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 		return button;
@@ -99,11 +100,6 @@ public class AllTableViewerPanel extends JPanel {
 		};
 		resultTable.setModel(model);
 		messageLabel.setText("✅ " + dataList.size() + "건 조회됨");
-	}
-
-	private void showError(String message) {
-		messageLabel.setText("❌ 오류 발생");
-		JOptionPane.showMessageDialog(this, message, "오류", JOptionPane.ERROR_MESSAGE);
 	}
 
 	@FunctionalInterface
