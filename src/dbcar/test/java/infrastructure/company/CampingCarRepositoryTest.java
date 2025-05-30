@@ -60,14 +60,14 @@ public class CampingCarRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		CampingCar oldCar = campingCarRepository.findById(13);
-		CampingCar updatedCar = new CampingCar("에버그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
+		CampingCar updatedCar = new CampingCar("레전드그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
 				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(),
 				oldCar.getRegistered_date());
 
 		campingCarRepository.update(13, updatedCar);
 
 		CampingCar actual = campingCarRepository.findById(13);
-		AssertUtil.assertEqual("에버그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
+		AssertUtil.assertEqual("레전드그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
 	}
 
 	private static void 조건식을_입력받아_데이터를_조회할_수_있어야_한다() {
