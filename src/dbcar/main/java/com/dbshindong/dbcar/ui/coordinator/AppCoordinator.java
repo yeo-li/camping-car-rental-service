@@ -208,7 +208,6 @@ public class AppCoordinator {
 		CampingCarQueryPanel view = new CampingCarQueryPanel();
 		frame.setContentPane(view);
 		frame.revalidate();
-		
 	}
 	
 	public void showCampingCarAvailableDateQueryView(int id) {
@@ -216,5 +215,9 @@ public class AppCoordinator {
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
-	
+	public void showUserReservationQueryView() { 
+		UserReservationQueryPanel view = new UserReservationQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
 }
