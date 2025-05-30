@@ -52,13 +52,8 @@ public class DataInsertService {
 
 	public CampingCarCompany createCampingCarCompany(String name, String address, String phone, String manager_name,
 			String manager_email) {
-		try {
-			CampingCarCompany company = new CampingCarCompany(name, address, phone, manager_name, manager_email);
-			return company;
-		} catch (NullPointerException e) {
-			System.out.println("[error]CampingCarCompany의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+		CampingCarCompany company = new CampingCarCompany(name, address, phone, manager_name, manager_email);
+		return company;
 	}
 
 	public void insertCampingCarCompany(CampingCarCompany company) {
@@ -66,15 +61,10 @@ public class DataInsertService {
 	}
 
 	public CampingCar createCampingCar(String name, String plate_number, int capacity, byte[] image, String description,
-			int rental_price, int company_id, Date registered_date) {
-		try {
-			CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id,
-					registered_date);
-			return car;
-		} catch (NullPointerException e) {
-			System.out.println("[error]CampingCar의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+			int rental_price, int company_id, String registered_date) {
+		CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id,
+				registered_date);
+		return car;
 	}
 
 	public void insertCampingCar(CampingCar car) {
@@ -83,13 +73,8 @@ public class DataInsertService {
 
 	public Employee createEmployee(String name, String phone, String address, int salary, int dependents,
 			String department, String role) {
-		try {
-			Employee employee = new Employee(name, phone, address, salary, dependents, department, role);
-			return employee;
-		} catch (NullPointerException e) {
-			System.out.println("[error]Employee의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+		Employee employee = new Employee(name, phone, address, salary, dependents, department, role);
+		return employee;
 	}
 
 	public void insertEmployee(Employee employee) {
@@ -98,29 +83,21 @@ public class DataInsertService {
 
 	public Customer createCustomer(String username, String password, String license_number, String name, String address,
 			String phone, String email) {
-		try {
-			Customer customer = new Customer(username, password, license_number, name, address, phone, email);
-			return customer;
-		} catch (NullPointerException e) {
-			System.out.println("[error]Customer의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+		Customer customer = new Customer(username, password, license_number, name, address, phone, email);
+		return customer;
+
 	}
 
 	public void insertCustomer(Customer customer) {
 		customerRepository.save(customer);
 	}
 
-	public Rental createRental(int car_id, int customer_id, int company_id, Date start_date, int rental_period,
-			int total_charge, Date due_date, String extra_charge_detail, Integer extra_charge) {
-		try {
-			Rental rental = new Rental(car_id, customer_id, company_id, start_date, rental_period, total_charge,
-					due_date, extra_charge_detail, extra_charge);
-			return rental;
-		} catch (NullPointerException e) {
-			System.out.println("[error]Rental의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+	public Rental createRental(int car_id, int customer_id, int company_id, String start_date, int rental_period,
+			int total_charge, String due_date, String extra_charge_detail, Integer extra_charge) {
+		Rental rental = new Rental(car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date,
+				extra_charge_detail, extra_charge);
+		return rental;
+
 	}
 
 	public void insertRental(Rental rental) throws Exception {
@@ -128,15 +105,11 @@ public class DataInsertService {
 	}
 
 	public ExternalRepairRecord createExternalRepairRecord(int car_id, int shop_id, int company_id, int customer_id,
-			String content, Date repair_date, int cost, Date due_date, String note) {
-		try {
-			ExternalRepairRecord record = new ExternalRepairRecord(car_id, shop_id, company_id, customer_id, content,
-					repair_date, cost, due_date, note);
-			return record;
-		} catch (NullPointerException e) {
-			System.out.println("[error]ExternalRepairRecord의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+			String content, String repair_date, int cost, String due_date, String note) {
+		ExternalRepairRecord record = new ExternalRepairRecord(car_id, shop_id, company_id, customer_id, content,
+				repair_date, cost, due_date, note);
+		return record;
+
 	}
 
 	public void insertExternalRepairRecord(ExternalRepairRecord record) {
@@ -145,43 +118,31 @@ public class DataInsertService {
 
 	public ExternalRepairShop createExternalRepairShop(String name, String address, String phone, String manager_name,
 			String manager_email) {
-		try {
-			ExternalRepairShop shop = new ExternalRepairShop(name, address, phone, manager_name, manager_email);
-			return shop;
-		} catch (NullPointerException e) {
-			System.out.println("[error]ExternalRepairShop의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+
+		ExternalRepairShop shop = new ExternalRepairShop(name, address, phone, manager_name, manager_email);
+		return shop;
+
 	}
 
 	public void insertExternalRepairShop(ExternalRepairShop shop) {
 		externalRepairShopRepository.save(shop);
 	}
 
-	public InternalRepairRecord creatInternalRepairRecord(int car_id, Integer part_id, Date repair_date,
+	public InternalRepairRecord creatInternalRepairRecord(int car_id, Integer part_id, String repair_date,
 			int duration_minutes, int employee_id) {
-		try {
-			InternalRepairRecord record = new InternalRepairRecord(car_id, part_id, repair_date, duration_minutes,
-					employee_id);
-			return record;
-		} catch (NullPointerException e) {
-			System.out.println("[error]InternalRepairRecord의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+		InternalRepairRecord record = new InternalRepairRecord(car_id, part_id, repair_date, duration_minutes,
+				employee_id);
+		return record;
+
 	}
 
 	public void insertInternalRepairRecord(InternalRepairRecord record) {
 		internalRepairRecordRepository.save(record);
 	}
 
-	public Part createPart(String name, int unit_price, int stock_quantity, Date stock_date, String supplier_name) {
-		try {
-			Part part = new Part(name, unit_price, stock_quantity, stock_date, supplier_name);
-			return part;
-		} catch (NullPointerException e) {
-			System.out.println("[error]Part의 입력값이 올바르지 않습니다.");
-			return null;
-		}
+	public Part createPart(String name, int unit_price, int stock_quantity, String stock_date, String supplier_name) {
+		Part part = new Part(name, unit_price, stock_quantity, stock_date, supplier_name);
+		return part;
 	}
 
 	public void insertPart(Part part) {

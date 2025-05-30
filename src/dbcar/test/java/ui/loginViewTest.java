@@ -17,6 +17,8 @@ public class loginViewTest {
 		System.out.println("\n[[LoginVeiwTest]]");
 		//AppCoordinator cd = new AppCoordinator();// 절때 코디네이터를 생성하면 안됨! 관리자는 전부 콘피그에서
 		AppConfig ac = AppConfig.getInstance();
+		ac.databaseInitService();
+		System.out.println("\n[[DatabaseInit]]");
 		ac.appCoordinator().start();
 		
 	}

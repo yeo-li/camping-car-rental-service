@@ -38,6 +38,13 @@ public class AppCoordinator {
 		showLoginView();
 		frame.setVisible(true);
 	}
+	
+	public void setUser(String userID) {
+		this.user = userID;
+	}
+	public String getUser() {
+		return this.user;
+	}
 
 	public void showLoginView() {
 		LoginPanel view = new LoginPanel(ac.loginController(), ac.appCoordinator());
@@ -54,6 +61,12 @@ public class AppCoordinator {
 	public void showAdminInitView() {
 		AdminInitPanel view = new AdminInitPanel();
 		frame.setContentPane(view);
+		frame.revalidate();
+	}
+	
+	public void showAllTableView() {
+		AllTableViewerPanel panel = new AllTableViewerPanel();
+		frame.setContentPane(panel);
 		frame.revalidate();
 	}
 
@@ -184,14 +197,24 @@ public class AppCoordinator {
 		frame.revalidate();
 	}
 
-	/*
-	 * public void showCampingCarQueryView(Customer user) { CampingCarRepository
-	 * campingCarRepository = new CampingCarRepository(this.conn);
-	 * CampingCarQueryService service = new
-	 * CampingCarQueryService(campingCarRepository); CampingCarQueryController
-	 * controller = new CampingCarQueryController(service); CampingCarQueryPanel
-	 * view = new CampingCarQueryPanel(user, controller, this);
-	 * 
-	 * frame.setContentPane(view); frame.revalidate(); }
-	 */
+	public void showDeleteUpdateView() {
+		DeleteUpdatePanel view = new DeleteUpdatePanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
+	
+	public void showCampingCarQueryView() { 
+		CampingCarQueryPanel view = new CampingCarQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+		
+	}
+	
+	public void showCampingCarAvailableDateQueryView(int id) {
+		CampingCarAvailableDateQueryPanel view = new CampingCarAvailableDateQueryPanel(id);
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+	
 }

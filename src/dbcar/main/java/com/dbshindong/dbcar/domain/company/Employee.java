@@ -2,19 +2,21 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidEmployeeException;
+
 public class Employee {
-	private final int employee_id;
+	private final Integer employee_id;
 	private final String name;
 	private final String phone;
 	private final String address;
-	private final int salary;
-	private final int dependents;
+	private final Integer salary;
+	private final Integer dependents;
 	private final String department;
 	private final String role;
 
 	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
 
-	public Employee(int employee_id, String name, String phone, String address, int salary, int dependents,
+	public Employee(Integer employee_id, String name, String phone, String address, Integer salary, Integer dependents,
 			String department, String role) {
 		this.validate(employee_id, name, phone, address, salary, dependents, department, role);
 		this.employee_id = employee_id;
@@ -27,7 +29,7 @@ public class Employee {
 		this.role = role;
 	}
 
-	public Employee(String name, String phone, String address, int salary, int dependents, String department,
+	public Employee(String name, String phone, String address, Integer salary, Integer dependents, String department,
 			String role) {
 		this.validate(-1, name, phone, address, salary, dependents, department, role);
 		this.employee_id = -1;
@@ -40,16 +42,34 @@ public class Employee {
 		this.role = role;
 	}
 
-	private void validate(int employee_id, String name, String phone, String address, int salary, int dependents,
-			String department, String role) {
-		Objects.requireNonNull(employee_id, String.format(NULL_MESSAGE, "employee_id"));
-		Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-		Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
-		Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
-		Objects.requireNonNull(salary, String.format(NULL_MESSAGE, "salary"));
-		Objects.requireNonNull(dependents, String.format(NULL_MESSAGE, "dependents"));
-		Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
-		Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
+	private void validate(Integer employee_id, String name, String phone, String address, Integer salary,
+			Integer dependents, String department, String role) {
+		try {
+			Objects.requireNonNull(employee_id, String.format(NULL_MESSAGE, "employee_id"));
+			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
+			Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
+			Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
+			Objects.requireNonNull(salary, String.format(NULL_MESSAGE, "salary"));
+			Objects.requireNonNull(dependents, String.format(NULL_MESSAGE, "dependents"));
+			Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
+			Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
+		} catch (NullPointerException e) {
+			throw new InvalidEmployeeException(e.getMessage(), e);
+		}
+
+		if (salary < 0) {
+			throw new InvalidEmployeeException("급여의 입력값이 올바르지 않습니다.");
+		}
+
+		if (dependents < 0) {
+			throw new InvalidEmployeeException("부양가족 수의 입력값이 올바르지 않습니다");
+		}
+
+		// role은 관리, 사무, 정비 중 하나여야함
+		if (!(role.equals("사무") || role.equals("관리") || role.equals("정비"))) {
+			throw new InvalidEmployeeException("담당 업무는 관리, 사무, 정비 중 하나여야합니다.");
+		}
+
 	}
 
 	@Override
