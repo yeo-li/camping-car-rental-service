@@ -72,8 +72,9 @@ public class ExternalRepairRecordInsertPanel extends JPanel {
 						Integer.parseInt(carIdField.getText().trim()), Integer.parseInt(shopIdField.getText().trim()),
 						Integer.parseInt(companyIdField.getText().trim()),
 						Integer.parseInt(customerIdField.getText().trim()), contentField.getText().trim(),
-						Date.valueOf(repairDateField.getText().trim()), Integer.parseInt(costField.getText().trim()),
-						Date.valueOf(dueDateField.getText().trim()), noteField.getText().trim());
+						Date.valueOf(repairDateField.getText().trim()).toString(),
+						Integer.parseInt(costField.getText().trim()),
+						Date.valueOf(dueDateField.getText().trim()).toString(), noteField.getText().trim());
 
 				ac.dataInsertService().insertExternalRepairRecord(record);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");

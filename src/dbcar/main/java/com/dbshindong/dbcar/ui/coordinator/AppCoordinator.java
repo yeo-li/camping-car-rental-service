@@ -56,6 +56,12 @@ public class AppCoordinator {
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
+	
+	public void showAllTableView() {
+		AllTableViewerPanel panel = new AllTableViewerPanel();
+		frame.setContentPane(panel);
+		frame.revalidate();
+	}
 
 	public void showTableEntrySelectorView() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
@@ -180,6 +186,12 @@ public class AppCoordinator {
 
 	public void showSqlQueryView() {
 		SqlQueryPanel view = new SqlQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
+	public void showDeleteUpdateView() {
+		DeleteUpdatePanel view = new DeleteUpdatePanel();
 		frame.setContentPane(view);
 		frame.revalidate();
 	}

@@ -5,6 +5,7 @@ import java.util.List;
 import java.sql.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.AssertUtil;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.RepositoryException;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.company.CampingCarRepository;
@@ -50,7 +51,7 @@ public class CampingCarRepositoryTest {
 
 	private static void 새로운_사용자를_저장할_수_있어야_한다() {
 		CampingCar newCar = new CampingCar("에버그린-X1", "서울34나9999", 4, new byte[] { 0x01, 0x02 }, "작고 실용적인 캠핑카입니다.",
-				99999, 2, Date.valueOf("2025-01-01"));
+				99999, 2, "2025-01-01");
 
 		campingCarRepository.save(newCar);
 
@@ -60,14 +61,14 @@ public class CampingCarRepositoryTest {
 
 	private static void 데이터를_업데이트_할_수_있어야_한다() {
 		CampingCar oldCar = campingCarRepository.findById(13);
-		CampingCar updatedCar = new CampingCar("에버그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
+		CampingCar updatedCar = new CampingCar("레전드그린-X2", oldCar.getPlate_number(), oldCar.getCapacity(),
 				oldCar.getImage(), oldCar.getDescription(), 123456, oldCar.getCompany_id(),
-				oldCar.getRegistered_date());
+				oldCar.getRegistered_date().toString());
 
 		campingCarRepository.update(13, updatedCar);
 
 		CampingCar actual = campingCarRepository.findById(13);
-		AssertUtil.assertEqual("에버그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
+		AssertUtil.assertEqual("레전드그린-X2", actual.getName(), "데이터를 업데이트 할 수 있어야 한다.");
 	}
 
 	private static void 조건식을_입력받아_데이터를_조회할_수_있어야_한다() {
@@ -77,12 +78,8 @@ public class CampingCarRepositoryTest {
 
 		// when
 		List<CampingCar> cars = null;
-		try {
-			cars = campingCarRepository.findByCondition(sql);	
-		} catch(SQLSyntaxErrorException e) {
-			
-		}
-		
+
+		cars = campingCarRepository.findByCondition(sql);
 
 		// then
 		int actual = cars.size();
@@ -98,7 +95,7 @@ public class CampingCarRepositoryTest {
 		List<CampingCar> cars = null;
 		try {
 			cars = campingCarRepository.findByCondition(sql);
-		} catch (SQLSyntaxErrorException e) {
+		} catch (RepositoryException e) {
 			AssertUtil.assertEqual(-1, -1, "조건식의 문법이 틀리면 오류를 발생시켜야 한다.");
 			return;
 		}

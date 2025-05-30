@@ -32,8 +32,6 @@ public class DataDeleteService {
 	private final PartRepository partRepository;
 	private final EmployeeRepository employeeRepository;
 	private final InternalRepairRecordRepository internalRepairRecordRepository;
-	
-	
 
 	public DataDeleteService(CampingCarCompanyRepository campingCarCompanyRepository,
 			ExternalRepairShopRepository externalRepairShopRepository, RentalRepository rentalRepository,
@@ -53,104 +51,80 @@ public class DataDeleteService {
 	}
 
 	public void deleteCampingCars(String sql) {
-		try {
-			List<CampingCar> cars = campingCarRepository.findByCondition(sql);
-			for (CampingCar car : cars) {
-				campingCarRepository.delete(car.getCar_id());
-			}
 
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<CampingCar> cars = campingCarRepository.findByCondition(sql);
+		for (CampingCar car : cars) {
+			campingCarRepository.delete(car.getCar_id());
 		}
+
 	}
 
 	public void deleteCampingCarCompanys(String sql) {
-		try {
-			List<CampingCarCompany> companys = campingCarCompanyRepository.findByCondition(sql);
-			for (CampingCarCompany company : companys) {
-				campingCarCompanyRepository.delete(company.getCompany_id());
-			}
 
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<CampingCarCompany> companys = campingCarCompanyRepository.findByCondition(sql);
+		for (CampingCarCompany company : companys) {
+			campingCarCompanyRepository.delete(company.getCompany_id());
 		}
+
 	}
 
 	public void deleteEmployees(String sql) {
-		try {
-			List<Employee> employees = employeeRepository.findByCondition(sql);
-			for (Employee employee : employees) {
-				employeeRepository.delete(employee.getEmployee_id());
-			}
 
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<Employee> employees = employeeRepository.findByCondition(sql);
+		for (Employee employee : employees) {
+			employeeRepository.delete(employee.getEmployee_id());
 		}
+
 	}
 
 	public void deleteCustomers(String conditionSql) {
-		try {
-			List<Customer> list = customerRepository.findByCondition(conditionSql);
-			for (Customer item : list) {
-				customerRepository.delete(item.getCustomer_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Customer> list = customerRepository.findByCondition(conditionSql);
+		for (Customer item : list) {
+			customerRepository.delete(item.getCustomer_id());
 		}
+
 	}
 
 	public void deleteExternalRepairShops(String conditionSql) {
-		try {
-			List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
-			for (ExternalRepairShop item : list) {
-				externalRepairShopRepository.delete(item.getShop_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
+		for (ExternalRepairShop item : list) {
+			externalRepairShopRepository.delete(item.getShop_id());
 		}
+
 	}
 
 	public void deleteExternalRepairRecords(String conditionSql) {
-		try {
-			List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
-			for (ExternalRepairRecord item : list) {
-				externalRepairRecordRepository.delete(item.getExternal_repair_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
+		for (ExternalRepairRecord item : list) {
+			externalRepairRecordRepository.delete(item.getExternal_repair_id());
 		}
+
 	}
 
 	public void deleteInternalRepairRecords(String conditionSql) {
-		try {
-			List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
-			for (InternalRepairRecord item : list) {
-				internalRepairRecordRepository.delete(item.getInternal_repair_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
+		for (InternalRepairRecord item : list) {
+			internalRepairRecordRepository.delete(item.getInternal_repair_id());
 		}
+
 	}
 
 	public void deleteParts(String conditionSql) {
-		try {
-			List<Part> list = partRepository.findByCondition(conditionSql);
-			for (Part item : list) {
-				partRepository.delete(item.getPart_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Part> list = partRepository.findByCondition(conditionSql);
+		for (Part item : list) {
+			partRepository.delete(item.getPart_id());
 		}
+
 	}
 
 	public void deleteRentals(String conditionSql) {
-		try {
-			List<Rental> list = rentalRepository.findByCondition(conditionSql);
-			for (Rental item : list) {
-				rentalRepository.delete(item.getRental_id());
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<Rental> list = rentalRepository.findByCondition(conditionSql);
+		for (Rental item : list) {
+			rentalRepository.delete(item.getRental_id());
 		}
 	}
 

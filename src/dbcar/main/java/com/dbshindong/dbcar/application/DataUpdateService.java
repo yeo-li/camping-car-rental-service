@@ -62,15 +62,13 @@ public class DataUpdateService {
 	}
 
 	public void updateCampingCars(UpdateCampingCarRequest request, String conditionSql) {
-		try {
-			List<CampingCar> cars = campingCarRepository.findByCondition(conditionSql);
-			for (CampingCar car : cars) {
-				CampingCar updateCar = createUpdateCampingCar(car, request);
-				campingCarRepository.update(car.getCar_id(), updateCar);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<CampingCar> cars = campingCarRepository.findByCondition(conditionSql);
+		for (CampingCar car : cars) {
+			CampingCar updateCar = createUpdateCampingCar(car, request);
+			campingCarRepository.update(car.getCar_id(), updateCar);
 		}
+
 	}
 
 	private CampingCar createUpdateCampingCar(CampingCar car, UpdateCampingCarRequest request) {
@@ -81,21 +79,18 @@ public class DataUpdateService {
 		String description = request.description() == null ? car.getDescription() : request.description();
 		Integer rental_price = request.rental_price() == null ? car.getRental_price() : request.rental_price();
 		Integer company_id = request.company_id() == null ? car.getCompany_id() : request.company_id();
-		Date registered_date = request.registered_date() == null ? car.getRegistered_date() : request.registered_date();
+		String registered_date = request.registered_date() == null ? car.getRegistered_date().toString()
+				: request.registered_date();
 
 		return new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id,
 				registered_date);
 	}
 
 	public void updateCampingCarCompanies(UpdateCampingCarCompanyRequest request, String conditionSql) {
-		try {
-			List<CampingCarCompany> list = campingCarCompanyRepository.findByCondition(conditionSql);
-			for (CampingCarCompany item : list) {
-				CampingCarCompany updateCompany = createUpdateCampingCarCompany(item, request);
-				campingCarCompanyRepository.update(item.getCompany_id(), updateCompany);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+		List<CampingCarCompany> list = campingCarCompanyRepository.findByCondition(conditionSql);
+		for (CampingCarCompany item : list) {
+			CampingCarCompany updateCompany = createUpdateCampingCarCompany(item, request);
+			campingCarCompanyRepository.update(item.getCompany_id(), updateCompany);
 		}
 	}
 
@@ -110,15 +105,13 @@ public class DataUpdateService {
 	}
 
 	public void updateCustomers(UpdateCustomerRequest request, String conditionSql) {
-		try {
-			List<Customer> list = customerRepository.findByCondition(conditionSql);
-			for (Customer item : list) {
-				Customer updateCustomer = createUpdateCustomer(item, request);
-				customerRepository.update(item.getCustomer_id(), updateCustomer);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Customer> list = customerRepository.findByCondition(conditionSql);
+		for (Customer item : list) {
+			Customer updateCustomer = createUpdateCustomer(item, request);
+			customerRepository.update(item.getCustomer_id(), updateCustomer);
 		}
+
 	}
 
 	private Customer createUpdateCustomer(Customer entity, UpdateCustomerRequest request) {
@@ -134,15 +127,13 @@ public class DataUpdateService {
 	}
 
 	public void updateEmployees(UpdateEmployeeRequest request, String conditionSql) {
-		try {
-			List<Employee> list = employeeRepository.findByCondition(conditionSql);
-			for (Employee item : list) {
-				Employee updateEmployee = createUpdateEmployee(item, request);
-				employeeRepository.update(item.getEmployee_id(), updateEmployee);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Employee> list = employeeRepository.findByCondition(conditionSql);
+		for (Employee item : list) {
+			Employee updateEmployee = createUpdateEmployee(item, request);
+			employeeRepository.update(item.getEmployee_id(), updateEmployee);
 		}
+
 	}
 
 	private Employee createUpdateEmployee(Employee entity, UpdateEmployeeRequest request) {
@@ -157,15 +148,13 @@ public class DataUpdateService {
 	}
 
 	public void updateExternalRepairShops(UpdateExternalRepairShopRequest request, String conditionSql) {
-		try {
-			List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
-			for (ExternalRepairShop item : list) {
-				ExternalRepairShop updateShop = createUpdateExternalRepairShop(item, request);
-				externalRepairShopRepository.update(item.getShop_id(), updateShop);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<ExternalRepairShop> list = externalRepairShopRepository.findByCondition(conditionSql);
+		for (ExternalRepairShop item : list) {
+			ExternalRepairShop updateShop = createUpdateExternalRepairShop(item, request);
+			externalRepairShopRepository.update(item.getShop_id(), updateShop);
 		}
+
 	}
 
 	private ExternalRepairShop createUpdateExternalRepairShop(ExternalRepairShop entity,
@@ -179,15 +168,13 @@ public class DataUpdateService {
 	}
 
 	public void updateExternalRepairRecords(UpdateExternalRepairRecordRequest request, String conditionSql) {
-		try {
-			List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
-			for (ExternalRepairRecord item : list) {
-				ExternalRepairRecord updateRecord = createUpdateExternalRepairRecord(item, request);
-				externalRepairRecordRepository.update(item.getExternal_repair_id(), updateRecord);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<ExternalRepairRecord> list = externalRepairRecordRepository.findByCondition(conditionSql);
+		for (ExternalRepairRecord item : list) {
+			ExternalRepairRecord updateRecord = createUpdateExternalRepairRecord(item, request);
+			externalRepairRecordRepository.update(item.getExternal_repair_id(), updateRecord);
 		}
+
 	}
 
 	private ExternalRepairRecord createUpdateExternalRepairRecord(ExternalRepairRecord entity,
@@ -197,31 +184,29 @@ public class DataUpdateService {
 		Integer company_id = request.company_id() == null ? entity.getCompany_id() : request.company_id();
 		Integer customer_id = request.customer_id() == null ? entity.getCustomer_id() : request.customer_id();
 		String content = request.content() == null ? entity.getContent() : request.content();
-		Date repair_date = request.repair_date() == null ? entity.getRepair_date() : request.repair_date();
+		String repair_date = request.repair_date() == null ? entity.getRepair_date().toString() : request.repair_date();
 		Integer cost = request.cost() == null ? entity.getCost() : request.cost();
-		Date due_date = request.due_date() == null ? entity.getDue_date() : request.due_date();
+		String due_date = request.due_date() == null ? entity.getDue_date().toString() : request.due_date();
 		String note = request.note() == null ? entity.getNote() : request.note();
 		return new ExternalRepairRecord(car_id, shop_id, company_id, customer_id, content, repair_date, cost, due_date,
 				note);
 	}
 
 	public void updateInternalRepairRecords(UpdateInternalRepairRecordRequest request, String conditionSql) {
-		try {
-			List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
-			for (InternalRepairRecord item : list) {
-				InternalRepairRecord updateRecord = createUpdateInternalRepairRecord(item, request);
-				internalRepairRecordRepository.update(item.getInternal_repair_id(), updateRecord);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<InternalRepairRecord> list = internalRepairRecordRepository.findByCondition(conditionSql);
+		for (InternalRepairRecord item : list) {
+			InternalRepairRecord updateRecord = createUpdateInternalRepairRecord(item, request);
+			internalRepairRecordRepository.update(item.getInternal_repair_id(), updateRecord);
 		}
+
 	}
 
 	private InternalRepairRecord createUpdateInternalRepairRecord(InternalRepairRecord entity,
 			UpdateInternalRepairRecordRequest request) {
 		Integer car_id = request.car_id() == null ? entity.getCar_id() : request.car_id();
 		Integer part_id = request.part_id() == null ? entity.getPart_id() : request.part_id();
-		Date repair_date = request.repair_date() == null ? entity.getRepair_date() : request.repair_date();
+		String repair_date = request.repair_date() == null ? entity.getRepair_date().toString() : request.repair_date();
 		Integer duration_minutes = request.duration_minutes() == null ? entity.getDuration_minutes()
 				: request.duration_minutes();
 		Integer employee_id = request.employee_id() == null ? entity.getEmployee_id() : request.employee_id();
@@ -229,15 +214,13 @@ public class DataUpdateService {
 	}
 
 	public void updateParts(UpdatePartRequest request, String conditionSql) {
-		try {
-			List<Part> list = partRepository.findByCondition(conditionSql);
-			for (Part item : list) {
-				Part updatePart = createUpdatePart(item, request);
-				partRepository.update(item.getPart_id(), updatePart);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Part> list = partRepository.findByCondition(conditionSql);
+		for (Part item : list) {
+			Part updatePart = createUpdatePart(item, request);
+			partRepository.update(item.getPart_id(), updatePart);
 		}
+
 	}
 
 	private Part createUpdatePart(Part entity, UpdatePartRequest request) {
@@ -245,31 +228,29 @@ public class DataUpdateService {
 		Integer unit_price = request.unit_price() == null ? entity.getUnit_price() : request.unit_price();
 		Integer stock_quantity = request.stock_quantity() == null ? entity.getStock_quantity()
 				: request.stock_quantity();
-		Date stock_date = request.stock_date() == null ? entity.getStock_date() : request.stock_date();
+		String stock_date = request.stock_date() == null ? entity.getStock_date().toString() : request.stock_date();
 		String supplier_name = request.supplier_name() == null ? entity.getSupplier_name() : request.supplier_name();
 		return new Part(name, unit_price, stock_quantity, stock_date, supplier_name);
 	}
 
 	public void updateRentals(UpdateRentalRequest request, String conditionSql) {
-		try {
-			List<Rental> list = rentalRepository.findByCondition(conditionSql);
-			for (Rental item : list) {
-				Rental updateRental = createUpdateRental(item, request);
-				rentalRepository.update(item.getRental_id(), updateRental);
-			}
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
+
+		List<Rental> list = rentalRepository.findByCondition(conditionSql);
+		for (Rental item : list) {
+			Rental updateRental = createUpdateRental(item, request);
+			rentalRepository.update(item.getRental_id(), updateRental);
 		}
+
 	}
 
 	private Rental createUpdateRental(Rental entity, UpdateRentalRequest request) {
 		Integer car_id = request.car_id() == null ? entity.getCar_id() : request.car_id();
 		Integer customer_id = request.customer_id() == null ? entity.getCustomer_id() : request.customer_id();
 		Integer company_id = request.company_id() == null ? entity.getCompany_id() : request.company_id();
-		Date start_date = request.start_date() == null ? entity.getStart_date() : request.start_date();
+		String start_date = request.start_date() == null ? entity.getStart_date().toString() : request.start_date();
 		Integer rental_period = request.rental_period() == null ? entity.getRental_period() : request.rental_period();
 		Integer total_charge = request.total_charge() == null ? entity.getTotal_charge() : request.total_charge();
-		Date due_date = request.due_date() == null ? entity.getDue_date() : request.due_date();
+		String due_date = request.due_date() == null ? entity.getDue_date().toString() : request.due_date();
 		String extra_charges = request.extra_charge_detail() == null ? entity.getExtra_charge_detail()
 				: request.extra_charge_detail();
 		Integer extra_charge = request.extra_charge() == null ? entity.getExtra_charge() : request.extra_charge();

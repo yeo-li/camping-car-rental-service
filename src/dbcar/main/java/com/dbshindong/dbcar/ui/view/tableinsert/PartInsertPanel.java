@@ -56,7 +56,7 @@ public class PartInsertPanel extends JPanel {
 				String name = nameField.getText().trim();
 				int unitPrice = Integer.parseInt(unitPriceField.getText().trim());
 				int stockQuantity = Integer.parseInt(stockQuantityField.getText().trim());
-				Date stockDate = Date.valueOf(stockDateField.getText().trim());
+				String stockDate = Date.valueOf(stockDateField.getText().trim()).toString();
 				String supplier = supplierNameField.getText().trim();
 
 				Part part = ac.dataInsertService().createPart(name, unitPrice, stockQuantity, stockDate, supplier);
