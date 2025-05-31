@@ -38,10 +38,11 @@ public class AppCoordinator {
 		showLoginView();
 		frame.setVisible(true);
 	}
-	
+
 	public void setUser(String userID) {
 		this.user = userID;
 	}
+
 	public String getUser() {
 		return this.user;
 	}
@@ -63,10 +64,16 @@ public class AppCoordinator {
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
-	
+
 	public void showAllTableView() {
 		AllTableViewerPanel panel = new AllTableViewerPanel();
 		frame.setContentPane(panel);
+		frame.revalidate();
+	}
+
+	public void showRepairRecordView() {
+		RepairRecordPanel view = new RepairRecordPanel();
+		frame.setContentPane(view);
 		frame.revalidate();
 	}
 
@@ -103,7 +110,7 @@ public class AppCoordinator {
 		}
 	}
 
-	// 표준
+// 표준
 	private void showCustomerInsertPanel() {
 		CustomerInsertPanel customerPanel = new CustomerInsertPanel();
 
@@ -203,18 +210,17 @@ public class AppCoordinator {
 		frame.revalidate();
 	}
 
-	
-	public void showCampingCarQueryView() { 
+	public void showCampingCarQueryView() {
 		CampingCarQueryPanel view = new CampingCarQueryPanel();
 		frame.setContentPane(view);
 		frame.revalidate();
-		
+
 	}
-	
+
 	public void showCampingCarAvailableDateQueryView(int id) {
 		CampingCarAvailableDateQueryPanel view = new CampingCarAvailableDateQueryPanel(id);
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
-	
+
 }
