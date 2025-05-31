@@ -4,11 +4,14 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
+import java.time.LocalDate;
+
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 
 public class RentalRepository {
@@ -142,9 +145,9 @@ public class RentalRepository {
 			pstmt.setString(8, rental.getExtra_charge_detail());
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
-			} else {
-				pstmt.setInt(9, rental.getExtra_charge());
-			}
+			else {
+				pstmt.setInt(9,rental.getExtra_charge());
+			} 
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
@@ -175,4 +178,36 @@ public class RentalRepository {
 			throw new DataUpdateException("데이터 업데이트 중 오류가 발생했습니다.", e);
 		}
 	}
+
+
+	public List<Rental> findByCarId(int car) {
+		List<Rental> rentals = new ArrayList<>();
+		try {
+			String sql = "SELECT * FROM Rental WHERE car_id = ?";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, car);
+			ResultSet rs = pstmt.executeQuery();
+
+			while (rs.next()) {
+				int rental_id = rs.getInt("rental_id");
+				int car_id = rs.getInt("car_id");
+				int customer_id = rs.getInt("customer_id");
+				int company_id = rs.getInt("company_id");
+				Date start_date = rs.getDate("start_date");
+				int rental_period = rs.getInt("rental_period");
+				int total_charge = rs.getInt("total_charge");
+				Date due_date = rs.getDate("due_date");
+				String extra_charge_detail = rs.getString("extra_charges");
+				int extra_charge = rs.getInt("extra_charge_amount");
+
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period,
+						total_charge, due_date, extra_charge_detail, extra_charge);
+				rentals.add(rental);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return rentals;
+	}
+	
 }

@@ -1,5 +1,7 @@
 package dbcar.main.java.com.dbshindong.dbcar.config;
 
+import dbcar.main.java.com.dbshindong.dbcar.application.CampingCarAvailableDateQueryService;
+import dbcar.main.java.com.dbshindong.dbcar.application.CampingCarQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DataDeleteService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DataFetchService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DataInsertService;
@@ -19,6 +21,8 @@ import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.Exter
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.external.ExternalRepairShopRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.InternalRepairRecordRepository;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal.PartRepository;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDateQueryController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
@@ -50,9 +54,15 @@ public class AppConfig {
 	private DataInsertService dataInsertService;
 	private DataUpdateService dataUpdateService;
 	private RepairRecordFetchService repairRecordFetchService;
-
+	private CampingCarQueryService campingCarQueryService;
+	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
+	
 	private LoginController loginController;
+  
+	private CampingCarQueryController campingCarQueryController;
+	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
 	private SqlQueryController sqlQueryController;
+
 
 	private AppConfig() {
 
@@ -233,6 +243,21 @@ public class AppConfig {
 
 		return repairRecordFetchService;
 	}
+	public CampingCarQueryService campingCarQueryService() {
+		if (campingCarQueryService == null) {
+			this.campingCarQueryService = new CampingCarQueryService(this.campingCarRepository());
+		}
+		return campingCarQueryService;
+	}
+	
+	public CampingCarAvailableDateQueryService campingCarAvailableDateQueryService() {
+		if (campingCarAvailableDateQueryService == null) {
+			this.campingCarAvailableDateQueryService = new CampingCarAvailableDateQueryService(this.rentalRepository());
+		}
+		return campingCarAvailableDateQueryService;
+	}
+	
+	
 
 	// controller
 
@@ -243,6 +268,19 @@ public class AppConfig {
 
 		return loginController;
 	}
+	public CampingCarQueryController campingCarQueryController() {
+		if(campingCarQueryController == null) {
+			campingCarQueryController = new CampingCarQueryController(this.campingCarQueryService(),this.appCoordinator());
+		}
+		return campingCarQueryController;
+	}
+	public CampingCarAvailableDateQueryController campingCarAvailableDateQueryController() {
+		if(campingCarAvailableDateQueryController == null) {
+			campingCarAvailableDateQueryController = new CampingCarAvailableDateQueryController(this.campingCarAvailableDateQueryService(), this.appCoordinator());
+		}
+		return campingCarAvailableDateQueryController;
+	}
+	
 
 	public SqlQueryController sqlQueryController() {
 		if (sqlQueryController == null) {

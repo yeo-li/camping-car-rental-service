@@ -20,6 +20,17 @@ public class ExternalRepairRecord {
 
 	private static final String NULL_MESSAGE = "%s은(는) null이 들어갈 수 없습니다.";
 
+	private static final String EXTERNAL_REPAIR_ID = "캠핑카 정비 기록 ID";
+	private static final String CAR_ID = "캠핑카 등록 ID";
+	private static final String SHOP_ID = "캠핑카 정비소 ID";
+	private static final String COMPANY_ID = "캠핑카 대여 회사 ID";
+	private static final String CUSTOMER_ID = "고객 ID";
+	private static final String CONTENT = "정비 내역";
+	private static final String REPAIR_DATE = "수리 날짜";
+	private static final String COST = "수리 비용";
+	private static final String DUE_DATE = "납입 기한";
+	private static final String NOTE = "기타 정비 내역 정보";
+
 	public ExternalRepairRecord(Integer external_repair_id, Integer car_id, Integer shop_id, Integer company_id,
 			Integer customer_id, String content, String repair_date, Integer cost, String due_date, String note) {
 		this.validate(external_repair_id, car_id, shop_id, company_id, customer_id, content, repair_date, cost,
@@ -56,41 +67,41 @@ public class ExternalRepairRecord {
 	private void validate(Integer external_repair_id, Integer car_id, Integer shop_id, Integer company_id,
 			Integer customer_id, String content, String repair_date, Integer cost, String due_date, String note) {
 		try {
-			Objects.requireNonNull(external_repair_id, String.format(NULL_MESSAGE, "external_repair_id"));
-			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
-			Objects.requireNonNull(shop_id, String.format(NULL_MESSAGE, "shop_id"));
-			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
-			Objects.requireNonNull(content, String.format(NULL_MESSAGE, "content"));
-			Objects.requireNonNull(repair_date, String.format(NULL_MESSAGE, "repair_date"));
-			Objects.requireNonNull(cost, String.format(NULL_MESSAGE, "cost"));
-			Objects.requireNonNull(due_date, String.format(NULL_MESSAGE, "due_date"));
+			Objects.requireNonNull(external_repair_id, String.format(NULL_MESSAGE, EXTERNAL_REPAIR_ID));
+			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, CAR_ID));
+			Objects.requireNonNull(shop_id, String.format(NULL_MESSAGE, SHOP_ID));
+			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, COMPANY_ID));
+			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, CUSTOMER_ID));
+			Validator.requireNonBlank(content, String.format(NULL_MESSAGE, CONTENT));
+			Validator.requireNonBlank(repair_date, String.format(NULL_MESSAGE, REPAIR_DATE));
+			Objects.requireNonNull(cost, String.format(NULL_MESSAGE, COST));
+			Validator.requireNonBlank(due_date, String.format(NULL_MESSAGE, DUE_DATE));
 		} catch (NullPointerException e) {
 			throw new InvalidExternalRepairRecordException(e.getMessage(), e);
 		}
 
 		if (car_id <= 0) {
-			throw new InvalidExternalRepairRecordException("캠핑카 아이디의 입력값이 잘못되었습니다.");
+			throw new InvalidExternalRepairRecordException(CAR_ID + "의 입력값이 잘못되었습니다.");
 		}
 
 		if (shop_id <= 0) {
-			throw new InvalidExternalRepairRecordException("외부정비소 아이디의 입력값이 잘못되었습니다.");
+			throw new InvalidExternalRepairRecordException(SHOP_ID + "의 입력값이 잘못되었습니다.");
 		}
 
 		if (company_id <= 0) {
-			throw new InvalidExternalRepairRecordException("캠핑카 대여 회사 아이디의 입력값이 올바르지 않습니다.");
+			throw new InvalidExternalRepairRecordException(COMPANY_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (customer_id <= 0) {
-			throw new InvalidExternalRepairRecordException("고객 아이디의 입력값이 올바르지 않습니다.");
+			throw new InvalidExternalRepairRecordException(CUSTOMER_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (!Validator.isValidDate(repair_date)) {
-			throw new InvalidExternalRepairRecordException("정비 날짜의 입력값이 올바르지 않습니다.");
+			throw new InvalidExternalRepairRecordException(REPAIR_DATE + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (!Validator.isValidDate(due_date)) {
-			throw new InvalidExternalRepairRecordException("정비 날의 입력값이 올바르지 않습니다.");
+			throw new InvalidExternalRepairRecordException(DUE_DATE + "의 입력값이 올바르지 않습니다.");
 		}
 	}
 

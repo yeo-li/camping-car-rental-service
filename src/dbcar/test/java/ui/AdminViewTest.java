@@ -1,10 +1,15 @@
 package dbcar.test.java.ui;
 
-import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 
 public class AdminViewTest {
 	public static void main(String[] args) {
-		AppCoordinator coordinator = new AppCoordinator();
-		coordinator.showAdminInitView();
+		AppConfig ac = AppConfig.getInstance();
+		ac.dbConnection().setConnection("root", "1234");
+		ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),
+				"dbcar/main/java/resources/DatabaseInit.sql");
+
+		ac.appCoordinator().start();
+		ac.appCoordinator().showAdminInitView();
 	}
 }
