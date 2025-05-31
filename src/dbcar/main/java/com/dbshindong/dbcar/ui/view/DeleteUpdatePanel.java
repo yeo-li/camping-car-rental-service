@@ -55,7 +55,7 @@ public class DeleteUpdatePanel extends JPanel {
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
 
-		deleteRadio = new JRadioButton("Delete");
+		deleteRadio = new JRadioButton("Delete", true); // 초기 선택 상태
 		updateRadio = new JRadioButton("Update");
 		ButtonGroup group = new ButtonGroup();
 		group.add(deleteRadio);
@@ -86,7 +86,7 @@ public class DeleteUpdatePanel extends JPanel {
 		deleteRadio.addActionListener(e -> clearUpdateFields());
 
 		refreshTableData();
-		buildUpdateFields();
+		clearUpdateFields();
 	}
 
 	private void buildUpdateFields() {
