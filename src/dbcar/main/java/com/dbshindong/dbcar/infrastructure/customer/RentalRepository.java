@@ -145,9 +145,9 @@ public class RentalRepository {
 			pstmt.setString(8, rental.getExtra_charge_detail());
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
-			else {
-				pstmt.setInt(9,rental.getExtra_charge());
-			} 
+			} else {
+				pstmt.setInt(9, rental.getExtra_charge());
+			}
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
@@ -179,7 +179,6 @@ public class RentalRepository {
 		}
 	}
 
-
 	public List<Rental> findByCarId(int car) {
 		List<Rental> rentals = new ArrayList<>();
 		try {
@@ -209,5 +208,5 @@ public class RentalRepository {
 		}
 		return rentals;
 	}
-	
+
 }

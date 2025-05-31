@@ -52,7 +52,7 @@ public class AdminInitPanel extends JPanel {
 					case 1 -> ac.appCoordinator().showTableEntrySelectorView();
 					case 2 -> ac.appCoordinator().showDeleteUpdateView();
 					case 3 -> ac.appCoordinator().showAllTableView();
-					case 4 -> System.out.println("캠핑카 정비 기록 조회 화면으로 이동");
+					case 4 -> ac.appCoordinator().showRepairRecordView();
 					case 5 -> ac.appCoordinator().showSqlQueryView();
 					}
 				});
