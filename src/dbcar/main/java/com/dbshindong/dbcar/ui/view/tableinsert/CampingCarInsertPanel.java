@@ -36,34 +36,43 @@ public class CampingCarInsertPanel extends JPanel {
 	private byte[] imageData = null;
 	private String imageFileName = null;
 
+	private static final String NAME = "캠핑카 이름";
+	private static final String PLATE_NUMBER = "캠핑카 차량 번호";
+	private static final String CAPACITY = "캠핑카 승차 인원수";
+	private static final String DESCRIPTION = "캠핑카상세정보";
+	private static final String IMAGE = "캠핑카 이미지";
+	private static final String RENTAL_PRICE = "캠핑카 대여 비용";
+	private static final String COMPANY_ID = "캠핑카 대여 회사 ID";
+	private static final String REGISTERED_DATE = "캠핑카 등록 일자";
+
 	public CampingCarInsertPanel() {
 		setLayout(new BorderLayout(10, 10));
 
 		JPanel formPanel = new JPanel(new GridLayout(9, 2, 10, 10));
-		formPanel.setBorder(BorderFactory.createTitledBorder("\uD83D\uDE98 CampingCar 정보 입력"));
+		formPanel.setBorder(BorderFactory.createTitledBorder("CampingCar 정보 입력"));
 
-		formPanel.add(new JLabel("Name"));
+		formPanel.add(new JLabel(NAME));
 		formPanel.add(nameField);
 
-		formPanel.add(new JLabel("Plate Number"));
+		formPanel.add(new JLabel(PLATE_NUMBER));
 		formPanel.add(plateField);
 
-		formPanel.add(new JLabel("Capacity"));
+		formPanel.add(new JLabel(CAPACITY));
 		formPanel.add(capacityField);
 
-		formPanel.add(new JLabel("Description"));
+		formPanel.add(new JLabel(DESCRIPTION));
 		formPanel.add(descriptionField);
 
-		formPanel.add(new JLabel("Rental Price"));
+		formPanel.add(new JLabel(RENTAL_PRICE));
 		formPanel.add(rentalPriceField);
 
-		formPanel.add(new JLabel("Company ID"));
+		formPanel.add(new JLabel(COMPANY_ID));
 		formPanel.add(companyIdField);
 
-		formPanel.add(new JLabel("Registered Date (YYYY-MM-DD)"));
+		formPanel.add(new JLabel(REGISTERED_DATE + "(YYYY-MM-DD)"));
 		formPanel.add(registeredDateField);
 
-		formPanel.add(new JLabel("Image Upload"));
+		formPanel.add(new JLabel(IMAGE));
 		JPanel imageControlPanel = new JPanel(new BorderLayout(5, 5));
 		imageControlPanel.add(uploadImageButton, BorderLayout.WEST);
 		imageControlPanel.add(imageFileNameLabel, BorderLayout.CENTER);
@@ -108,10 +117,10 @@ public class CampingCarInsertPanel extends JPanel {
 			try {
 				String name = nameField.getText().trim();
 				String plate = plateField.getText().trim();
-				Integer capacity = safeParseInt(capacityField.getText().trim(), "capacity");
+				Integer capacity = safeParseInt(capacityField.getText().trim(), CAPACITY);
 				String description = descriptionField.getText().trim();
-				Integer rentalPrice = safeParseInt(rentalPriceField.getText().trim(), "rental_price");
-				Integer companyId = safeParseInt(companyIdField.getText().trim(), "company_id");
+				Integer rentalPrice = safeParseInt(rentalPriceField.getText().trim(), RENTAL_PRICE);
+				Integer companyId = safeParseInt(companyIdField.getText().trim(), COMPANY_ID);
 				String regDate = registeredDateField.getText().trim();
 
 				CampingCar car = ac.dataInsertService().createCampingCar(name, plate, capacity, imageData, description,
@@ -149,7 +158,7 @@ public class CampingCarInsertPanel extends JPanel {
 		try {
 			return input == null || input.isBlank() ? null : Integer.parseInt(input);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+			throw new IllegalArgumentException(fieldName + "의 입력값은 숫자여야 합니다.");
 		}
 	}
 }

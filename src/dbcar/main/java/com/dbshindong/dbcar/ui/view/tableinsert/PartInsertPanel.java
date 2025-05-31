@@ -23,25 +23,32 @@ public class PartInsertPanel extends JPanel {
 	private final JButton cancelButton = new JButton("취소");
 	private final JButton clearButton = new JButton("초기화");
 
+	private final static String PART_ID = "부품 등록 ID";
+	private final static String NAME = "부품";
+	private final static String UNIT_PRICE = "단가";
+	private final static String STOCK_QUANTITY = "재고 수량";
+	private final static String STOCK_DATE = "입고 날짜";
+	private final static String SUPPLIER_NAME = "공급업체명";
+
 	public PartInsertPanel() {
 		setLayout(new BorderLayout(10, 10));
 
 		JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
 		formPanel.setBorder(BorderFactory.createTitledBorder("🔩 부품 정보 입력"));
 
-		formPanel.add(new JLabel("부품 이름"));
+		formPanel.add(new JLabel(NAME));
 		formPanel.add(nameField);
 
-		formPanel.add(new JLabel("단가"));
+		formPanel.add(new JLabel(UNIT_PRICE));
 		formPanel.add(unitPriceField);
 
-		formPanel.add(new JLabel("재고 수량"));
+		formPanel.add(new JLabel(STOCK_QUANTITY));
 		formPanel.add(stockQuantityField);
 
-		formPanel.add(new JLabel("입고 일자 (yyyy-mm-dd)"));
+		formPanel.add(new JLabel(STOCK_DATE + "(yyyy-mm-dd)"));
 		formPanel.add(stockDateField);
 
-		formPanel.add(new JLabel("공급 업체명"));
+		formPanel.add(new JLabel(SUPPLIER_NAME));
 		formPanel.add(supplierNameField);
 
 		JPanel buttonPanel = new JPanel();
@@ -55,8 +62,8 @@ public class PartInsertPanel extends JPanel {
 		saveButton.addActionListener(e -> {
 			try {
 				String name = nameField.getText().trim();
-				Integer unitPrice = safeParseInt(unitPriceField.getText().trim(), "unit_price");
-				Integer stockQuantity = safeParseInt(stockQuantityField.getText().trim(), "stock_quantity");
+				Integer unitPrice = safeParseInt(unitPriceField.getText().trim(), UNIT_PRICE);
+				Integer stockQuantity = safeParseInt(stockQuantityField.getText().trim(), STOCK_QUANTITY);
 				String stockDate = stockDateField.getText().trim();
 				String supplier = supplierNameField.getText().trim();
 
@@ -101,7 +108,7 @@ public class PartInsertPanel extends JPanel {
 		try {
 			return input == null || input.isBlank() ? null : Integer.parseInt(input);
 		} catch (NumberFormatException e) {
-			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+			throw new IllegalArgumentException(fieldName + "의 입력값은 숫자여야 합니다.");
 		}
 	}
 }

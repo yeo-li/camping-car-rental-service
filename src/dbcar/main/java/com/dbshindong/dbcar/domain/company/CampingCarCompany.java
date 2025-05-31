@@ -13,6 +13,13 @@ public class CampingCarCompany {
 	private final String manager_name;
 	private final String manager_email;
 
+	private static final String COMPANY_ID = "회사 고유 ID";
+	private static final String NAME = "회사 이름";
+	private static final String ADDRESS = "주소";
+	private static final String PHONE = "전화번호";
+	private static final String MANAGER_NAME = "담당자 이름";
+	private static final String MANAGER_EMAIL = "담당자 이메일";
+
 	private static final String NULL_MESSAGE = "%s은(는) null이 들어갈 수 없습니다.";
 
 	public CampingCarCompany(int company_id, String name, String address, String phone, String manager_name,
@@ -39,18 +46,18 @@ public class CampingCarCompany {
 	private void validate(int company_id, String name, String address, String phone, String manager_name,
 			String manager_email) {
 		try {
-			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
-			Validator.requireNonBlank(address, String.format(NULL_MESSAGE, "address"));
-			Validator.requireNonBlank(phone, String.format(NULL_MESSAGE, "phone"));
-			Validator.requireNonBlank(manager_name, String.format(NULL_MESSAGE, "manager_name"));
-			Validator.requireNonBlank(manager_email, String.format(NULL_MESSAGE, "manager_email"));
+			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, COMPANY_ID));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, NAME));
+			Validator.requireNonBlank(address, String.format(NULL_MESSAGE, ADDRESS));
+			Validator.requireNonBlank(phone, String.format(NULL_MESSAGE, PHONE));
+			Validator.requireNonBlank(manager_name, String.format(NULL_MESSAGE, MANAGER_NAME));
+			Validator.requireNonBlank(manager_email, String.format(NULL_MESSAGE, MANAGER_EMAIL));
 		} catch (NullPointerException e) {
 			throw new InvalidCampingCarCompanyException(e.getMessage(), e);
 		}
 
 		if (!Validator.isValidEmail(manager_email)) {
-			throw new InvalidCampingCarCompanyException("이메일 형식이 올바르지 않습니다.");
+			throw new InvalidCampingCarCompanyException(MANAGER_EMAIL + "의 입력값이 올바르지 않습니다.");
 		}
 
 	}
