@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.Validator;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidCampingCarException;
 
 import java.sql.*;
@@ -17,7 +18,17 @@ public class CampingCar {
 	private final Integer company_id;
 	private final Date registered_date;
 
-	private static final String NULL_MESSAGE = "%s은() null이 들어갈 수 없습니다.";
+	private static final String CAR_ID = "캠핑카 고유 ID";
+	private static final String NAME = "캠핑카 이름";
+	private static final String PLATE_NUMBER = "캠핑카 차량 번호";
+	private static final String CAPACITY = "캠핑카 승차 인원수";
+	private static final String DESCRIPTION = "캠핑카상세정보";
+	private static final String IMAGE = "캠핑카 이미지";
+	private static final String RENTAL_PRICE = "캠핑카 대여 비용";
+	private static final String COMPANY_ID = "캠핑카 대여 회사 ID";
+	private static final String REGISTERED_DATE = "캠핑카 등록 일자";
+
+	private static final String NULL_MESSAGE = "%s은(는) null이 들어갈 수 없습니다.";
 
 	public CampingCar(Integer car_id, String name, String plate_number, Integer capacity, byte[] image,
 			String description, int rental_price, Integer company_id, String registered_date) {
@@ -54,37 +65,35 @@ public class CampingCar {
 
 		// null 유효성 검증
 		try {
-			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-			Objects.requireNonNull(plate_number, String.format(NULL_MESSAGE, "plate_number"));
-			Objects.requireNonNull(capacity, String.format(NULL_MESSAGE, "capacity"));
-			Objects.requireNonNull(image, String.format(NULL_MESSAGE, "image"));
-			Objects.requireNonNull(description, String.format(NULL_MESSAGE, "description"));
-			Objects.requireNonNull(rental_price, String.format(NULL_MESSAGE, "rental_price"));
-			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Objects.requireNonNull(registered_date, String.format(NULL_MESSAGE, "registered_date"));
+			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, CAR_ID));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, NAME));
+			Validator.requireNonBlank(plate_number, String.format(NULL_MESSAGE, PLATE_NUMBER));
+			Objects.requireNonNull(capacity, String.format(NULL_MESSAGE, CAPACITY));
+			Objects.requireNonNull(image, String.format(NULL_MESSAGE, IMAGE));
+			Validator.requireNonBlank(description, String.format(NULL_MESSAGE, DESCRIPTION));
+			Objects.requireNonNull(rental_price, String.format(NULL_MESSAGE, RENTAL_PRICE));
+			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, COMPANY_ID));
+			Validator.requireNonBlank(registered_date, String.format(NULL_MESSAGE, REGISTERED_DATE));
 		} catch (Exception e) {
 			throw new InvalidCampingCarException(e.getMessage(), e);
 		}
 
 		// 수용인원 음수 유효성 검증
 		if (capacity < 0) {
-			throw new InvalidCampingCarException("수용인원의 입력값이 올바르지 않습니다.");
+			throw new InvalidCampingCarException(CAPACITY + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (rental_price < 0) {
-			throw new InvalidCampingCarException("랜탈 비용의 입력값이 올바르지 않습니다.");
+			throw new InvalidCampingCarException(RENTAL_PRICE + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (company_id < 0) {
-			throw new InvalidCampingCarException("수용인원의 입력값이 올바르지 않습니다.");
+			throw new InvalidCampingCarException(COMPANY_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		// Date type 유효성 검증
-		try {
-			java.sql.Date.valueOf(registered_date);
-		} catch (IllegalArgumentException e) {
-			throw new InvalidCampingCarException("registered_date의 형식이 올바르지 않습니다.");
+		if (!Validator.isValidDate(registered_date)) {
+			throw new InvalidCampingCarException(REGISTERED_DATE + "의 입력값이 올바르지 않습니다.");
 		}
 
 	}
