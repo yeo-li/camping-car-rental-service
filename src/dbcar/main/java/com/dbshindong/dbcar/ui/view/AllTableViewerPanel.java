@@ -91,7 +91,6 @@ public class AllTableViewerPanel extends JPanel {
 			}
 		}
 
-		// ✅ 수정 불가능한 모델 적용
 		DefaultTableModel model = new DefaultTableModel(rowData, columnNames) {
 			@Override
 			public boolean isCellEditable(int row, int column) {
