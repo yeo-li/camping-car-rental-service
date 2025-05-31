@@ -1,10 +1,15 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.lang.reflect.Field;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
@@ -19,11 +24,9 @@ public class AllTableViewerPanel extends JPanel {
 	public AllTableViewerPanel() {
 		setLayout(new BorderLayout(10, 10));
 
-		// 메시지 라벨
 		messageLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		messageLabel.setFont(new Font("SansSerif", Font.BOLD, 14));
 
-		// 버튼 패널 설정
 		buttonPanel.setLayout(new GridLayout(0, 1, 5, 5));
 
 		buttonPanel
@@ -54,7 +57,7 @@ public class AllTableViewerPanel extends JPanel {
 		button.addActionListener(e -> {
 			try {
 				List<T> list = fetchFunction.get();
-				renderObjectTable(list);
+				renderObjectTable(list, tableName);
 			} catch (Exception ex) {
 				GlobalExceptionHandler.handle(ex);
 			}
@@ -62,7 +65,7 @@ public class AllTableViewerPanel extends JPanel {
 		return button;
 	}
 
-	private <T> void renderObjectTable(List<T> dataList) {
+	private <T> void renderObjectTable(List<T> dataList, String tableName) {
 		if (dataList.isEmpty()) {
 			messageLabel.setText("\uD83D\uDCC4 결과 없음");
 			resultTable.setModel(new DefaultTableModel());
@@ -74,18 +77,27 @@ public class AllTableViewerPanel extends JPanel {
 		for (Field f : fields)
 			f.setAccessible(true);
 
-		String[] columnNames = new String[fields.length - 1];
-		for (int i = 0; i < fields.length - 1; i++) {
+		String[] columnNames = new String[fields.length];
+		for (int i = 0; i < fields.length; i++) {
 			columnNames[i] = fields[i].getName();
 		}
 
-		Object[][] rowData = new Object[dataList.size()][fields.length - 1];
+		Object[][] rowData = new Object[dataList.size()][fields.length];
 		for (int i = 0; i < dataList.size(); i++) {
 			T obj = dataList.get(i);
-			for (int j = 0; j < fields.length - 1; j++) {
+			for (int j = 0; j < fields.length; j++) {
 				try {
-					rowData[i][j] = fields[j].get(obj);
-				} catch (IllegalAccessException e) {
+					Object value = fields[j].get(obj);
+					if (value instanceof byte[] && "CampingCar".equals(tableName)) {
+						// 이미지를 아이콘으로 변환
+						byte[] imageBytes = (byte[]) value;
+						BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
+						Image scaled = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH);
+						rowData[i][j] = new ImageIcon(scaled);
+					} else {
+						rowData[i][j] = value;
+					}
+				} catch (Exception e) {
 					rowData[i][j] = "ERROR";
 				}
 			}
@@ -96,8 +108,20 @@ public class AllTableViewerPanel extends JPanel {
 			public boolean isCellEditable(int row, int column) {
 				return false;
 			}
+
+			@Override
+			public Class<?> getColumnClass(int columnIndex) {
+				for (int row = 0; row < getRowCount(); row++) {
+					Object value = getValueAt(row, columnIndex);
+					if (value != null)
+						return value.getClass();
+				}
+				return Object.class;
+			}
 		};
+
 		resultTable.setModel(model);
+		resultTable.setRowHeight(80);
 		messageLabel.setText("✅ " + dataList.size() + "건 조회됨");
 	}
 
