@@ -3,10 +3,12 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
 import java.io.ByteArrayInputStream;
+import java.time.LocalDate;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ public class UserReservationQueryPanel extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private AppConfig ac = AppConfig.getInstance();
 	private UserReservationQueryController userReservationQueryController;
+	private boolean eventFlag = true; 
 	
 	public UserReservationQueryPanel() {
 		createUI();
@@ -47,9 +50,10 @@ public class UserReservationQueryPanel extends JPanel {
 		List<Rental> rentList;
 		JTable table;
 
-		JButton logoutButton = new JButton("Logout");
-		logoutButton.setBounds(800 - 155 - 80, 0, 80, 25);
-		add(logoutButton);
+		JButton DeleteButton = new JButton("일괄 삭제");
+		DeleteButton.setBounds(25, 50, 120, 30);
+		add(DeleteButton);
+		
 
 		JLabel tableTitle = new JLabel("예약 목록");
 		tableTitle.setBounds(presetx, 25, 100, 40);
@@ -137,15 +141,62 @@ public class UserReservationQueryPanel extends JPanel {
 
 			            } else if ("수정".equals(columnName)) {
 			                // 수정 버튼처럼 동작
-			                JOptionPane.showMessageDialog(null, "수정하기: " + rentList.get(row).getCar_id());
-			                
 			                ac.appCoordinator().showUserReservationModifyView(rentList.get(row), ac.userReservationQueryController().findCarById(rentList.get(row).getCar_id()).getName());
 			            } else if("삭제".equals(columnName)) {
-			            	// 일괄 삭제
+			            	//삭제 버튼처럼 동작
 			            }
 			        }
 				}
 			});
+			
+			table.getModel().addTableModelListener(e -> {
+				if(this.eventFlag == false) return;
+				
+	            if (e.getColumn() == 0) {
+	            	this.eventFlag = false;
+	            	if(LocalDate.now().isAfter(rentList.get(e.getFirstRow()).getStart_date().toLocalDate())) {
+	            		boolean current = (Boolean) table.getValueAt(e.getFirstRow(), 0);
+	            		table.setValueAt(!current, e.getFirstRow(), 0);
+	            		JOptionPane.showMessageDialog(null, "이미 대여가 진행된 예약은 삭제할 수 없습니다!");
+	            	}
+	                this.eventFlag = true;
+	            }
+	        });
+			
+			DeleteButton.addActionListener(e -> {
+	        	try {
+	        		int result = JOptionPane.showConfirmDialog(
+							null, "삭제를 확정하시겠습니까?","삭제 확인",JOptionPane.YES_NO_OPTION
+							);
+							
+					if(result == JOptionPane.YES_OPTION) {
+						List<Rental> selected = new ArrayList<>();
+						for (int i = 0; i < table.getRowCount(); i++) {
+						    Boolean isChecked = (Boolean) table.getValueAt(i, 0);
+						    if (Boolean.TRUE.equals(isChecked)) {
+						        
+						        selected.add(rentList.get(i)); 
+						    }
+						}
+						int res = ac.userReservationQueryController().onSelectDelete(selected);
+						if(res == 0) {
+							ac.appCoordinator().showUserReservationQueryView();
+							JOptionPane.showMessageDialog(null, "모든 예약의 삭제에 성공했습니다.");
+						}
+						else if(res == -1) {
+							JOptionPane.showMessageDialog(null, "선택된 예약이 없습니다.");
+						}
+						else {
+							JOptionPane.showMessageDialog(null, "이미 대여가 진행된" + res +"개의 예약을 제외하고 나머지 일정을 삭제하는데 성공했습니다.");
+						}
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
+					}
+	        	} catch(Exception ex) {
+	        		GlobalExceptionHandler.handle(ex);
+	        	}
+	        });
 		}catch(Exception ex) {
 			GlobalExceptionHandler.handle(ex);
 		}

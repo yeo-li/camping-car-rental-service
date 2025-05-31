@@ -1,5 +1,6 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
@@ -36,17 +37,29 @@ public class UserReservationQueryController {
 	public CampingCarCompany findCompanyById(int id) {
 		return ac.userReservationQueryService().findCompanyById(id);
 	}
-	public void onSelectDelete(List<Rental> targets) {
+	
+	public void onSelectedModify(Rental target) {
 		try {
-			ac.userReservationQueryService().deleteRental(targets);
+			ac.appCoordinator().showUserReservationModifyView(target, findCarById(target.getCar_id()).getName());
 		} catch(Exception e) {
 			throw e;
 		}
 	}
 	
-	public void onSelectedModify(Rental target) {
+	public int onSelectDelete(List<Rental> target) {
 		try {
-			ac.appCoordinator().showUserReservationModifyView(target, findCarById(target.getCar_id()).getName());
+			LocalDate now = LocalDate.now();
+			if(target.size() == 0) return -1;
+			int cnt = 0;
+			for(Rental rent : target) {
+				if(rent.getStart_date().toLocalDate().isBefore(now)) {
+					cnt += 1;
+				}
+				else {
+					this.userReservationQueryService.deleteRental(rent);
+				}
+			}
+			return cnt;
 		} catch(Exception e) {
 			throw e;
 		}

@@ -49,11 +49,11 @@ public class UserReservationQueryService {
 		}
 	}
 	
-	public void deleteRental(List<Rental> targets) {
+	public void deleteRental(Rental rent) {
 		try {
-			for(int i = 0; i < targets.size(); i++) {
-				ac.rentalRepository().delete(targets.get(i).getRental_id());
-			}
+			
+			ac.rentalRepository().delete(rent.getRental_id());
+			
 		} catch(Exception e) {
 			throw e;
 		}
