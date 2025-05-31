@@ -49,13 +49,13 @@ public class Customer {
 			String address, String phone, String email) {
 		try {
 			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
-			Objects.requireNonNull(username, String.format(NULL_MESSAGE, "username"));
-			Objects.requireNonNull(password, String.format(NULL_MESSAGE, "password"));
-			Objects.requireNonNull(license_number, String.format(NULL_MESSAGE, "license_number"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-			Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
-			Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
-			Objects.requireNonNull(email, String.format(NULL_MESSAGE, "email"));
+			Validator.requireNonBlank(username, String.format(NULL_MESSAGE, "username"));
+			Validator.requireNonBlank(password, String.format(NULL_MESSAGE, "password"));
+			Validator.requireNonBlank(license_number, String.format(NULL_MESSAGE, "license_number"));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
+			Validator.requireNonBlank(address, String.format(NULL_MESSAGE, "address"));
+			Validator.requireNonBlank(phone, String.format(NULL_MESSAGE, "phone"));
+			Validator.requireNonBlank(email, String.format(NULL_MESSAGE, "email"));
 		} catch (NullPointerException e) {
 			throw new InvalidCustomerException(e.getMessage(), e);
 		}

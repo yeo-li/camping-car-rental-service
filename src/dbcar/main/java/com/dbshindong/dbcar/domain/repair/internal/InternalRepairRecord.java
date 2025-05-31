@@ -43,7 +43,7 @@ public class InternalRepairRecord {
 		try {
 			Objects.requireNonNull(internal_repair_id, String.format(NULL_MESSAGE, "internal_repair_id"));
 			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
-			Objects.requireNonNull(repair_date, String.format(NULL_MESSAGE, "repair_date"));
+			Validator.requireNonBlank(repair_date, String.format(NULL_MESSAGE, "repair_date"));
 			Objects.requireNonNull(duration_minutes, String.format(NULL_MESSAGE, "duration_minutes"));
 			Objects.requireNonNull(employee_id, String.format(NULL_MESSAGE, "employee_id"));
 		} catch (NullPointerException e) {

@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.Validator;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidEmployeeException;
 
 public class Employee {
@@ -46,13 +47,13 @@ public class Employee {
 			Integer dependents, String department, String role) {
 		try {
 			Objects.requireNonNull(employee_id, String.format(NULL_MESSAGE, "employee_id"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-			Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
-			Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
+			Validator.requireNonBlank(phone, String.format(NULL_MESSAGE, "phone"));
+			Validator.requireNonBlank(address, String.format(NULL_MESSAGE, "address"));
 			Objects.requireNonNull(salary, String.format(NULL_MESSAGE, "salary"));
 			Objects.requireNonNull(dependents, String.format(NULL_MESSAGE, "dependents"));
-			Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
-			Objects.requireNonNull(department, String.format(NULL_MESSAGE, "department"));
+			Validator.requireNonBlank(department, String.format(NULL_MESSAGE, "department"));
+			Validator.requireNonBlank(role, String.format(NULL_MESSAGE, "role"));
 		} catch (NullPointerException e) {
 			throw new InvalidEmployeeException(e.getMessage(), e);
 		}

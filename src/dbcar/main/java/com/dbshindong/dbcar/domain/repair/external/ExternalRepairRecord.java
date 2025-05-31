@@ -61,10 +61,10 @@ public class ExternalRepairRecord {
 			Objects.requireNonNull(shop_id, String.format(NULL_MESSAGE, "shop_id"));
 			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
 			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
-			Objects.requireNonNull(content, String.format(NULL_MESSAGE, "content"));
-			Objects.requireNonNull(repair_date, String.format(NULL_MESSAGE, "repair_date"));
+			Validator.requireNonBlank(content, String.format(NULL_MESSAGE, "content"));
+			Validator.requireNonBlank(repair_date, String.format(NULL_MESSAGE, "repair_date"));
 			Objects.requireNonNull(cost, String.format(NULL_MESSAGE, "cost"));
-			Objects.requireNonNull(due_date, String.format(NULL_MESSAGE, "due_date"));
+			Validator.requireNonBlank(due_date, String.format(NULL_MESSAGE, "due_date"));
 		} catch (NullPointerException e) {
 			throw new InvalidExternalRepairRecordException(e.getMessage(), e);
 		}

@@ -40,11 +40,11 @@ public class ExternalRepairShop {
 			String manager_email) {
 		try {
 			Objects.requireNonNull(shop_id, String.format(NULL_MESSAGE, "shop_id"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-			Objects.requireNonNull(address, String.format(NULL_MESSAGE, "address"));
-			Objects.requireNonNull(phone, String.format(NULL_MESSAGE, "phone"));
-			Objects.requireNonNull(manager_name, String.format(NULL_MESSAGE, "manager_name"));
-			Objects.requireNonNull(manager_email, String.format(NULL_MESSAGE, "manager_email"));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
+			Validator.requireNonBlank(address, String.format(NULL_MESSAGE, "address"));
+			Validator.requireNonBlank(phone, String.format(NULL_MESSAGE, "phone"));
+			Validator.requireNonBlank(manager_name, String.format(NULL_MESSAGE, "manager_name"));
+			Validator.requireNonBlank(manager_email, String.format(NULL_MESSAGE, "manager_email"));
 		} catch (NullPointerException e) {
 			throw new InvalidExternalRepairShopException(e.getMessage(), e);
 		}

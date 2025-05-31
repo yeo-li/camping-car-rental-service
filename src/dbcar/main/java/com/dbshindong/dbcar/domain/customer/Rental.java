@@ -62,10 +62,10 @@ public class Rental {
 			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
 			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
 			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Objects.requireNonNull(start_date, String.format(NULL_MESSAGE, "start_date"));
+			Validator.requireNonBlank(start_date, String.format(NULL_MESSAGE, "start_date"));
 			Objects.requireNonNull(rental_period, String.format(NULL_MESSAGE, "rental_period"));
 			Objects.requireNonNull(total_charge, String.format(NULL_MESSAGE, "total_charge"));
-			Objects.requireNonNull(due_date, String.format(NULL_MESSAGE, "due_date"));
+			Validator.requireNonBlank(due_date, String.format(NULL_MESSAGE, "due_date"));
 		} catch (NullPointerException e) {
 			throw new InvalidRentalException(e.getMessage(), e);
 		}
@@ -77,7 +77,7 @@ public class Rental {
 		if (!Validator.isValidDate(due_date)) {
 			throw new InvalidRentalException("납인기한의 입력값이 올바르지 않습니다.");
 		}
-		
+
 		if (rental_id <= 0) {
 			throw new InvalidRentalException("캠핑카 아이디의 입력값이 올바르지 않습니다.");
 		}

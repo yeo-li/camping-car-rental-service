@@ -41,11 +41,11 @@ public class Part {
 			String supplier_name) {
 		try {
 			Objects.requireNonNull(part_id, String.format(NULL_MESSAGE, "part_id"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
 			Objects.requireNonNull(unit_price, String.format(NULL_MESSAGE, "unit_price"));
 			Objects.requireNonNull(stock_quantity, String.format(NULL_MESSAGE, "stock_quantity"));
-			Objects.requireNonNull(stock_date, String.format(NULL_MESSAGE, "stock_date"));
-			Objects.requireNonNull(supplier_name, String.format(NULL_MESSAGE, "supplier_name"));
+			Validator.requireNonBlank(stock_date, String.format(NULL_MESSAGE, "stock_date"));
+			Validator.requireNonBlank(supplier_name, String.format(NULL_MESSAGE, "supplier_name"));
 		} catch (NullPointerException e) {
 			throw new InvalidPartException(e.getMessage(), e);
 		}
