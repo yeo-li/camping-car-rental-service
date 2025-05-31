@@ -58,4 +58,12 @@ public class UserReservationModifyService {
 			throw e;
 		}
 	}
+	public void changeReservation(int id, Rental rent) {
+		try {
+			this.rentalRepository.update(id, rent);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+
 }

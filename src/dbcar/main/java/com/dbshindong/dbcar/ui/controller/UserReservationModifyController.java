@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.controller;
 
 import java.time.LocalDate;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -89,6 +91,51 @@ public class UserReservationModifyController {
 	public CampingCar findCarById(int id) {
 		try {
 			return this.userReservationModifyService.findCarById(id);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+	
+	public boolean changeReservationCar(List<Integer>selected, Rental rent) {
+		if(selected.size() == 0) return false;
+		try {
+			CampingCar newCar = this.userReservationModifyService.findCarById(selected.getFirst());
+			
+			Rental newRent = new Rental(selected.getFirst(), 
+					(Integer) rent.getCustomer_id(),
+					(Integer) rent.getCompany_id(),
+					rent.getStart_date().toString(),
+					(Integer) rent.getRental_period(),
+					(Integer) newCar.getRental_price() * rent.getRental_period() + rent.getExtra_charge(),
+					rent.getDue_date().toString(),
+					rent.getExtra_charge_detail(),
+					(Integer) rent.getExtra_charge());
+			this.userReservationModifyService.changeReservation(rent.getRental_id(), newRent);
+			return true;
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+	
+	public boolean changeReservationDate(LocalDate start, LocalDate end, Rental rent) {
+		if(start == null || end == null || start.isAfter(end)) return false;
+		try {
+			int days = (int) ChronoUnit.DAYS.between(start, end) + 1;
+			CampingCar car = this.userReservationModifyService.findCarById(rent.getCar_id());
+			
+			
+			Rental newRent = new Rental(
+					(Integer) rent.getCar_id(), 
+					(Integer) rent.getCustomer_id(),
+					(Integer) rent.getCompany_id(),
+					start.toString(),
+					(Integer) days,
+					(Integer) car.getRental_price() * days + rent.getExtra_charge(),
+					start.plusDays(days - 1).toString(),
+					rent.getExtra_charge_detail(),
+					(Integer) rent.getExtra_charge());
+			this.userReservationModifyService.changeReservation(rent.getRental_id(), newRent);
+			return true;
 		} catch(Exception e) {
 			throw e;
 		}

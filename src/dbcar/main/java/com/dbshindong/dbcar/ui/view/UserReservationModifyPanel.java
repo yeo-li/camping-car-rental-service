@@ -5,6 +5,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 import java.awt.*;
 import java.awt.event.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.*;
@@ -24,7 +25,7 @@ public class UserReservationModifyPanel extends JPanel {
     private JTable currentTable;
     private boolean eventflag = true;
     private Rental rent;
-
+    private List<Integer> carList;
     private JPanel actionPanel; // 상단 버튼/콤보박스 영역
     private JButton carChangeButton, dateChangeButton;
     
@@ -90,6 +91,41 @@ public class UserReservationModifyPanel extends JPanel {
         if (mode.equals("car")) {
             carChangeButton = new JButton("차량 변경");
             carChangeButton.setBounds(0, 0, 120, 30);
+            carChangeButton.addActionListener(e -> {
+            	try {
+            		int result = JOptionPane.showConfirmDialog(
+    						null, "정말로 선택된 차량으로 변경하시겠습니까?","확인",JOptionPane.YES_NO_OPTION
+    						);
+    						
+    				if(result == JOptionPane.YES_OPTION) {
+    					List<Integer> selected = new ArrayList<>();
+    					for (int i = 0; i < currentTable.getRowCount(); i++) {
+    					    Boolean isChecked = (Boolean) currentTable.getValueAt(i, 0);
+    					    if (Boolean.TRUE.equals(isChecked)) {
+    					        int car_id = (int) carList.get(i);
+    					        selected.add(car_id);
+    					    }
+    					}
+    					if(selected.size() > 1) {
+    						JOptionPane.showMessageDialog(null, "캠핑카가 여러 개 선택되었습니다.");
+    						return;
+    					}
+    					Boolean res = ac.userReservationModifyController().changeReservationCar(selected, rent);
+    					if(res) {
+    						ac.appCoordinator().showUserReservationQueryView();
+    						JOptionPane.showMessageDialog(null, "수정에 성공했습니다.");
+    					}
+    					else {
+    						JOptionPane.showMessageDialog(null, "선택된 차량이 없습니다.");
+    					}
+    				}
+    				else {
+    					JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
+    				}
+            	} catch(Exception ex) {
+            		GlobalExceptionHandler.handle(ex);
+            	}
+            });
             actionPanel.add(carChangeButton);
         } else if (mode.equals("date")) {
         	startComboBox = new JComboBox<>();
@@ -104,6 +140,36 @@ public class UserReservationModifyPanel extends JPanel {
             actionPanel.add(startComboBox);
             actionPanel.add(endComboBox);
             actionPanel.add(dateChangeButton);
+            dateChangeButton.addActionListener(e -> {
+            	try {
+	            	LocalDate start = (LocalDate) startComboBox.getSelectedItem();
+	            	LocalDate end = (LocalDate) endComboBox.getSelectedItem();
+	            	
+	            	int result = JOptionPane.showConfirmDialog(
+							null, "정말로 선택된 일정으로 변경하시겠습니까?","확인",JOptionPane.YES_NO_OPTION
+							);
+	            	if(result == JOptionPane.YES_OPTION) {
+    					
+    					Boolean res = ac.userReservationModifyController().changeReservationDate(start,end, rent);
+    					if(res) {
+    						ac.appCoordinator().showUserReservationQueryView();
+    						JOptionPane.showMessageDialog(null, "수정에 성공했습니다.");
+    					}
+    					else {
+    						JOptionPane.showMessageDialog(null, "선택된 일정이 잘못되었습니다. 다시 선택해 주세요.");
+    					}
+    				}
+    				else {
+    					JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
+    				}
+            	} catch(Exception ex) {
+            		GlobalExceptionHandler.handle(ex);
+            	}
+	            	
+            	
+            });
+            
+            
         }
         actionPanel.revalidate();
         actionPanel.repaint();
@@ -150,7 +216,7 @@ public class UserReservationModifyPanel extends JPanel {
     
     private void showCarTable() {
         try {
-            List<Integer> carList = ac.userReservationModifyController().findAvailableCarId(this.rent);
+            this.carList = ac.userReservationModifyController().findAvailableCarId(this.rent);
             String[] columnNames = {"선택", "모델명", "차량번호", "탑승인원", "사진", "가격", "상세정보"};
             Object[][] data = new Object[carList.size()][7];
 
