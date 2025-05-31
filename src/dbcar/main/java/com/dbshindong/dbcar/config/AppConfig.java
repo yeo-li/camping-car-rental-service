@@ -9,6 +9,7 @@ import dbcar.main.java.com.dbshindong.dbcar.application.DataUpdateService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.application.LoginService;
 import dbcar.main.java.com.dbshindong.dbcar.application.RepairRecordFetchService;
+import dbcar.main.java.com.dbshindong.dbcar.application.UserRequestRepairService;
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationModifyService;
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.application.factory.LoginServiceFactory;
@@ -27,6 +28,7 @@ import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDat
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserRequestRepairController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationModifyController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
@@ -62,6 +64,7 @@ public class AppConfig {
 	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
 	private UserReservationQueryService userReservationQueryService;
 	private UserReservationModifyService userReservationModifyService;
+	private UserRequestRepairService userRequestRepairService;
 	
 	private LoginController loginController;
   
@@ -70,6 +73,7 @@ public class AppConfig {
 	private SqlQueryController sqlQueryController;
 	private UserReservationQueryController userReservationQueryController;
 	private UserReservationModifyController userReservationModifyController;
+	private UserRequestRepairController userRequestRepairController;
 
 	private AppConfig() {
 
@@ -275,6 +279,12 @@ public class AppConfig {
 		}
 		return userReservationModifyService;
 	}
+	public UserRequestRepairService userRequestRepairService() {
+		if(userRequestRepairService == null) {
+			this.userRequestRepairService = new UserRequestRepairService(this.externalRepairRecordRepository(),this.externalRepairShopRepository(), this.customerRepository());
+		}
+		return userRequestRepairService;
+	}
 
 	// controller
 
@@ -317,5 +327,11 @@ public class AppConfig {
 			userReservationModifyController = new UserReservationModifyController(this.userReservationModifyService(), this.appCoordinator());
 		}
 		return userReservationModifyController;
+	}
+	public UserRequestRepairController userRequestRepairController() {
+		if(userRequestRepairController == null) {
+			userRequestRepairController = new UserRequestRepairController(this.userRequestRepairService(), this.appCoordinator());
+		}
+		return userRequestRepairController;
 	}
 }

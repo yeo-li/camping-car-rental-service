@@ -40,10 +40,10 @@ public class UserReservationQueryPanel extends JPanel {
 	
 	public void createUI() {
 		setLayout(null);
-		addLoginComponent(this);
+		addQueryComponent(this);
 	}
 
-	private void addLoginComponent(JPanel panel) {
+	private void addQueryComponent(JPanel panel) {
 
 		int presety = (600 - 100) / 2;
 		int presetx = (800 - 100) / 2;
@@ -61,21 +61,22 @@ public class UserReservationQueryPanel extends JPanel {
 		try {
 			rentList = ac.userReservationQueryController().hendleQuery(ac.appCoordinator.getUser());
 			
-			String[] columnNames = {"삭제", "수정", "상세", "모델명", "시작일", "기간", "가격","추가요금","추가요금내역", "납입기한"};
-			Object[][] data = new Object[rentList.size()][10];
+			String[] columnNames = {"삭제", "수정", "상세","정비", "모델명", "시작일", "기간", "가격","추가요금","추가요금내역", "납입기한"};
+			Object[][] data = new Object[rentList.size()][11];
 	
 			for (int i = 0; i < rentList.size(); i++) {
 				CampingCar car = ac.userReservationQueryController().findCarById(rentList.get(i).getCar_id());
 				data[i][0] = Boolean.FALSE;
 				data[i][1] = "[수정]";
 				data[i][2] = "[조회]";
-				data[i][3] = car.getName();
-				data[i][4] = rentList.get(i).getStart_date();
-				data[i][5] = rentList.get(i).getRental_period();
-				data[i][6] = rentList.get(i).getTotal_charge();
-				data[i][7] = rentList.get(i).getExtra_charge();
-				data[i][8] = rentList.get(i).getExtra_charge_detail();
-				data[i][9] = rentList.get(i).getDue_date();
+				data[i][3] = "[의뢰]";
+				data[i][4] = car.getName();
+				data[i][5] = rentList.get(i).getStart_date();
+				data[i][6] = rentList.get(i).getRental_period();
+				data[i][7] = rentList.get(i).getTotal_charge();
+				data[i][8] = rentList.get(i).getExtra_charge();
+				data[i][9] = rentList.get(i).getExtra_charge_detail();
+				data[i][10] = rentList.get(i).getDue_date();
 				
 			}
 	
@@ -97,6 +98,8 @@ public class UserReservationQueryPanel extends JPanel {
 			table.getColumn("삭제").setPreferredWidth(40);
 			table.getColumn("수정").setPreferredWidth(40);
 			table.getColumn("상세").setPreferredWidth(40);
+			table.getColumn("정비").setPreferredWidth(40);
+			
 			
 			JScrollPane scrollPane = new JScrollPane(table);
 			scrollPane.setBounds((800-750)/2, 100, 750, 450);
@@ -144,6 +147,8 @@ public class UserReservationQueryPanel extends JPanel {
 			                ac.appCoordinator().showUserReservationModifyView(rentList.get(row), ac.userReservationQueryController().findCarById(rentList.get(row).getCar_id()).getName());
 			            } else if("삭제".equals(columnName)) {
 			            	//삭제 버튼처럼 동작
+			            } else if("정비".equals(columnName)){
+			            	ac.appCoordinator().showUserRequestRepairView(rentList.get(row), ac.appCoordinator().getUser());
 			            }
 			        }
 				}
