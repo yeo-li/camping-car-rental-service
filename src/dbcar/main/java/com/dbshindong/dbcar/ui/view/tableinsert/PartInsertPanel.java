@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 
@@ -54,23 +55,19 @@ public class PartInsertPanel extends JPanel {
 		saveButton.addActionListener(e -> {
 			try {
 				String name = nameField.getText().trim();
-				int unitPrice = Integer.parseInt(unitPriceField.getText().trim());
-				int stockQuantity = Integer.parseInt(stockQuantityField.getText().trim());
-				String stockDate = Date.valueOf(stockDateField.getText().trim()).toString();
+				Integer unitPrice = safeParseInt(unitPriceField.getText().trim(), "unit_price");
+				Integer stockQuantity = safeParseInt(stockQuantityField.getText().trim(), "stock_quantity");
+				String stockDate = stockDateField.getText().trim();
 				String supplier = supplierNameField.getText().trim();
 
 				Part part = ac.dataInsertService().createPart(name, unitPrice, stockQuantity, stockDate, supplier);
-
-				if (part == null) {
-					throw new IllegalArgumentException("입력값이 올바르지 않습니다.");
-				}
 
 				ac.dataInsertService().insertPart(part);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
 
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "❗ 오류", JOptionPane.ERROR_MESSAGE);
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -98,5 +95,13 @@ public class PartInsertPanel extends JPanel {
 
 	public JButton getCancelButton() {
 		return cancelButton;
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+		}
 	}
 }

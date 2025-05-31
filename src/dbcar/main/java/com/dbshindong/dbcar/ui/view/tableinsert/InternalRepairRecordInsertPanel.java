@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 
@@ -53,26 +54,23 @@ public class InternalRepairRecordInsertPanel extends JPanel {
 
 		saveButton.addActionListener(e -> {
 			try {
-				int carId = Integer.parseInt(carIdField.getText().trim());
+				Integer carId = safeParseInt(carIdField.getText().trim(), "car_id");
 				String partText = partIdField.getText().trim();
-				Integer partId = partText.isEmpty() ? null : Integer.parseInt(partText);
-				String repairDate = Date.valueOf(repairDateField.getText().trim()).toString();
-				int duration = Integer.parseInt(durationField.getText().trim());
-				int employeeId = Integer.parseInt(employeeIdField.getText().trim());
+				Integer partId = safeParseInt(partIdField.getText().trim(), "part_id");
+				String repairDate = repairDateField.getText().trim();
+				Integer duration = safeParseInt(durationField.getText().trim(), "duration");
+				Integer employeeId = safeParseInt(employeeIdField.getText().trim(), "employee_id");
 
 				InternalRepairRecord record = ac.dataInsertService().creatInternalRepairRecord(carId, partId,
 						repairDate, duration, employeeId);
-
-				if (record == null) {
-					throw new IllegalArgumentException("입력값을 확인해주세요.");
-				}
 
 				ac.dataInsertService().insertInternalRepairRecord(record);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
 
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "❗ 오류", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -98,5 +96,13 @@ public class InternalRepairRecordInsertPanel extends JPanel {
 
 	public JButton getCancelButton() {
 		return cancelButton;
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+		}
 	}
 }

@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 
@@ -68,17 +69,15 @@ public class CustomerInsertPanel extends JPanel {
 						passwordField.getText().trim(), licenseNumberField.getText().trim(), nameField.getText().trim(),
 						addressField.getText().trim(), phoneField.getText().trim(), emailField.getText().trim());
 
-				System.out.println(customer.toString());
-
 				// Customer 저장
 				ac.dataInsertService().insertCustomer(customer);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 
 				// 필드 지우기
 				clearFields();
-			} catch (IllegalArgumentException ex) {
+			} catch (Exception ex) {
 				// 예외 핸들링
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "\u2757 오류", JOptionPane.ERROR_MESSAGE);
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 

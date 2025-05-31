@@ -60,8 +60,8 @@ public class DataInsertService {
 		campingCarCompanyRepository.save(company);
 	}
 
-	public CampingCar createCampingCar(String name, String plate_number, int capacity, byte[] image, String description,
-			int rental_price, int company_id, String registered_date) {
+	public CampingCar createCampingCar(String name, String plate_number, Integer capacity, byte[] image,
+			String description, Integer rental_price, Integer company_id, String registered_date) {
 		CampingCar car = new CampingCar(name, plate_number, capacity, image, description, rental_price, company_id,
 				registered_date);
 		return car;
@@ -71,7 +71,7 @@ public class DataInsertService {
 		campingCarRepository.save(car);
 	}
 
-	public Employee createEmployee(String name, String phone, String address, int salary, int dependents,
+	public Employee createEmployee(String name, String phone, String address, Integer salary, Integer dependents,
 			String department, String role) {
 		Employee employee = new Employee(name, phone, address, salary, dependents, department, role);
 		return employee;
@@ -92,8 +92,9 @@ public class DataInsertService {
 		customerRepository.save(customer);
 	}
 
-	public Rental createRental(int car_id, int customer_id, int company_id, String start_date, int rental_period,
-			int total_charge, String due_date, String extra_charge_detail, Integer extra_charge) {
+	public Rental createRental(Integer car_id, Integer customer_id, Integer company_id, String start_date,
+			Integer rental_period, Integer total_charge, String due_date, String extra_charge_detail,
+			Integer extra_charge) {
 		Rental rental = new Rental(car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date,
 				extra_charge_detail, extra_charge);
 		return rental;
@@ -104,8 +105,8 @@ public class DataInsertService {
 		rentalRepository.save(rental);
 	}
 
-	public ExternalRepairRecord createExternalRepairRecord(int car_id, int shop_id, int company_id, int customer_id,
-			String content, String repair_date, int cost, String due_date, String note) {
+	public ExternalRepairRecord createExternalRepairRecord(Integer car_id, Integer shop_id, Integer company_id,
+			Integer customer_id, String content, String repair_date, Integer cost, String due_date, String note) {
 		ExternalRepairRecord record = new ExternalRepairRecord(car_id, shop_id, company_id, customer_id, content,
 				repair_date, cost, due_date, note);
 		return record;
@@ -128,8 +129,8 @@ public class DataInsertService {
 		externalRepairShopRepository.save(shop);
 	}
 
-	public InternalRepairRecord creatInternalRepairRecord(int car_id, Integer part_id, String repair_date,
-			int duration_minutes, int employee_id) {
+	public InternalRepairRecord creatInternalRepairRecord(Integer car_id, Integer part_id, String repair_date,
+			Integer duration_minutes, Integer employee_id) {
 		InternalRepairRecord record = new InternalRepairRecord(car_id, part_id, repair_date, duration_minutes,
 				employee_id);
 		return record;
@@ -140,7 +141,8 @@ public class DataInsertService {
 		internalRepairRecordRepository.save(record);
 	}
 
-	public Part createPart(String name, int unit_price, int stock_quantity, String stock_date, String supplier_name) {
+	public Part createPart(String name, Integer unit_price, Integer stock_quantity, String stock_date,
+			String supplier_name) {
 		Part part = new Part(name, unit_price, stock_quantity, stock_date, supplier_name);
 		return part;
 	}

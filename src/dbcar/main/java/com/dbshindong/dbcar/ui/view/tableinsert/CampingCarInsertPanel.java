@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
+
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 
@@ -106,27 +108,19 @@ public class CampingCarInsertPanel extends JPanel {
 			try {
 				String name = nameField.getText().trim();
 				String plate = plateField.getText().trim();
-				int capacity = Integer.parseInt(capacityField.getText().trim());
+				Integer capacity = safeParseInt(capacityField.getText().trim(), "capacity");
 				String description = descriptionField.getText().trim();
-				int rentalPrice = Integer.parseInt(rentalPriceField.getText().trim());
-				int companyId = Integer.parseInt(companyIdField.getText().trim());
-				String regDate = Date.valueOf(registeredDateField.getText().trim()).toString();
-
-				if (imageData == null) {
-					JOptionPane.showMessageDialog(this, "이미지를 업로드해주세요.", "\u2757 오류", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+				Integer rentalPrice = safeParseInt(rentalPriceField.getText().trim(), "rental_price");
+				Integer companyId = safeParseInt(companyIdField.getText().trim(), "company_id");
+				String regDate = registeredDateField.getText().trim();
 
 				CampingCar car = ac.dataInsertService().createCampingCar(name, plate, capacity, imageData, description,
 						rentalPrice, companyId, regDate);
 				ac.dataInsertService().insertCampingCar(car);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
-			} catch (IllegalArgumentException ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "\u2757 오류", JOptionPane.ERROR_MESSAGE);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, "입력 중 오류가 발생했습니다: " + ex.getMessage(), "\u2757 오류",
-						JOptionPane.ERROR_MESSAGE);
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -149,5 +143,13 @@ public class CampingCarInsertPanel extends JPanel {
 		imageData = null;
 		imageFileName = null;
 		imageFileNameLabel.setText("선택된 이미지 없음");
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+		}
 	}
 }

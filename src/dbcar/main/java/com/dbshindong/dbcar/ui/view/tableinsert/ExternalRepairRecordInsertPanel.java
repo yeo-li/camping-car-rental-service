@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.sql.Date;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairRecord;
 
@@ -69,20 +70,18 @@ public class ExternalRepairRecordInsertPanel extends JPanel {
 		saveButton.addActionListener(e -> {
 			try {
 				ExternalRepairRecord record = ac.dataInsertService().createExternalRepairRecord(
-						Integer.parseInt(carIdField.getText().trim()), Integer.parseInt(shopIdField.getText().trim()),
-						Integer.parseInt(companyIdField.getText().trim()),
-						Integer.parseInt(customerIdField.getText().trim()), contentField.getText().trim(),
-						Date.valueOf(repairDateField.getText().trim()).toString(),
-						Integer.parseInt(costField.getText().trim()),
-						Date.valueOf(dueDateField.getText().trim()).toString(), noteField.getText().trim());
+						safeParseInt(carIdField.getText().trim(), "car_id"),
+						safeParseInt(shopIdField.getText().trim(), "shop_id"),
+						safeParseInt(companyIdField.getText().trim(), "compnay_id"),
+						safeParseInt(customerIdField.getText().trim(), "customer_id"), contentField.getText().trim(),
+						repairDateField.getText().trim(), safeParseInt(costField.getText().trim(), "cost"),
+						dueDateField.getText().trim(), noteField.getText().trim());
 
 				ac.dataInsertService().insertExternalRepairRecord(record);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
-			} catch (IllegalArgumentException ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "❗ 오류", JOptionPane.ERROR_MESSAGE);
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, "입력 오류: " + ex.getMessage(), "❗ 오류", JOptionPane.ERROR_MESSAGE);
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -104,5 +103,13 @@ public class ExternalRepairRecordInsertPanel extends JPanel {
 		costField.setText("");
 		dueDateField.setText("");
 		noteField.setText("");
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+		}
 	}
 }

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.sql.Date;
 import java.sql.SQLException;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 
@@ -69,30 +70,25 @@ public class RentalInsertPanel extends JPanel {
 
 		saveButton.addActionListener(e -> {
 			try {
-				int carId = Integer.parseInt(carIdField.getText().trim());
-				int customerId = Integer.parseInt(customerIdField.getText().trim());
-				int companyId = Integer.parseInt(companyIdField.getText().trim());
-				String startDate = Date.valueOf(startDateField.getText().trim()).toString();
-				int rentalPeriod = Integer.parseInt(rentalPeriodField.getText().trim());
-				int totalCharge = Integer.parseInt(totalChargeField.getText().trim());
-				String dueDate = Date.valueOf(dueDateField.getText().trim()).toString();
+				Integer carId = safeParseInt(carIdField.getText().trim(), "car_id");
+				Integer customerId = safeParseInt(customerIdField.getText().trim(), "customer_id");
+				Integer companyId = safeParseInt(companyIdField.getText().trim(), "company_id");
+				String startDate = startDateField.getText().trim();
+				Integer rentalPeriod = safeParseInt(rentalPeriodField.getText().trim(), "rental_period");
+				Integer totalCharge = safeParseInt(totalChargeField.getText().trim(), "total_charge");
+				String dueDate = dueDateField.getText().trim();
 				String extraDetail = extraChargesField.getText().trim();
-				Integer extraAmount = extraChargeAmountField.getText().isEmpty() ? null
-						: Integer.parseInt(extraChargeAmountField.getText().trim());
+				Integer extraAmount = safeParseInt(extraChargeAmountField.getText().trim(), "extra_charge_amount");
 
 				Rental rental = ac.dataInsertService().createRental(carId, customerId, companyId, startDate,
 						rentalPeriod, totalCharge, dueDate, extraDetail, extraAmount);
-
-				if (rental == null) {
-					JOptionPane.showMessageDialog(this, "입력값 오류로 저장할 수 없습니다.", "⚠ 오류", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
 
 				ac.dataInsertService().insertRental(rental);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "⚠ 오류", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -122,5 +118,13 @@ public class RentalInsertPanel extends JPanel {
 
 	public JButton getCancelButton() {
 		return cancelButton;
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("['" + fieldName + "'] 필드에 숫자 형식이 올바르지 않습니다: '" + input + "'");
+		}
 	}
 }
