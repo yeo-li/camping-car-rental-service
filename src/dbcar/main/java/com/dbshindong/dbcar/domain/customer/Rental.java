@@ -89,7 +89,7 @@ public class Rental {
 			throw new InvalidRentalException(DUE_DATE + "의 입력값이 올바르지 않습니다.");
 		}
 
-		if (rental_id <= 0) {
+		if (rental_id != -1 && rental_id <= 0) {
 			throw new InvalidRentalException(RENTAL_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
@@ -113,7 +113,7 @@ public class Rental {
 			throw new InvalidRentalException(TOTAL_CHARGE + "의 입력값이 올바르지 않습니다.");
 		}
 
-		if (extra_charge != null && extra_charge <= 0) {
+		if (extra_charge != null && extra_charge < 0) {
 			throw new InvalidRentalException(EXTRA_CHARGE_AMOUNT + "의 입력값이 올바르지 않습니다.");
 		}
 

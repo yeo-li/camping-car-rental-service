@@ -1,12 +1,17 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view.admin;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +35,8 @@ public class SqlQueryPanel extends JPanel {
 
 		// 결과 테이블
 		resultTable = new JTable();
+		resultTable.setShowGrid(true);
+		resultTable.setGridColor(Color.GRAY);
 		JScrollPane tableScrollPane = new JScrollPane(resultTable);
 
 		// SQL 입력창
@@ -107,11 +114,24 @@ public class SqlQueryPanel extends JPanel {
 		for (int i = 0; i < result.size(); i++) {
 			Map<String, Object> row = result.get(i);
 			for (int j = 0; j < columns.length; j++) {
-				data[i][j] = row.get(columns[j]);
+				Object value = row.get(columns[j]);
+				if (value instanceof byte[] && columns[j].toLowerCase().contains("image")) {
+					try {
+						BufferedImage img = ImageIO.read(new ByteArrayInputStream((byte[]) value));
+						if (img != null) {
+							value = new ImageIcon(img.getScaledInstance(100, 60, Image.SCALE_SMOOTH));
+						} else {
+							value = "이미지 오류";
+						}
+					} catch (IOException e) {
+						value = "이미지 오류";
+					}
+				}
+				data[i][j] = value;
 			}
 		}
 
-		// 테이블 명 분리
+		// 컬럼명 다듬기 (접두사 제거)
 		for (int i = 0; i < columns.length; i++) {
 			columns[i] = columns[i].substring(columns[i].indexOf('_') + 1);
 		}
@@ -122,6 +142,31 @@ public class SqlQueryPanel extends JPanel {
 				return false;
 			}
 		});
+
+		resultTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				if (value instanceof ImageIcon) {
+					JLabel label = new JLabel((ImageIcon) value);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					return label;
+				}
+				return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+			}
+		});
+
+		boolean flag = false;
+		for (String col : columns) {
+			if (col.equals("image"))
+				flag = true;
+		}
+		if (flag) {
+			resultTable.setRowHeight(80);
+		}
+		resultTable.setShowGrid(true);
+		resultTable.setGridColor(Color.GRAY);
+
 		messageLabel.setText("✅ 결과: " + result.size() + "건");
 	}
 }

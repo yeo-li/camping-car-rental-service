@@ -44,11 +44,11 @@ public class ExternalRepairRecordRepository {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int external_repair_id = rs.getInt("external_repair_id");
-				int car_id = rs.getInt("car_id");
-				int shop_id = rs.getInt("shop_id");
-				int company_id = rs.getInt("company_id");
-				int customer_id = rs.getInt("customer_id");
+				Integer external_repair_id = rs.getInt("external_repair_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer shop_id = rs.getInt("shop_id");
+				Integer company_id = rs.getInt("company_id");
+				Integer customer_id = rs.getInt("customer_id");
 				String content = rs.getString("content");
 				String repair_date = rs.getDate("repair_date").toString();
 				int cost = rs.getInt("cost");

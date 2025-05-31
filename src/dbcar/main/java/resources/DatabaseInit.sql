@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS `DBTEST`.`CampingCar` (
   `name` VARCHAR(255) NOT NULL,
   `plate_number` VARCHAR(255) NOT NULL,
   `capacity` INT UNSIGNED NOT NULL,
-  `image` BLOB NOT NULL,
+  `image` LONGBLOB NOT NULL,
   `description` TEXT NOT NULL,
   `rental_price` INT UNSIGNED NOT NULL,
   `company_id` INT NOT NULL,

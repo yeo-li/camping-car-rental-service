@@ -53,7 +53,7 @@ public class RentalInsertPanel extends JPanel {
 		formPanel.add(new JLabel(COMPANY_ID));
 		formPanel.add(companyIdField);
 
-		formPanel.add(new JLabel(START_DATE + "yyyy-MM-dd)"));
+		formPanel.add(new JLabel(START_DATE + "(yyyy-MM-dd)"));
 		formPanel.add(startDateField);
 
 		formPanel.add(new JLabel(RENTAL_PERIOD + "(days)"));

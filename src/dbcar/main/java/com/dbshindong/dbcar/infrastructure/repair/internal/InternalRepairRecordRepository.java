@@ -27,12 +27,12 @@ public class InternalRepairRecordRepository {
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int internal_repair_id = rs.getInt("internal_repair_id");
-				int car_id = rs.getInt("car_id");
-				int part_id = rs.getInt("part_id");
+				Integer internal_repair_id = rs.getInt("internal_repair_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer part_id = rs.getObject("part_id", Integer.class);
 				String repair_date = rs.getDate("repair_date").toString();
-				int duration_minutes = rs.getInt("duration_minutes");
-				int employee_id = rs.getInt("employee_id");
+				Integer duration_minutes = rs.getInt("duration_minutes");
+				Integer employee_id = rs.getInt("employee_id");
 
 				return new InternalRepairRecord(internal_repair_id, car_id, part_id, repair_date, duration_minutes,
 						employee_id);
@@ -54,12 +54,12 @@ public class InternalRepairRecordRepository {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
-				int internal_repair_id = rs.getInt("internal_repair_id");
-				int car_id = rs.getInt("car_id");
-				int part_id = rs.getInt("part_id");
+				Integer internal_repair_id = rs.getInt("internal_repair_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer part_id = rs.getObject("part_id", Integer.class);
 				String repair_date = rs.getDate("repair_date").toString();
-				int duration_minutes = rs.getInt("duration_minutes");
-				int employee_id = rs.getInt("employee_id");
+				Integer duration_minutes = rs.getInt("duration_minutes");
+				Integer employee_id = rs.getInt("employee_id");
 				list.add(new InternalRepairRecord(internal_repair_id, car_id, part_id, repair_date, duration_minutes,
 						employee_id));
 			}
@@ -82,12 +82,12 @@ public class InternalRepairRecordRepository {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				int internal_repair_id = rs.getInt("internal_repair_id");
-				int car_id = rs.getInt("car_id");
-				int part_id = rs.getInt("part_id");
+				Integer internal_repair_id = rs.getInt("internal_repair_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer part_id = rs.getObject("part_id", Integer.class);
 				String repair_date = rs.getDate("repair_date").toString();
-				int duration_minutes = rs.getInt("duration_minutes");
-				int employee_id = rs.getInt("employee_id");
+				Integer duration_minutes = rs.getInt("duration_minutes");
+				Integer employee_id = rs.getInt("employee_id");
 
 				InternalRepairRecord record = new InternalRepairRecord(internal_repair_id, car_id, part_id, repair_date,
 						duration_minutes, employee_id);
@@ -124,7 +124,10 @@ public class InternalRepairRecordRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, record.getCar_id());
-			pstmt.setInt(2, record.getPart_id());
+			if (record.getPart_id() != null)
+				pstmt.setInt(2, record.getPart_id());
+			else
+				pstmt.setNull(2, java.sql.Types.INTEGER);
 			pstmt.setDate(3, record.getRepair_date());
 			pstmt.setInt(4, record.getDuration_minutes());
 			pstmt.setInt(5, record.getEmployee_id());
@@ -143,7 +146,10 @@ public class InternalRepairRecordRepository {
 		try {
 			PreparedStatement pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, record.getCar_id());
-			pstmt.setInt(2, record.getPart_id());
+			if (record.getPart_id() != null)
+				pstmt.setInt(2, record.getPart_id());
+			else
+				pstmt.setNull(2, java.sql.Types.INTEGER);
 			pstmt.setDate(3, record.getRepair_date());
 			pstmt.setInt(4, record.getDuration_minutes());
 			pstmt.setInt(5, record.getEmployee_id());
@@ -155,7 +161,7 @@ public class InternalRepairRecordRepository {
 				throw new DataUpdateException("업데이트 대상이 존재하지 않습니다.");
 			}
 
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			throw new DataUpdateException("데이터 업데이트 중 오류가 발생했습니다.", e);
 		}
 	}
