@@ -19,4 +19,18 @@ public class Validator {
 
 		return true;
 	}
+
+	public static String requireNonBlank(String value, String message) {
+		if (value == null || value.isBlank()) {
+			throw new NullPointerException(message);
+		}
+		return value;
+	}
+
+	public static <T> T requireNonNull(T value, String message) {
+		if (value == null) {
+			throw new NullPointerException(message);
+		}
+		return value;
+	}
 }

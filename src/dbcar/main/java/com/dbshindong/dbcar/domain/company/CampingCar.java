@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.domain.company;
 
 import java.util.Objects;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.Validator;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.exception.InvalidCampingCarException;
 
 import java.sql.*;
@@ -55,14 +56,14 @@ public class CampingCar {
 		// null 유효성 검증
 		try {
 			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
-			Objects.requireNonNull(name, String.format(NULL_MESSAGE, "name"));
-			Objects.requireNonNull(plate_number, String.format(NULL_MESSAGE, "plate_number"));
+			Validator.requireNonBlank(name, String.format(NULL_MESSAGE, "name"));
+			Validator.requireNonBlank(plate_number, String.format(NULL_MESSAGE, "plate_number"));
 			Objects.requireNonNull(capacity, String.format(NULL_MESSAGE, "capacity"));
 			Objects.requireNonNull(image, String.format(NULL_MESSAGE, "image"));
-			Objects.requireNonNull(description, String.format(NULL_MESSAGE, "description"));
+			Validator.requireNonBlank(description, String.format(NULL_MESSAGE, "description"));
 			Objects.requireNonNull(rental_price, String.format(NULL_MESSAGE, "rental_price"));
 			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Objects.requireNonNull(registered_date, String.format(NULL_MESSAGE, "registered_date"));
+			Validator.requireNonBlank(registered_date, String.format(NULL_MESSAGE, "registered_date"));
 		} catch (Exception e) {
 			throw new InvalidCampingCarException(e.getMessage(), e);
 		}
