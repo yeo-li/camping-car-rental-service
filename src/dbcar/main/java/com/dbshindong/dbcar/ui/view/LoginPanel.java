@@ -1,6 +1,8 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
@@ -60,6 +62,8 @@ public class LoginPanel extends JPanel {
 		adminLoginButton.addActionListener(e -> {
 			JOptionPane.showMessageDialog(null, "관리자 접속");
 			loginController.handleLogin("root", "1234", null, null);
+			coordinator.setUser("root");
+			coordinator.showAdminInitView();
 		});
 
 	}
