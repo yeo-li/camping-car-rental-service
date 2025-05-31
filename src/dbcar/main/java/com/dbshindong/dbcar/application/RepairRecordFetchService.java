@@ -37,21 +37,15 @@ public class RepairRecordFetchService {
 	}
 
 	public List<ExternalRepairRecord> fetchExternalRepairRecord(int carId) {
-		try {
-			return externalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
-			return null;
-		}
+
+		return externalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
+
 	}
 
 	public List<InternalRepairRecord> fetchInternalRepairRecord(int carId) {
-		try {
-			return internalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
-		} catch (SQLSyntaxErrorException e) {
-			e.printStackTrace();
-			return null;
-		}
+
+		return internalRepairRecordRepository.findByCondition("car_id = " + Integer.toString(carId));
+
 	}
 
 	public ExternalRepairShop fetchExternalRepairShop(int shopId) {

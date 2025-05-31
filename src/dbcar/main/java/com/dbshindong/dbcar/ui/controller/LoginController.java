@@ -26,6 +26,7 @@ public class LoginController {
 					JOptionPane.showMessageDialog(null, "잘못된 ID나 비밀번호를 입력하셨습니다.");
 				} else {
 					JOptionPane.showMessageDialog(null, "로그인 성공!");
+					this.coordinator.setUser(userId);
 					this.coordinator.showUserInitView();// 중간 뷰이기 때문에 컨트롤러를 넣어줄 필요 없다.
 
 				}

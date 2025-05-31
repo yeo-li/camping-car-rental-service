@@ -57,7 +57,7 @@ public class DataUpdateServiceTest {
 
 	private static void updateCampingCar테스트(DataUpdateService service) {
 		UpdateCampingCarRequest updateCar = new UpdateCampingCarRequest("수정된 캠핑카", "서울99가9999", 4,
-				new byte[] { (byte) 0xFF, (byte) 0xD8 }, "수정 설명", 123456, 1, java.sql.Date.valueOf("2025-01-01"));
+				new byte[] { (byte) 0xFF, (byte) 0xD8 }, "수정 설명", 123456, 1, "2025-01-01");
 
 		service.updateCampingCars(updateCar, "car_id = 1");
 
@@ -119,7 +119,7 @@ public class DataUpdateServiceTest {
 
 	private static void updateExternalRepairRecord테스트(DataUpdateService service) {
 		UpdateExternalRepairRecordRequest updated = new UpdateExternalRepairRecordRequest(1, 1, 1, 1, "수정내용",
-				java.sql.Date.valueOf("2025-01-01"), 123456, java.sql.Date.valueOf("2025-02-01"), "메모");
+				"2025-01-01", 123456, "2025-02-01", "메모");
 
 		service.updateExternalRepairRecords(updated, "external_repair_id = 1");
 
@@ -130,8 +130,7 @@ public class DataUpdateServiceTest {
 	}
 
 	private static void updateInternalRepairRecord테스트(DataUpdateService service) {
-		UpdateInternalRepairRecordRequest updated = new UpdateInternalRepairRecordRequest(1, 1,
-				java.sql.Date.valueOf("2025-01-01"), 120, 1);
+		UpdateInternalRepairRecordRequest updated = new UpdateInternalRepairRecordRequest(1, 1, "2025-01-01", 120, 1);
 
 		service.updateInternalRepairRecords(updated, "internal_repair_id = 1");
 
@@ -141,8 +140,7 @@ public class DataUpdateServiceTest {
 	}
 
 	private static void updatePart테스트(DataUpdateService service) {
-		UpdatePartRequest updated = new UpdatePartRequest("수정부품", 50000, 10, java.sql.Date.valueOf("2025-01-01"),
-				"부품상사999");
+		UpdatePartRequest updated = new UpdatePartRequest("수정부품", 50000, 10, "2025-01-01", "부품상사999");
 
 		service.updateParts(updated, "part_id = 1");
 
@@ -152,8 +150,8 @@ public class DataUpdateServiceTest {
 	}
 
 	private static void updateRental테스트(DataUpdateService service) {
-		UpdateRentalRequest updated = new UpdateRentalRequest(1, 1, 1, java.sql.Date.valueOf("2025-01-01"), 7, 700000,
-				java.sql.Date.valueOf("2025-01-08"), "기타비용", 10000);
+		UpdateRentalRequest updated = new UpdateRentalRequest(1, 1, 1, "2025-01-01", 7, 700000, "2025-01-08", "기타비용",
+				10000);
 
 		service.updateRentals(updated, "rental_id = 1");
 
