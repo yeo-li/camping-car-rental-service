@@ -17,7 +17,7 @@ public class UserReservationQueryViewTest {
 		AppConfig ac = AppConfig.getInstance();
 		
 		ac.appCoordinator().setUser("user2");
-		ac.dbConnection().setConnection("user1", "user1");
+		ac.dbConnection().setConnection("root", "1234");
 		//ac.databaseInitService().initDatabase(ac.dbConnection().getConnection(),"dbcar/main/java/resources/DatabaseInit.sql");
 		ac.appCoordinator().start();
 		ac.appCoordinator().showUserReservationQueryView();

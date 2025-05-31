@@ -9,6 +9,7 @@ import dbcar.main.java.com.dbshindong.dbcar.application.DataUpdateService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.application.LoginService;
 import dbcar.main.java.com.dbshindong.dbcar.application.RepairRecordFetchService;
+import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationModifyService;
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.application.factory.LoginServiceFactory;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
@@ -26,6 +27,7 @@ import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDat
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationModifyController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
@@ -59,7 +61,7 @@ public class AppConfig {
 	private CampingCarQueryService campingCarQueryService;
 	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
 	private UserReservationQueryService userReservationQueryService;
-	
+	private UserReservationModifyService userReservationModifyService;
 	
 	private LoginController loginController;
   
@@ -67,7 +69,7 @@ public class AppConfig {
 	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
 	private SqlQueryController sqlQueryController;
 	private UserReservationQueryController userReservationQueryController;
-
+	private UserReservationModifyController userReservationModifyController;
 
 	private AppConfig() {
 
@@ -267,7 +269,12 @@ public class AppConfig {
 		}
 		return userReservationQueryService;
 	}
-	
+	public UserReservationModifyService userReservationModifyService() {
+		if(userReservationModifyService == null) {
+			this.userReservationModifyService = new UserReservationModifyService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository());
+		}
+		return userReservationModifyService;
+	}
 
 	// controller
 
@@ -301,9 +308,14 @@ public class AppConfig {
 	}
 	public UserReservationQueryController userReservationQueryController() {
 		if(userReservationQueryController == null) {
-			userReservationQueryController = new UserReservationQueryController(this.userReservationQueryService, this.appCoordinator());
+			userReservationQueryController = new UserReservationQueryController(this.userReservationQueryService(), this.appCoordinator());
 		}
 		return userReservationQueryController;
 	}
-
+	public UserReservationModifyController userReservationModifyController() {
+		if(userReservationModifyController == null) {
+			userReservationModifyController = new UserReservationModifyController(this.userReservationModifyService(), this.appCoordinator());
+		}
+		return userReservationModifyController;
+	}
 }

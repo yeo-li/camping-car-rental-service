@@ -239,5 +239,29 @@ public class RentalRepository {
 		}
 		return rentals;
 	}
+	public List<Integer> findCarNotInPeriod(Rental rent){
+		try {
+			List<Integer> availCar = new ArrayList<>();
+			String sql = "SELECT DISTINCT car_id "
+					+ "FROM Rental "
+					+ "WHERE start_date <= ? "
+					+ "AND DATE_ADD(start_date, INTERVAL rental_period -1 DAY) >= ?;";
+			PreparedStatement pstmt = conn.prepareStatement(sql);
+			pstmt.setDate(1, Date.valueOf(rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1)));
+			pstmt.setDate(2, rent.getStart_date());
+			
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				int car_id = rs.getInt("car_id");
+				availCar.add(car_id);
+			}
+			return availCar;
+		} catch (SQLException e) {
+			if (e.getSQLState() != null && e.getSQLState().startsWith("42")) {
+				throw new InvalidQueryException("SQL 문법 오류입니다.", e);
+			}
+			throw new InvalidQueryException("DB 오류입니다.", e);
+		}
+	}
 	
 }
