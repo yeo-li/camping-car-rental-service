@@ -5,6 +5,7 @@ import java.util.List;
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
+import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
@@ -32,4 +33,23 @@ public class UserReservationQueryController {
 			throw e;
 		}
 	}
+	public CampingCarCompany findCompanyById(int id) {
+		return ac.userReservationQueryService().findCompanyById(id);
+	}
+	public void onSelectDelete(List<Rental> targets) {
+		try {
+			ac.userReservationQueryService().deleteRental(targets);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+	
+	public void onSelectedModify(Rental target) {
+		try {
+			ac.appCoordinator().showUserReservationModifyView(target);
+		} catch(Exception e) {
+			throw e;
+		}
+	}
+	
 }

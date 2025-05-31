@@ -263,7 +263,7 @@ public class AppConfig {
 	}
 	public UserReservationQueryService userReservationQueryService() {
 		if(userReservationQueryService == null) {
-			this.userReservationQueryService = new UserReservationQueryService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository());
+			this.userReservationQueryService = new UserReservationQueryService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository(), this.campingCarCompanyRepository());
 		}
 		return userReservationQueryService;
 	}

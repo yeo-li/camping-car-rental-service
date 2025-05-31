@@ -2,8 +2,13 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+import java.io.ByteArrayInputStream;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -105,13 +110,37 @@ public class UserReservationQueryPanel extends JPanel {
 
 			            if ("상세".equals(columnName)) {
 			                // 조회 버튼처럼 동작
-			                JOptionPane.showMessageDialog(null, "상세조회: " + rentList.get(row).getCar_id());
-			                // ac.campingCarQueryController().onCarSelected(...); 와 연동 가능
+			            	CampingCar car = ac.userReservationQueryController().findCarById(rentList.get(row).getCar_id());
+			            	byte[] imgBytes = car.getImage();
+			            	JLabel imageLabel = null;
+			            	try {
+			            		BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imgBytes));
+			                    ImageIcon icon = new ImageIcon(bufferedImage.getScaledInstance(300, 200, java.awt.Image.SCALE_SMOOTH));
+			                    imageLabel = new JLabel(icon);
+			            	}catch(Exception ex) {
+			            		
+			            		//GlobalExceptionHandler.handle(ex);
+			            		//이미지 라벨을 불러오지 못했을 경우에는 그냥 표시하지 않기 떄문에 별개의 헨들러 필요 X
+			            	}
+			            	Object[] message = {
+			            			"상세조회: " + car.getName() ,
+					                "\n번호판: " + car.getPlate_number(),
+					                "\n승차인원: " + car.getCapacity()+"명",
+					                "\n이미지: " + (imageLabel == null ? "이미지 없음" : ""),
+					                imageLabel,
+					                "\n가격: " + car.getRental_price() +"원/1일",
+					                "\n회사명: " + ac.userReservationQueryController().findCompanyById(car.getCompany_id()).getName(),
+					                "\n상세정보: " + car.getDescription()
+			            	};
+			                JOptionPane.showMessageDialog(null,message);
+			                 
 
 			            } else if ("수정".equals(columnName)) {
 			                // 수정 버튼처럼 동작
 			                JOptionPane.showMessageDialog(null, "수정하기: " + rentList.get(row).getCar_id());
 			                // 수정 뷰 띄우는 로직 넣으면 됨
+			            } else if("삭제".equals(columnName)) {
+			            	// 일괄 삭제
 			            }
 			        }
 				}
