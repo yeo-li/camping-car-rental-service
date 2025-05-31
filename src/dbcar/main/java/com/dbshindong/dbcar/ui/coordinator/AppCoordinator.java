@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
+import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.*;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.CampingCarCompanyInsertPanel;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.CampingCarInsertPanel;
@@ -217,6 +218,12 @@ public class AppCoordinator {
 	}
 	public void showUserReservationQueryView() { 
 		UserReservationQueryPanel view = new UserReservationQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+	
+	public void showUserReservationModifyView(Rental target, String carname) {
+		UserReservationModifyPanel view = new UserReservationModifyPanel(target, carname);
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
