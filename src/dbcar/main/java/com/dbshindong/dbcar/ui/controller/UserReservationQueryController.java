@@ -46,7 +46,7 @@ public class UserReservationQueryController {
 	
 	public void onSelectedModify(Rental target) {
 		try {
-			ac.appCoordinator().showUserReservationModifyView(target);
+			ac.appCoordinator().showUserReservationModifyView(target, findCarById(target.getCar_id()).getName());
 		} catch(Exception e) {
 			throw e;
 		}
