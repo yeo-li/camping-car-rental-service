@@ -20,6 +20,17 @@ public class Rental {
 
 	private static final String NULL_MESSAGE = "%s은(는) null이 들어갈 수 없습니다.";
 
+	private static final String RENTAL_ID = "캠핑카 대여 ID";
+	private static final String CAR_ID = "캠핑카 등록 ID";
+	private static final String CUSTOMER_ID = "고객 ID";
+	private static final String COMPANY_ID = "캠핑카 대여 회사 ID";
+	private static final String START_DATE = "대여 시작일";
+	private static final String RENTAL_PERIOD = "대여 기간";
+	private static final String TOTAL_CHARGE = "청구 요금";
+	private static final String DUE_DATE = "납입 기한";
+	private static final String EXTRA_CHARGE_DETAIL = "기타 청구 내역";
+	private static final String EXTRA_CHARGE_AMOUNT = "기타 청구 요금 정보";
+
 	public Rental(Integer rental_id, Integer car_id, Integer customer_id, Integer company_id, String start_date,
 			Integer rental_period, Integer total_charge, String due_date, String extra_charge_detail,
 			Integer extra_charge) {
@@ -40,9 +51,9 @@ public class Rental {
 
 	public Rental(Integer car_id, Integer customer_id, Integer company_id, String start_date, Integer rental_period,
 			Integer total_charge, String due_date, String extra_charge_detail, Integer extra_charge) {
-		
-		
-		this.validate(-1,car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date,
+
+		this.validate(-1, car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date,
+
 				extra_charge_detail, extra_charge);
 		this.rental_id = -1;
 		this.car_id = car_id;
@@ -60,48 +71,53 @@ public class Rental {
 			Integer rental_period, Integer total_charge, String due_date, String extra_charge_detail,
 			Integer extra_charge) {
 		try {
-			Objects.requireNonNull(rental_id, String.format(NULL_MESSAGE, "rental_id"));
-			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, "car_id"));
-			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, "customer_id"));
-			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, "company_id"));
-			Objects.requireNonNull(start_date, String.format(NULL_MESSAGE, "start_date"));
-			Objects.requireNonNull(rental_period, String.format(NULL_MESSAGE, "rental_period"));
-			Objects.requireNonNull(total_charge, String.format(NULL_MESSAGE, "total_charge"));
-			Objects.requireNonNull(due_date, String.format(NULL_MESSAGE, "due_date"));
+			Objects.requireNonNull(rental_id, String.format(NULL_MESSAGE, RENTAL_ID));
+			Objects.requireNonNull(car_id, String.format(NULL_MESSAGE, CAR_ID));
+			Objects.requireNonNull(customer_id, String.format(NULL_MESSAGE, CUSTOMER_ID));
+			Objects.requireNonNull(company_id, String.format(NULL_MESSAGE, COMPANY_ID));
+			Validator.requireNonBlank(start_date, String.format(NULL_MESSAGE, START_DATE));
+			Objects.requireNonNull(rental_period, String.format(NULL_MESSAGE, RENTAL_PERIOD));
+			Objects.requireNonNull(total_charge, String.format(NULL_MESSAGE, TOTAL_CHARGE));
+			Validator.requireNonBlank(due_date, String.format(NULL_MESSAGE, DUE_DATE));
 		} catch (NullPointerException e) {
 			throw new InvalidRentalException(e.getMessage(), e);
 		}
 
 		if (!Validator.isValidDate(start_date)) {
-			throw new InvalidRentalException("납인기한의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(START_DATE + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (!Validator.isValidDate(due_date)) {
-			throw new InvalidRentalException("납인기한의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(DUE_DATE + "의 입력값이 올바르지 않습니다.");
+		}
+
+		if (rental_id <= 0) {
+			throw new InvalidRentalException(RENTAL_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (car_id <= 0) {
-			throw new InvalidRentalException("캠핑카 아이디의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(CAR_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (customer_id <= 0) {
-			throw new InvalidRentalException("고객 아이디의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(CUSTOMER_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (company_id <= 0) {
-			throw new InvalidRentalException("캠핑카 대여 회사 아이디의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(COMPANY_ID + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (rental_period <= 0) {
-			throw new InvalidRentalException("대여기간의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(RENTAL_PERIOD + "의 입력값이 올바르지 않습니다.");
 		}
 
 		if (total_charge <= 0) {
-			throw new InvalidRentalException("청구요금의 입력값이 올바르지 않습니다.");
+			throw new InvalidRentalException(TOTAL_CHARGE + "의 입력값이 올바르지 않습니다.");
 		}
 
-		if (extra_charge < 0) {
-			throw new InvalidRentalException("기타청구요금의 입력값이 올바르지 않습니다.");
+		if (extra_charge != null && extra_charge <= 0) {
+			throw new InvalidRentalException(EXTRA_CHARGE_AMOUNT + "의 입력값이 올바르지 않습니다.");
+
 		}
 
 	}

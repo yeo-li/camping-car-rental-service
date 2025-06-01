@@ -2,7 +2,9 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.coordinator;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.FlowLayout;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -23,7 +25,7 @@ import dbcar.main.java.com.dbshindong.dbcar.ui.view.admin.SqlQueryPanel;
 public class AppCoordinator {
 
 	private final JFrame frame;
-	private String user;
+	private String user = null;
 	private AppConfig ac = AppConfig.getInstance();
 	private JPanel tableContentPanel;
 
@@ -38,10 +40,11 @@ public class AppCoordinator {
 		showLoginView();
 		frame.setVisible(true);
 	}
-	
+
 	public void setUser(String userID) {
 		this.user = userID;
 	}
+
 	public String getUser() {
 		return this.user;
 	}
@@ -59,32 +62,48 @@ public class AppCoordinator {
 	}
 
 	public void showAdminInitView() {
-		AdminInitPanel view = new AdminInitPanel();
-		frame.setContentPane(view);
+		AdminInitPanel panel = new AdminInitPanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(panel, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
-	
+
 	public void showAllTableView() {
 		AllTableViewerPanel panel = new AllTableViewerPanel();
-		frame.setContentPane(panel);
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(panel, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
+		frame.revalidate();
+	}
+
+	public void showRepairRecordView() {
+		RepairRecordPanel panel = new RepairRecordPanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(panel, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 
 	public void showTableEntrySelectorView() {
 		JPanel mainPanel = new JPanel(new BorderLayout());
+		JPanel topWrapperPanel = new JPanel(new BorderLayout());
+		topWrapperPanel.add(buildTopBar(), BorderLayout.NORTH);
+		topWrapperPanel.add(new TableEntrySelectorPanel(this::handleTableSelection), BorderLayout.SOUTH);
 
-		// 상단: 테이블 선택 패널
-		TableEntrySelectorPanel selectorPanel = new TableEntrySelectorPanel(this::handleTableSelection);
-		mainPanel.add(selectorPanel, BorderLayout.NORTH);
+		mainPanel.add(topWrapperPanel, BorderLayout.NORTH);
 
-		// 하단: 입력 패널을 담을 컨테이너 (CardLayout)
 		JPanel contentPanel = new JPanel(new CardLayout());
 		mainPanel.add(contentPanel, BorderLayout.CENTER);
 
-		// 참조 저장 (이후 패널 전환 시 필요)
 		this.tableContentPanel = contentPanel;
 
-		// 프레임에 표시
 		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
@@ -103,7 +122,6 @@ public class AppCoordinator {
 		}
 	}
 
-	// 표준
 	private void showCustomerInsertPanel() {
 		CustomerInsertPanel customerPanel = new CustomerInsertPanel();
 
@@ -192,29 +210,59 @@ public class AppCoordinator {
 	}
 
 	public void showSqlQueryView() {
-		SqlQueryPanel view = new SqlQueryPanel();
-		frame.setContentPane(view);
+		SqlQueryPanel panel = new SqlQueryPanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(panel, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 
 	public void showDeleteUpdateView() {
-		DeleteUpdatePanel view = new DeleteUpdatePanel();
-		frame.setContentPane(view);
+		DeleteUpdatePanel panel = new DeleteUpdatePanel();
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(panel, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 
-	
-	public void showCampingCarQueryView() { 
+	public void showCampingCarQueryView() {
 		CampingCarQueryPanel view = new CampingCarQueryPanel();
 		frame.setContentPane(view);
 		frame.revalidate();
-		
+
 	}
-	
+
 	public void showCampingCarAvailableDateQueryView(int id) {
 		CampingCarAvailableDateQueryPanel view = new CampingCarAvailableDateQueryPanel(id);
 		frame.setContentPane(view);
 		frame.revalidate();
 	}
-	
+
+	private JPanel buildTopBar() {
+		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+
+		JButton homeButton = new JButton("🏠 홈");
+		homeButton.addActionListener(e -> {
+			if (user.equals("root"))
+				showAdminInitView();
+			else
+				showUserInitView();
+		});
+
+		JButton logoutButton = new JButton("🔒 로그아웃");
+		logoutButton.addActionListener(e -> {
+			setUser(null);
+			showLoginView();
+		});
+
+		topBar.add(homeButton);
+		topBar.add(logoutButton);
+
+		return topBar;
+	}
+
 }

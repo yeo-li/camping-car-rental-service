@@ -3,8 +3,8 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.admin;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
-import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
 
 import java.awt.*;
 import java.util.List;
@@ -37,15 +37,14 @@ public class SqlQueryPanel extends JPanel {
 		JScrollPane inputScroll = new JScrollPane(sqlInputArea);
 
 		executeButton = new JButton("SQL 실행");
-		// 🎯 버튼 클릭 → 컨트롤러 실행
+
 		executeButton.addActionListener(e -> {
 			String sql = sqlInputArea.getText().trim();
 			try {
 				List<Map<String, Object>> result = ac.sqlQueryController().handleQuery(sql);
-
 				renderTable(result);
 			} catch (Exception ex) {
-				showError(ex.getMessage());
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -63,7 +62,6 @@ public class SqlQueryPanel extends JPanel {
 		add(bottomPanel, BorderLayout.SOUTH);
 	}
 
-	// 👉 Controller가 View에서 이 메서드를 호출함
 	public String getSqlInput() {
 		return sqlInputArea.getText().trim();
 	}
@@ -86,7 +84,12 @@ public class SqlQueryPanel extends JPanel {
 			}
 		}
 
-		resultTable.setModel(new DefaultTableModel(rowData, columnNames));
+		resultTable.setModel(new DefaultTableModel(rowData, columnNames) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
 		messageLabel.setText("✅ 결과: " + result.size() + "건");
 	}
 
@@ -113,12 +116,12 @@ public class SqlQueryPanel extends JPanel {
 			columns[i] = columns[i].substring(columns[i].indexOf('_') + 1);
 		}
 
-		resultTable.setModel(new DefaultTableModel(data, columns));
+		resultTable.setModel(new DefaultTableModel(data, columns) {
+			@Override
+			public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
 		messageLabel.setText("✅ 결과: " + result.size() + "건");
-	}
-
-	private void showError(String message) {
-		messageLabel.setText("❌ 오류 발생");
-		JOptionPane.showMessageDialog(this, message, "오류", JOptionPane.ERROR_MESSAGE);
 	}
 }
