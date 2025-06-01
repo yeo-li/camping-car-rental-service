@@ -4,7 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DatabaseConnectionException;
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.DatabaseException;
 
 public class DBConnection {
 
@@ -20,15 +20,15 @@ public class DBConnection {
 			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/DBTEST", user, pw); // JDBC 연결
 			System.out.println("DB 연결 완료");
 		} catch (ClassNotFoundException e) {
-			throw new DatabaseConnectionException("JDBC 드라이버 로드 오류", e);
+			throw new DatabaseException("JDBC 드라이버 로드 오류", e);
 		} catch (SQLException e) {
-			throw new DatabaseConnectionException("DB 연결 오류", e);
+			throw new DatabaseException("DB 연결 오류", e);
 		}
 	}
 
 	public Connection getConnection() {// Connection getter
 		if (conn == null) {
-			throw new DatabaseConnectionException("커넥션이 설정되지 않았습니다. 로그인 먼저 하세요.");
+			throw new DatabaseException("커넥션이 설정되지 않았습니다. 로그인 먼저 하세요.");
 		}
 
 		return this.conn;
@@ -41,7 +41,7 @@ public class DBConnection {
 				conn = null;
 				System.out.println("DB 연결 종료");
 			} catch (SQLException e) {
-				throw new DatabaseConnectionException("DB 연결 종료 중 오류 발생", e);
+				throw new DatabaseException("DB 연결 종료 중 오류 발생", e);
 			}
 		}
 	}

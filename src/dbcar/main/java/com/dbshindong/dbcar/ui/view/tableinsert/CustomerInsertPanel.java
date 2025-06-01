@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 
@@ -24,31 +25,40 @@ public class CustomerInsertPanel extends JPanel {
 	private final JButton cancelButton = new JButton("취소");
 	private final JButton clearButton = new JButton("초기화");
 
+	private static final String CUSTOMER_ID = "고객 ID";
+	private static final String USERNAME = "아이디";
+	private static final String PASSWORD = "비밀번호";
+	private static final String LICENSE_NUMBER = "운전면허증 번호";
+	private static final String NAME = "고객명";
+	private static final String ADDRESS = "주소";
+	private static final String PHONE = "전화번호";
+	private static final String EMAIL = "이메일";
+
 	public CustomerInsertPanel() {
 		setLayout(new BorderLayout(10, 10));
 
 		JPanel formPanel = new JPanel(new GridLayout(7, 2, 10, 10));
-		formPanel.setBorder(BorderFactory.createTitledBorder("\uD83D\uDCC4 Customer 정보 입력"));
+		formPanel.setBorder(BorderFactory.createTitledBorder("Customer 정보 입력"));
 
-		formPanel.add(new JLabel("Username"));
+		formPanel.add(new JLabel(USERNAME));
 		formPanel.add(usernameField);
 
-		formPanel.add(new JLabel("Password"));
+		formPanel.add(new JLabel(PASSWORD));
 		formPanel.add(passwordField);
 
-		formPanel.add(new JLabel("License Number"));
+		formPanel.add(new JLabel(LICENSE_NUMBER));
 		formPanel.add(licenseNumberField);
 
-		formPanel.add(new JLabel("Name"));
+		formPanel.add(new JLabel(NAME));
 		formPanel.add(nameField);
 
-		formPanel.add(new JLabel("Address"));
+		formPanel.add(new JLabel(ADDRESS));
 		formPanel.add(addressField);
 
-		formPanel.add(new JLabel("Phone"));
+		formPanel.add(new JLabel(PHONE));
 		formPanel.add(phoneField);
 
-		formPanel.add(new JLabel("Email"));
+		formPanel.add(new JLabel(EMAIL));
 		formPanel.add(emailField);
 
 		JPanel buttonPanel = new JPanel();
@@ -68,17 +78,15 @@ public class CustomerInsertPanel extends JPanel {
 						passwordField.getText().trim(), licenseNumberField.getText().trim(), nameField.getText().trim(),
 						addressField.getText().trim(), phoneField.getText().trim(), emailField.getText().trim());
 
-				System.out.println(customer.toString());
-
 				// Customer 저장
 				ac.dataInsertService().insertCustomer(customer);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 
 				// 필드 지우기
 				clearFields();
-			} catch (IllegalArgumentException ex) {
+			} catch (Exception ex) {
 				// 예외 핸들링
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "\u2757 오류", JOptionPane.ERROR_MESSAGE);
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 

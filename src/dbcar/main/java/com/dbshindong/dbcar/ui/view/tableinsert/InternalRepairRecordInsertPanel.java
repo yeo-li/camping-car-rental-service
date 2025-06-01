@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert;
 
 import javax.swing.*;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 
@@ -22,25 +23,32 @@ public class InternalRepairRecordInsertPanel extends JPanel {
 	private final JButton cancelButton = new JButton("취소");
 	private final JButton clearButton = new JButton("초기화");
 
+	private static final String INTERNAL_REPAIR_ID = "자체 정비 등록 ID";
+	private static final String CAR_ID = "캠핑카 등록 ID";
+	private static final String PART_ID = "부픔 등록 ID";
+	private static final String REPAIR_DATE = "정비 일자";
+	private static final String DURATION = "정비 소요 시간";
+	private static final String EMPLOYEE_ID = "정비 담당자 ID";
+
 	public InternalRepairRecordInsertPanel() {
 		setLayout(new BorderLayout(10, 10));
 
 		JPanel formPanel = new JPanel(new GridLayout(5, 2, 10, 10));
-		formPanel.setBorder(BorderFactory.createTitledBorder("🔧 내부 정비 기록 입력"));
+		formPanel.setBorder(BorderFactory.createTitledBorder("내부 정비 기록 입력"));
 
-		formPanel.add(new JLabel("차량 ID"));
+		formPanel.add(new JLabel(CAR_ID));
 		formPanel.add(carIdField);
 
-		formPanel.add(new JLabel("부품 ID (없으면 비워두세요)"));
+		formPanel.add(new JLabel(PART_ID + "(없으면 비워두세요.)"));
 		formPanel.add(partIdField);
 
-		formPanel.add(new JLabel("정비일 (yyyy-mm-dd)"));
+		formPanel.add(new JLabel(REPAIR_DATE + "(yyyy-mm-dd)"));
 		formPanel.add(repairDateField);
 
-		formPanel.add(new JLabel("정비 소요 시간 (분)"));
+		formPanel.add(new JLabel(DURATION + "(분)"));
 		formPanel.add(durationField);
 
-		formPanel.add(new JLabel("직원 ID"));
+		formPanel.add(new JLabel(EMPLOYEE_ID));
 		formPanel.add(employeeIdField);
 
 		JPanel buttonPanel = new JPanel();
@@ -53,26 +61,22 @@ public class InternalRepairRecordInsertPanel extends JPanel {
 
 		saveButton.addActionListener(e -> {
 			try {
-				int carId = Integer.parseInt(carIdField.getText().trim());
-				String partText = partIdField.getText().trim();
-				Integer partId = partText.isEmpty() ? null : Integer.parseInt(partText);
-				String repairDate = Date.valueOf(repairDateField.getText().trim()).toString();
-				int duration = Integer.parseInt(durationField.getText().trim());
-				int employeeId = Integer.parseInt(employeeIdField.getText().trim());
+				Integer carId = safeParseInt(carIdField.getText().trim(), CAR_ID);
+				Integer partId = safeParseInt(partIdField.getText().trim(), PART_ID);
+				String repairDate = repairDateField.getText().trim();
+				Integer duration = safeParseInt(durationField.getText().trim(), DURATION);
+				Integer employeeId = safeParseInt(employeeIdField.getText().trim(), EMPLOYEE_ID);
 
 				InternalRepairRecord record = ac.dataInsertService().creatInternalRepairRecord(carId, partId,
 						repairDate, duration, employeeId);
-
-				if (record == null) {
-					throw new IllegalArgumentException("입력값을 확인해주세요.");
-				}
 
 				ac.dataInsertService().insertInternalRepairRecord(record);
 				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
 				clearFields();
 
 			} catch (Exception ex) {
-				JOptionPane.showMessageDialog(this, ex.getMessage(), "❗ 오류", JOptionPane.ERROR_MESSAGE);
+				ex.printStackTrace();
+				GlobalExceptionHandler.handle(ex);
 			}
 		});
 
@@ -98,5 +102,13 @@ public class InternalRepairRecordInsertPanel extends JPanel {
 
 	public JButton getCancelButton() {
 		return cancelButton;
+	}
+
+	private Integer safeParseInt(String input, String fieldName) {
+		try {
+			return input == null || input.isBlank() ? null : Integer.parseInt(input);
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException(fieldName + "의 입력값은 숫자여야 합니다.");
+		}
 	}
 }

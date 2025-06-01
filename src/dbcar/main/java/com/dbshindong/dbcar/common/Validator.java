@@ -1,8 +1,10 @@
 package dbcar.main.java.com.dbshindong.dbcar.common;
 
 public class Validator {
-	private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%가-힣]+@" + // local-part
-			"[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"; // domain
+
+  
+	private static final String EMAIL_REGEX = "^[a-zA-Z0-9가-힣._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
 
 	public static boolean isValidEmail(String email) {
 		if (email == null || email.isBlank()) {
@@ -19,5 +21,19 @@ public class Validator {
 		}
 
 		return true;
+	}
+
+	public static String requireNonBlank(String value, String message) {
+		if (value == null || value.isBlank()) {
+			throw new NullPointerException(message);
+		}
+		return value;
+	}
+
+	public static <T> T requireNonNull(T value, String message) {
+		if (value == null) {
+			throw new NullPointerException(message);
+		}
+		return value;
 	}
 }
