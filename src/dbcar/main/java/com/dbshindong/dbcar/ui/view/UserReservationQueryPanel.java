@@ -144,7 +144,8 @@ public class UserReservationQueryPanel extends JPanel {
 
 			            } else if ("수정".equals(columnName)) {
 			                // 수정 버튼처럼 동작
-			                ac.appCoordinator().showUserReservationModifyView(rentList.get(row), ac.userReservationQueryController().findCarById(rentList.get(row).getCar_id()).getName());
+			                //ac.appCoordinator().showUserReservationModifyView(rentList.get(row), ac.userReservationQueryController().findCarById(rentList.get(row).getCar_id()).getName());
+			            	ac.userReservationQueryController().onSelectedModify(rentList.get(row));
 			            } else if("삭제".equals(columnName)) {
 			            	//삭제 버튼처럼 동작
 			            } else if("정비".equals(columnName)){

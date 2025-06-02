@@ -42,7 +42,17 @@ public class UserReservationQueryController {
 	
 	public void onSelectedModify(Rental target) {
 		try {
-			ac.appCoordinator().showUserReservationModifyView(target, findCarById(target.getCar_id()).getName());
+			LocalDate start = target.getStart_date().toLocalDate();
+			LocalDate end = target.getStart_date().toLocalDate().plusDays(target.getRental_period() - 1);
+			if(end.isBefore(LocalDate.now())){
+				JOptionPane.showMessageDialog(null,"이미 반납이 끝난 캠핑카에 대해서는 수정할 수 없습니다.");
+			}
+			else if((start.isEqual(LocalDate.now()) || start.isBefore(LocalDate.now())) && (end.isAfter(LocalDate.now()) || (start.isEqual(LocalDate.now())))) {
+				JOptionPane.showMessageDialog(null,"현재 대여중인 캠핑카에 대해서는 수정할 수 없습니다.");
+			}
+			else {
+				ac.appCoordinator().showUserReservationModifyView(target, findCarById(target.getCar_id()).getName());
+			}
 		} catch(Exception e) {
 			throw e;
 		}
