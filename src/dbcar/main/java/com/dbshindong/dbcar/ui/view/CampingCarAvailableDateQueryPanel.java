@@ -33,7 +33,6 @@ public class CampingCarAvailableDateQueryPanel extends JPanel {
 	public CampingCarAvailableDateQueryPanel(int car_id) {
 
 		this.car_id = car_id;
-
 		createUI();
 	}
 	
@@ -47,9 +46,6 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 		int presetx = (800- 100) / 2 ;
 		panel.setLayout(null);
 		
-		JButton logoutButton = new JButton("Logout");
-		logoutButton.setBounds(800-80, 0, 80, 25);
-		panel.add(logoutButton);
 		
 		JButton prevButton = new JButton("Prev");
 		prevButton.setBounds(0, 0, 80, 25);

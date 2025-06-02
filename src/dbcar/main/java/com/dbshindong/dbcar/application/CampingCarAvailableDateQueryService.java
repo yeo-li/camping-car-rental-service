@@ -24,7 +24,7 @@ public class CampingCarAvailableDateQueryService {
 		try {
 		List<Rental> queryResult = rentalRepository.findByCarId(id);
 		List<LocalDate> avail = new ArrayList<LocalDate>();
-		
+		System.out.println("exe2");
 		for (int day = 0; day < 31; day++) {
 	        LocalDate targetDate = today.plusDays(day);
 	        boolean isAvailable = true;
@@ -57,7 +57,6 @@ public class CampingCarAvailableDateQueryService {
 			LocalDate prev = null;
 			CampingCar car = ac.campingCarRepository().findById(carid);
 			Customer me = ac.customerRepository().findByUsername(ac.appCoordinator().getUser()).getFirst();
-			
 			int car_id = carid;
 			int customer_id = me.getCustomer_id();
 			int company_id = car.getCompany_id();
@@ -78,6 +77,7 @@ public class CampingCarAvailableDateQueryService {
 			        // 저장
 			        start_date = Date.valueOf(start);
 			        due_date = Date.valueOf(end);
+			        System.out.println(me.getCustomer_id()+"!");
 			        rent = new Rental(car_id, customer_id, company_id, start_date.toString(), rental_period, total_charge * rental_period, due_date.toString(), extra_charge_detail, extra_charge);
 			        ac.rentalRepository().save(rent);
 	
