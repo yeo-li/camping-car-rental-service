@@ -56,13 +56,12 @@ public class AppConfig {
 	private RepairRecordFetchService repairRecordFetchService;
 	private CampingCarQueryService campingCarQueryService;
 	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
-	
+
 	private LoginController loginController;
-  
+
 	private CampingCarQueryController campingCarQueryController;
 	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
 	private SqlQueryController sqlQueryController;
-
 
 	private AppConfig() {
 
@@ -88,7 +87,7 @@ public class AppConfig {
 
 	public CustomerRepository customerRepository() {
 		if (customerRepository == null) {
-			customerRepository = new CustomerRepository(dbConnection().getConnection());
+			customerRepository = new CustomerRepository();
 		}
 
 		return customerRepository;
@@ -96,7 +95,7 @@ public class AppConfig {
 
 	public CampingCarRepository campingCarRepository() {
 		if (campingCarRepository == null) {
-			campingCarRepository = new CampingCarRepository(dbConnection().getConnection());
+			campingCarRepository = new CampingCarRepository();
 		}
 
 		return campingCarRepository;
@@ -104,7 +103,7 @@ public class AppConfig {
 
 	public CampingCarCompanyRepository campingCarCompanyRepository() {
 		if (campingCarCompanyRepository == null) {
-			campingCarCompanyRepository = new CampingCarCompanyRepository(dbConnection().getConnection());
+			campingCarCompanyRepository = new CampingCarCompanyRepository();
 		}
 
 		return campingCarCompanyRepository;
@@ -112,7 +111,7 @@ public class AppConfig {
 
 	public RentalRepository rentalRepository() {
 		if (rentalRepository == null) {
-			rentalRepository = new RentalRepository(dbConnection().getConnection());
+			rentalRepository = new RentalRepository();
 		}
 
 		return rentalRepository;
@@ -120,7 +119,7 @@ public class AppConfig {
 
 	public EmployeeRepository employeeRepository() {
 		if (employeeRepository == null) {
-			employeeRepository = new EmployeeRepository(dbConnection().getConnection());
+			employeeRepository = new EmployeeRepository();
 		}
 
 		return employeeRepository;
@@ -128,7 +127,7 @@ public class AppConfig {
 
 	public ExternalRepairShopRepository externalRepairShopRepository() {
 		if (externalRepairShopRepository == null) {
-			externalRepairShopRepository = new ExternalRepairShopRepository(dbConnection().getConnection());
+			externalRepairShopRepository = new ExternalRepairShopRepository();
 		}
 
 		return externalRepairShopRepository;
@@ -136,7 +135,7 @@ public class AppConfig {
 
 	public ExternalRepairRecordRepository externalRepairRecordRepository() {
 		if (externalRepairRecordRepository == null) {
-			externalRepairRecordRepository = new ExternalRepairRecordRepository(dbConnection().getConnection());
+			externalRepairRecordRepository = new ExternalRepairRecordRepository();
 		}
 
 		return externalRepairRecordRepository;
@@ -144,7 +143,7 @@ public class AppConfig {
 
 	public InternalRepairRecordRepository internalRepairRecordRepository() {
 		if (internalRepairRecordRepository == null) {
-			internalRepairRecordRepository = new InternalRepairRecordRepository(dbConnection().getConnection());
+			internalRepairRecordRepository = new InternalRepairRecordRepository();
 		}
 
 		return internalRepairRecordRepository;
@@ -152,7 +151,7 @@ public class AppConfig {
 
 	public PartRepository partRepository() {
 		if (partRepository == null) {
-			partRepository = new PartRepository(dbConnection().getConnection());
+			partRepository = new PartRepository();
 		}
 
 		return partRepository;
@@ -243,21 +242,20 @@ public class AppConfig {
 
 		return repairRecordFetchService;
 	}
+
 	public CampingCarQueryService campingCarQueryService() {
 		if (campingCarQueryService == null) {
 			this.campingCarQueryService = new CampingCarQueryService(this.campingCarRepository());
 		}
 		return campingCarQueryService;
 	}
-	
+
 	public CampingCarAvailableDateQueryService campingCarAvailableDateQueryService() {
 		if (campingCarAvailableDateQueryService == null) {
 			this.campingCarAvailableDateQueryService = new CampingCarAvailableDateQueryService(this.rentalRepository());
 		}
 		return campingCarAvailableDateQueryService;
 	}
-	
-	
 
 	// controller
 
@@ -268,19 +266,22 @@ public class AppConfig {
 
 		return loginController;
 	}
+
 	public CampingCarQueryController campingCarQueryController() {
-		if(campingCarQueryController == null) {
-			campingCarQueryController = new CampingCarQueryController(this.campingCarQueryService(),this.appCoordinator());
+		if (campingCarQueryController == null) {
+			campingCarQueryController = new CampingCarQueryController(this.campingCarQueryService(),
+					this.appCoordinator());
 		}
 		return campingCarQueryController;
 	}
+
 	public CampingCarAvailableDateQueryController campingCarAvailableDateQueryController() {
-		if(campingCarAvailableDateQueryController == null) {
-			campingCarAvailableDateQueryController = new CampingCarAvailableDateQueryController(this.campingCarAvailableDateQueryService(), this.appCoordinator());
+		if (campingCarAvailableDateQueryController == null) {
+			campingCarAvailableDateQueryController = new CampingCarAvailableDateQueryController(
+					this.campingCarAvailableDateQueryService(), this.appCoordinator());
 		}
 		return campingCarAvailableDateQueryController;
 	}
-	
 
 	public SqlQueryController sqlQueryController() {
 		if (sqlQueryController == null) {

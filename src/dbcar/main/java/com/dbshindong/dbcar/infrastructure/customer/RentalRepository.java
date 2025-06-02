@@ -4,27 +4,21 @@ import java.sql.*;
 import java.sql.Date;
 import java.util.*;
 
-import java.time.LocalDate;
-
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
-
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 
 public class RentalRepository {
-	private final Connection conn;
 
-	public RentalRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public Rental findById(int id) {
 		try {
 			String sql = "SELECT * FROM Rental WHERE rental_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -57,7 +51,7 @@ public class RentalRepository {
 		List<Rental> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Rental WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int rental_id = rs.getInt("rental_id");
@@ -87,7 +81,7 @@ public class RentalRepository {
 		List<Rental> rentals = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Rental";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -118,7 +112,7 @@ public class RentalRepository {
 	public void delete(int id) {
 		try {
 			String sql = "DELETE FROM Rental WHERE rental_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -134,7 +128,7 @@ public class RentalRepository {
 	public void save(Rental rental) {
 		try {
 			String sql = "INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date, extra_charges, extra_charge_amount) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, rental.getCar_id());
 			pstmt.setInt(2, rental.getCustomer_id());
 			pstmt.setInt(3, rental.getCompany_id());
@@ -162,7 +156,7 @@ public class RentalRepository {
 	public void update(int id, Rental rental) {
 		try {
 			String sql = "UPDATE Rental SET car_id = ?, customer_id = ?, company_id = ?, start_date = ?, rental_period = ?, total_charge = ?, due_date = ?, extra_charges = ?, extra_charge_amount = ? WHERE rental_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, rental.getCar_id());
 			pstmt.setInt(2, rental.getCustomer_id());
 			pstmt.setInt(3, rental.getCompany_id());
@@ -196,7 +190,7 @@ public class RentalRepository {
 		List<Rental> rentals = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Rental WHERE car_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, car);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -212,8 +206,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date, rental_period,
-						total_charge, due_date, extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
+						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {

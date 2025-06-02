@@ -5,22 +5,18 @@ import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
 
 public class CustomerRepository {
-	private final Connection conn;
-
-	public CustomerRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private AppConfig ac = AppConfig.getInstance();
 
 	public Customer findById(int id) {
 		try {
 			String sql = "SELECT * FROM Customer where customer_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -52,7 +48,7 @@ public class CustomerRepository {
 		List<Customer> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Customer WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int customer_id = rs.getInt("customer_id");
@@ -80,7 +76,7 @@ public class CustomerRepository {
 
 		try {
 			String sql = "SELECT * FROM Customer";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -111,7 +107,7 @@ public class CustomerRepository {
 	public void delete(int id) {
 		String sql = "DELETE FROM Customer WHERE customer_id = ?";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -127,7 +123,7 @@ public class CustomerRepository {
 	public void save(Customer customer) {
 		String sql = "INSERT INTO Customer (username, password, license_number, name, address, phone, email) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, customer.getUsername());
 			pstmt.setString(2, customer.getPassword());
 			pstmt.setString(3, customer.getLicense_number());
@@ -149,7 +145,7 @@ public class CustomerRepository {
 		String sql = "UPDATE Customer SET username = ?, password = ?, license_number = ?, name = ?, address = ?, phone = ?, email = ? WHERE customer_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, customer.getUsername());
 			pstmt.setString(2, customer.getPassword());
 			pstmt.setString(3, customer.getLicense_number());
@@ -177,7 +173,7 @@ public class CustomerRepository {
 		ResultSet rs;
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, userID);
 			rs = pstmt.executeQuery();
 

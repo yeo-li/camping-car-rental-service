@@ -6,23 +6,20 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 
 public class CampingCarRepository {
-	private final Connection conn;
 
-	public CampingCarRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public CampingCar findById(int id) {
 		String sql = "SELECT * FROM CampingCar WHERE car_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -56,7 +53,7 @@ public class CampingCarRepository {
 
 		try {
 			String sql = "SELECT * FROM CampingCar WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -90,7 +87,7 @@ public class CampingCarRepository {
 
 		try {
 			String sql = "SELECT * FROM CampingCar";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -124,7 +121,7 @@ public class CampingCarRepository {
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, car.getName());
 			pstmt.setString(2, car.getPlate_number());
 			pstmt.setInt(3, car.getCapacity());
@@ -150,7 +147,7 @@ public class CampingCarRepository {
 				+ "WHERE car_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, car.getName());
 			pstmt.setString(2, car.getPlate_number());
 			pstmt.setInt(3, car.getCapacity());
@@ -176,7 +173,7 @@ public class CampingCarRepository {
 		String sql = "DELETE FROM CampingCar WHERE car_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 

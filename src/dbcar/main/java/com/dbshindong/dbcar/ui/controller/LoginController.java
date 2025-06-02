@@ -34,6 +34,7 @@ public class LoginController {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			JOptionPane.showMessageDialog(null, "DB 연결 실패");
 		}
 

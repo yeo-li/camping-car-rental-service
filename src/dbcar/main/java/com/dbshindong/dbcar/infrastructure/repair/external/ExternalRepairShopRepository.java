@@ -5,23 +5,19 @@ import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.external.ExternalRepairShop;
 
 public class ExternalRepairShopRepository {
-	private final Connection conn;
-
-	public ExternalRepairShopRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public List<ExternalRepairShop> findAll() {
 		List<ExternalRepairShop> shops = new ArrayList<>();
 		String sql = "SELECT * FROM ExternalRepairShop";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -50,7 +46,7 @@ public class ExternalRepairShopRepository {
 	public ExternalRepairShop findById(int id) {
 		try {
 			String sql = "SELECT * FROM ExternalRepairShop WHERE shop_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -79,7 +75,7 @@ public class ExternalRepairShopRepository {
 		List<ExternalRepairShop> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM ExternalRepairShop WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int shop_id = rs.getInt("shop_id");
@@ -103,7 +99,7 @@ public class ExternalRepairShopRepository {
 	public void delete(int id) {
 		try {
 			String sql = "DELETE FROM ExternalRepairShop WHERE shop_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -119,7 +115,7 @@ public class ExternalRepairShopRepository {
 	public void save(ExternalRepairShop shop) {
 		try {
 			String sql = "INSERT INTO ExternalRepairShop (name, address, phone, manager_name, manager_email) VALUES (?, ?, ?, ?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, shop.getName());
 			pstmt.setString(2, shop.getAddress());
 			pstmt.setString(3, shop.getPhone());
@@ -137,7 +133,7 @@ public class ExternalRepairShopRepository {
 	public void update(int id, ExternalRepairShop shop) {
 		try {
 			String sql = "UPDATE ExternalRepairShop SET name = ?, address = ?, phone = ?, manager_name = ?, manager_email = ? WHERE shop_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, shop.getName());
 			pstmt.setString(2, shop.getAddress());
 			pstmt.setString(3, shop.getPhone());

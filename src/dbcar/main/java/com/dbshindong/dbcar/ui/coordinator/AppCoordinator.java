@@ -256,6 +256,7 @@ public class AppCoordinator {
 		JButton logoutButton = new JButton("🔒 로그아웃");
 		logoutButton.addActionListener(e -> {
 			setUser(null);
+			ac.dbConnection().close();
 			showLoginView();
 		});
 
