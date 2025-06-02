@@ -209,6 +209,7 @@ public class AppCoordinator {
 		tableContentPanel.removeAll();
 		tableContentPanel.revalidate();
 		tableContentPanel.repaint();
+		tableContentPanel.requestFocusInWindow(); // 기본 포커스 회복용
 	}
 
 	public void showSqlQueryView() {
@@ -276,6 +277,7 @@ public class AppCoordinator {
 		JButton logoutButton = new JButton("🔒 로그아웃");
 		logoutButton.addActionListener(e -> {
 			setUser(null);
+			ac.dbConnection().close();
 			showLoginView();
 		});
 

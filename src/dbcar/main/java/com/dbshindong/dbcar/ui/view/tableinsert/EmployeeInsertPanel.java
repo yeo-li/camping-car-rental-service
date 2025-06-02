@@ -81,24 +81,26 @@ public class EmployeeInsertPanel extends JPanel {
 						department, role);
 				ac.dataInsertService().insertEmployee(employee);
 
-				JOptionPane.showMessageDialog(this, "저장 되었습니다.");
+				JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "저장 되었습니다.");
+
 				clearFields();
+
+				// 🔧 포커스와 버튼 상태 초기화
+				saveButton.getModel().setPressed(false);
+				saveButton.getModel().setArmed(false);
+				nameField.requestFocusInWindow();
 			} catch (Exception ex) {
 				ex.printStackTrace();
-				GlobalExceptionHandler.handle(ex);
+				GlobalExceptionHandler.handle(ex); // this 전달
 			}
 		});
 
-		cancelButton.addActionListener(e ->
-
-		{
+		cancelButton.addActionListener(e -> {
 			clearFields();
 			ac.appCoordinator().clearContentPanel();
 		});
 
-		clearButton.addActionListener(e ->
-
-		clearFields());
+		clearButton.addActionListener(e -> clearFields());
 	}
 
 	private void clearFields() {

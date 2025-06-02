@@ -1,28 +1,23 @@
 package dbcar.main.java.com.dbshindong.dbcar.infrastructure.repair.internal;
 
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.InternalRepairRecord;
 
 public class InternalRepairRecordRepository {
-	private final Connection conn;
-
-	public InternalRepairRecordRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public InternalRepairRecord findById(int id) {
 		String sql = "SELECT * FROM InternalRepairRecord WHERE internal_repair_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -51,7 +46,7 @@ public class InternalRepairRecordRepository {
 		List<InternalRepairRecord> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM InternalRepairRecord WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				Integer internal_repair_id = rs.getInt("internal_repair_id");
@@ -78,7 +73,7 @@ public class InternalRepairRecordRepository {
 		String sql = "SELECT * FROM InternalRepairRecord";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -106,7 +101,7 @@ public class InternalRepairRecordRepository {
 	public void delete(int id) {
 		String sql = "DELETE FROM InternalRepairRecord WHERE internal_repair_id = ?";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -122,7 +117,7 @@ public class InternalRepairRecordRepository {
 	public void save(InternalRepairRecord record) {
 		String sql = "INSERT INTO InternalRepairRecord (car_id, part_id, repair_date, duration_minutes, employee_id) VALUES (?, ?, ?, ?, ?)";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, record.getCar_id());
 			if (record.getPart_id() != null)
 				pstmt.setInt(2, record.getPart_id());
@@ -144,7 +139,7 @@ public class InternalRepairRecordRepository {
 	public void update(int id, InternalRepairRecord record) {
 		String sql = "UPDATE InternalRepairRecord SET car_id = ?, part_id = ?, repair_date = ?, duration_minutes = ?, employee_id = ? WHERE internal_repair_id = ?";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, record.getCar_id());
 			if (record.getPart_id() != null)
 				pstmt.setInt(2, record.getPart_id());

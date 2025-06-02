@@ -1,6 +1,5 @@
 package dbcar.main.java.com.dbshindong.dbcar.infrastructure.company;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,22 +8,19 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.Employee;
 
 public class EmployeeRepository {
-	private final Connection conn;
 
-	public EmployeeRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public Employee findById(int id) {
 		try {
 			String sql = "SELECT * FROM Employee where employee_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -57,7 +53,7 @@ public class EmployeeRepository {
 
 		try {
 			String sql = "SELECT * FROM Employee WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			if (rs.next()) {
@@ -89,7 +85,7 @@ public class EmployeeRepository {
 
 		try {
 			String sql = "SELECT * FROM Employee";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
@@ -120,7 +116,7 @@ public class EmployeeRepository {
 	public void delete(int id) {
 		String sql = "DELETE FROM Employee WHERE employee_id = ?";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -136,7 +132,7 @@ public class EmployeeRepository {
 	public void save(Employee employee) {
 		String sql = "INSERT INTO Employee (name, phone, address, salary, dependents, department, role) VALUES (?, ?, ?, ?, ?, ?, ?)";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, employee.getName());
 			pstmt.setString(2, employee.getPhone());
 			pstmt.setString(3, employee.getAddress());
@@ -158,7 +154,7 @@ public class EmployeeRepository {
 		String sql = "UPDATE Employee SET name = ?, phone = ?, address = ?, salary = ?, dependents = ?, department = ?, role = ? WHERE employee_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, employee.getName());
 			pstmt.setString(2, employee.getPhone());
 			pstmt.setString(3, employee.getAddress());
