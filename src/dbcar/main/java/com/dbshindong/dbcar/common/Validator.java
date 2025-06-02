@@ -1,7 +1,9 @@
 package dbcar.main.java.com.dbshindong.dbcar.common;
 
 public class Validator {
+
 	private static final String EMAIL_REGEX = "^[a-zA-Z0-9가-힣._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
 
 	public static boolean isValidEmail(String email) {
 		if (email == null || email.isBlank()) {
