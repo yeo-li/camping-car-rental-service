@@ -34,10 +34,6 @@ public class CampingCarQueryPanel extends JPanel {
 		int presety = (600 - 100) / 2;
 		int presetx = (800 - 100) / 2;
 
-		JButton logoutButton = new JButton("Logout");
-		logoutButton.setBounds(800 - 155 - 80, 0, 80, 25);
-		add(logoutButton);
-
 		JLabel tableTitle = new JLabel("캠핑카 목록");
 		tableTitle.setBounds(presetx, 25, 100, 40);
 		add(tableTitle);
@@ -86,8 +82,10 @@ public class CampingCarQueryPanel extends JPanel {
 					int selectedRow = table.getSelectedRow();
 					if (selectedRow >= 0) {
 						try {
-							ac.campingCarQueryController().onCarSelected(selectedRow + 1);
+							ac.campingCarQueryController().onCarSelected(carList.get(selectedRow).getCar_id());
+							System.out.println(carList.get(selectedRow).getCar_id());
 						} catch(Exception ex) {
+							
 							GlobalExceptionHandler.handle(ex);
 						}
 					}

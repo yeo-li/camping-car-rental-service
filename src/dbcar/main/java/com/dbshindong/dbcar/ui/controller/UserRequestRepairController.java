@@ -44,7 +44,7 @@ public class UserRequestRepairController {
 						(Integer) id,
 						(Integer) rent.getCompany_id(),
 						(Integer) user.getCustomer_id(),
-						"",
+						"정비내역 추가 요망",
 						LocalDate.now().toString(),
 						(Integer) 0,
 						LocalDate.now().toString(),
