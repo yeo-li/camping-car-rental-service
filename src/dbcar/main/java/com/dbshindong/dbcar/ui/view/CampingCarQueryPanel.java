@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
@@ -40,55 +41,61 @@ public class CampingCarQueryPanel extends JPanel {
 		JLabel tableTitle = new JLabel("캠핑카 목록");
 		tableTitle.setBounds(presetx, 25, 100, 40);
 		add(tableTitle);
-
-		List<CampingCar> carList = ac.campingCarQueryController().handleQuery();
-
-		String[] columnNames = {"모델명", "차량번호", "탑승인원", "사진", "가격", "상세정보"};
-		Object[][] data = new Object[carList.size()][6];
-
-		for (int i = 0; i < carList.size(); i++) {
-			CampingCar car = carList.get(i);
-			data[i][0] = car.getName();
-			data[i][1] = car.getPlate_number();
-			data[i][2] = car.getCapacity() + "인승";
-			data[i][3] = car.getImage();
-			data[i][4] = car.getRental_price() + "원";
-			data[i][5] = car.getDescription();
-		}
-
-		JTable table = new JTable(data, columnNames) {
-			@Override
-			public boolean isCellEditable(int row, int column) {
-				return false;
+		try {
+			List<CampingCar> carList = ac.campingCarQueryController().handleQuery();
+			
+			String[] columnNames = {"모델명", "차량번호", "탑승인원", "사진", "가격", "상세정보"};
+			Object[][] data = new Object[carList.size()][6];
+	
+			for (int i = 0; i < carList.size(); i++) {
+				CampingCar car = carList.get(i);
+				data[i][0] = car.getName();
+				data[i][1] = car.getPlate_number();
+				data[i][2] = car.getCapacity() + "인승";
+				data[i][3] = car.getImage();
+				data[i][4] = car.getRental_price() + "원";
+				data[i][5] = car.getDescription();
 			}
-			@Override
-	        public TableCellRenderer getCellRenderer(int row, int column) {
-	            if (column == 3) return new SwingImageRenderer();
-	            return super.getCellRenderer(row, column);
-	        }
-		};
-
-		table.setRowHeight(60);
-		table.getColumn("모델명").setPreferredWidth(70);
-		table.getColumn("탑승인원").setPreferredWidth(50);
-		table.getColumn("가격").setPreferredWidth(40);
-		table.getColumn("상세정보").setPreferredWidth(190);
-
-		JScrollPane scrollPane = new JScrollPane(table);
-		scrollPane.setBounds((800-750)/2, 100, 750, 450);
-		
-		add(scrollPane);
-
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				int selectedRow = table.getSelectedRow();
-				if (selectedRow >= 0) {
-					ac.campingCarQueryController().onCarSelected(selectedRow + 1);
+	
+			JTable table = new JTable(data, columnNames) {
+				@Override
+				public boolean isCellEditable(int row, int column) {
+					return false;
 				}
-			}
-		});
-
+				@Override
+		        public TableCellRenderer getCellRenderer(int row, int column) {
+		            if (column == 3) return new SwingImageRenderer();
+		            return super.getCellRenderer(row, column);
+		        }
+			};
+	
+			table.setRowHeight(60);
+			table.getColumn("모델명").setPreferredWidth(70);
+			table.getColumn("탑승인원").setPreferredWidth(50);
+			table.getColumn("가격").setPreferredWidth(40);
+			table.getColumn("상세정보").setPreferredWidth(190);
+	
+			JScrollPane scrollPane = new JScrollPane(table);
+			scrollPane.setBounds((800-750)/2, 100, 750, 450);
+			
+			add(scrollPane);
+	
+			table.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					int selectedRow = table.getSelectedRow();
+					if (selectedRow >= 0) {
+						try {
+							ac.campingCarQueryController().onCarSelected(selectedRow + 1);
+						} catch(Exception ex) {
+							GlobalExceptionHandler.handle(ex);
+						}
+					}
+				}
+			});
+		}catch(Exception ex) {
+			GlobalExceptionHandler.handle(ex);
+		}
 	
 	}
 	

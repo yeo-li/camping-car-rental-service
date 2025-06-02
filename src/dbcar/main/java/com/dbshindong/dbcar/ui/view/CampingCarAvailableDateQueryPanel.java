@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.customer.RentalRepository;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDateQueryController;
@@ -32,10 +33,7 @@ public class CampingCarAvailableDateQueryPanel extends JPanel {
 	public CampingCarAvailableDateQueryPanel(int car_id) {
 
 		this.car_id = car_id;
-		
-		
-		
-		
+
 		createUI();
 	}
 	
@@ -108,32 +106,35 @@ private void addCampingCarAvailableDateQueryComponent(JPanel panel) {
 			ac.appCoordinator().showCampingCarQueryView();
 		});
 		reservationButton.addActionListener( e -> {
-			int result = JOptionPane.showConfirmDialog(
-					null, "예약을 확정하시겠습니까?","예약 확인",JOptionPane.YES_NO_OPTION
-					);
-					
-			if(result == JOptionPane.YES_OPTION) {
-				List<LocalDate> selected = new ArrayList<>();
-				for (int i = 0; i < table.getRowCount(); i++) {
-				    Boolean isChecked = (Boolean) table.getValueAt(i, 0);
-				    if (Boolean.TRUE.equals(isChecked)) {
-				        String dateStr = (String) table.getValueAt(i, 1);
-				        selected.add(LocalDate.parse(dateStr)); // yyyy-MM-dd 형식 파싱
-				    }
-				}
-				Boolean res = ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
-				if(res) {
-					ac.appCoordinator().showCampingCarQueryView();
-					JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
+			try {
+				int result = JOptionPane.showConfirmDialog(
+						null, "예약을 확정하시겠습니까?","예약 확인",JOptionPane.YES_NO_OPTION
+						);
+						
+				if(result == JOptionPane.YES_OPTION) {
+					List<LocalDate> selected = new ArrayList<>();
+					for (int i = 0; i < table.getRowCount(); i++) {
+					    Boolean isChecked = (Boolean) table.getValueAt(i, 0);
+					    if (Boolean.TRUE.equals(isChecked)) {
+					        String dateStr = (String) table.getValueAt(i, 1);
+					        selected.add(LocalDate.parse(dateStr)); // yyyy-MM-dd 형식 파싱
+					    }
+					}
+					Boolean res = ac.campingCarAvailableDateQueryController().saveReservation(selected, car_id);
+					if(res) {
+						ac.appCoordinator().showCampingCarQueryView();
+						JOptionPane.showMessageDialog(null, "예약에 성공했습니다.");
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "선택된 일정이 없습니다.");
+					}
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "예약에 실패했습니다.\n일정을 확인해 주세요.");
+					JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
 				}
+			}catch(Exception ex) {
+				GlobalExceptionHandler.handle(ex);
 			}
-			else {
-				JOptionPane.showMessageDialog(null, "작업을 취소하셨습니다.");
-			}
-					
 		});
 		
 		
