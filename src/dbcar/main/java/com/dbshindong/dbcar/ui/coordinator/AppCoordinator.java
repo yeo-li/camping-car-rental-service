@@ -207,6 +207,7 @@ public class AppCoordinator {
 		tableContentPanel.removeAll();
 		tableContentPanel.revalidate();
 		tableContentPanel.repaint();
+		tableContentPanel.requestFocusInWindow(); // 기본 포커스 회복용
 	}
 
 	public void showSqlQueryView() {

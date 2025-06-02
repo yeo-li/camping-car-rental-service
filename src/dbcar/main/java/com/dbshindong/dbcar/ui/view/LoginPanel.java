@@ -1,6 +1,7 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+import java.awt.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
@@ -18,54 +19,57 @@ public class LoginPanel extends JPanel {
 	}
 
 	public void createUI() {
-		setLayout(null);
-		addLoginComponent(this);
-	}
+		setLayout(new GridBagLayout()); // 화면 크기 변경에도 중앙 정렬 유지
 
-	private void addLoginComponent(JPanel panel) {
-
-		int presety = (600 - 145) / 2;
-		int presetx = (800 - 220) / 2;
-		panel.setLayout(null);
+		JPanel formPanel = new JPanel();
+		formPanel.setLayout(new GridBagLayout());
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.insets = new Insets(10, 10, 10, 10);
+		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		JLabel userIDLabel = new JLabel("ID");
-		userIDLabel.setBounds(presetx, presety, 100, 25);
-		panel.add(userIDLabel);
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		formPanel.add(userIDLabel, gbc);
 
-		JTextField userIDText = new JTextField(20);
-		userIDText.setBounds(presetx + 60, presety, 160, 25);
-		panel.add(userIDText);
+		JTextField userIDText = new JTextField(15);
+		gbc.gridx = 1;
+		formPanel.add(userIDText, gbc);
 
 		JLabel userPWLabel = new JLabel("Password");
-		userPWLabel.setBounds(presetx, 40 + presety, 100, 25);
-		panel.add(userPWLabel);
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		formPanel.add(userPWLabel, gbc);
 
-		JTextField userPWText = new JTextField(20);
-		userPWText.setBounds(presetx + 60, 40 + presety, 160, 25);
-		panel.add(userPWText);
+		JTextField userPWText = new JTextField(15); // 비밀번호는 JPasswordField로 바꿔도 됨
+		gbc.gridx = 1;
+		formPanel.add(userPWText, gbc);
 
+		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
 		JButton userLoginButton = new JButton("User Login");
-		userLoginButton.setBounds(presetx, 80 + presety, 105, 25);
-		panel.add(userLoginButton);
-
 		JButton adminLoginButton = new JButton("Admin Login");
-		adminLoginButton.setBounds(presetx + 115, 80 + presety, 105, 25);
-		panel.add(adminLoginButton);
+		buttonPanel.add(userLoginButton);
+		buttonPanel.add(adminLoginButton);
+
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.gridwidth = 2;
+		formPanel.add(buttonPanel, gbc);
+
+		// formPanel을 이 LoginPanel 중앙에 추가
+		add(formPanel);
 
 		userLoginButton.addActionListener(e -> {
 			String userID = userIDText.getText();
 			String password = userPWText.getText();
-			loginController.handleLogin("user1", "user1", userID, password);// 추후 user1으로 수정 필요
-
+			loginController.handleLogin("user1", "user1", userID, password);
 		});
 
 		adminLoginButton.addActionListener(e -> {
-			JOptionPane.showMessageDialog(null, "관리자 접속");
+			JOptionPane.showMessageDialog(SwingUtilities.getWindowAncestor(this), "관리자 접속");
 			loginController.handleLogin("root", "1234", null, null);
 			coordinator.setUser("root");
 			coordinator.showAdminInitView();
 		});
-
 	}
-
 }
