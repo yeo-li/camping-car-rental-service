@@ -59,7 +59,11 @@ public class AppCoordinator {
 
 	public void showUserInitView() {
 		UserInitPanel view = new UserInitPanel();
-		frame.setContentPane(view);
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 
@@ -233,31 +237,60 @@ public class AppCoordinator {
 
 	public void showCampingCarQueryView() {
 		CampingCarQueryPanel view = new CampingCarQueryPanel();
-		frame.setContentPane(view);
+		
+
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 
 	}
 
 	public void showCampingCarAvailableDateQueryView(int id) {
 		CampingCarAvailableDateQueryPanel view = new CampingCarAvailableDateQueryPanel(id);
-		frame.setContentPane(view);
+		
+
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
+		
 		frame.revalidate();
 	}
 
 	public void showUserReservationQueryView() { 
 		UserReservationQueryPanel view = new UserReservationQueryPanel();
-		frame.setContentPane(view);
+		
+
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 	
 	public void showUserReservationModifyView(Rental target, String carname) {
 		UserReservationModifyPanel view = new UserReservationModifyPanel(target, carname);
-		frame.setContentPane(view);
+		
+
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 	public void showUserRequestRepairView(Rental rent, String userId) {
 		UserRequestRepairPanel view = new UserRequestRepairPanel(rent, userId);
-		frame.setContentPane(view);
+		JPanel mainPanel = new JPanel(new BorderLayout());
+		mainPanel.add(buildTopBar(), BorderLayout.NORTH);
+		mainPanel.add(view, BorderLayout.CENTER);
+
+		frame.setContentPane(mainPanel);
 		frame.revalidate();
 	}
 
