@@ -356,6 +356,7 @@ DROP USER IF EXISTS 'user1'@'localhost';
 CREATE USER 'user1'@'localhost' IDENTIFIED BY 'user1';
 
 -- 3. 권한을 제한하고 싶다면 예: SELECT, INSERT, UPDATE만
+GRANT SELECT ON DBTEST.CampingCarCompany TO 'user1'@'localhost';
 GRANT SELECT ON DBTEST.CampingCar TO 'user1'@'localhost';
 GRANT SELECT ON DBTEST.Customer TO 'user1'@'localhost';
 GRANT SELECT, INSERT, UPDATE, DELETE ON DBTEST.Rental TO 'user1'@'localhost';
