@@ -2,6 +2,7 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
 
+
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
@@ -72,6 +73,7 @@ public class LoginPanel extends JPanel {
 			loginController.handleLogin("root", "1234", null, null);
         coordinator.setUser("root");
 			coordinator.showAdminInitView();
+
 			} catch (Exception ex) {
 				GlobalExceptionHandler.handle(ex);
 			}

@@ -118,6 +118,7 @@ public class Rental {
 
 		if (extra_charge != null && extra_charge <= 0) {
 			throw new InvalidRentalException(EXTRA_CHARGE_AMOUNT + "의 입력값이 올바르지 않습니다.");
+
 		}
 
 	}
