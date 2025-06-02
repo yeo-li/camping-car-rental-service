@@ -77,7 +77,7 @@ public class Employee {
 
 		// role은 관리, 사무, 정비 중 하나여야함
 		if (!(role.equals("사무") || role.equals("관리") || role.equals("정비"))) {
-			throw new InvalidEmployeeException(DEPARTMENT + "는 관리, 사무, 정비 중 하나여야합니다.");
+			throw new InvalidEmployeeException(ROLE + "는 관리, 사무, 정비 중 하나여야합니다.");
 		}
 
 	}
