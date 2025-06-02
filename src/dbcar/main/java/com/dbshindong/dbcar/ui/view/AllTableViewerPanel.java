@@ -6,9 +6,10 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.GlobalExceptionHandler;
@@ -73,27 +74,38 @@ public class AllTableViewerPanel extends JPanel {
 		}
 
 		T first = dataList.get(0);
-		Field[] fields = first.getClass().getDeclaredFields();
-		for (Field f : fields)
-			f.setAccessible(true);
+		Field[] fullFields = first.getClass().getDeclaredFields();
+		int limit = (fullFields.length - 1) / 2 - 1;
+		Field[] fields = Arrays.copyOfRange(fullFields, 0, limit + 1);
+		for (Field field : fields)
+			field.setAccessible(true);
 
 		String[] columnNames = new String[fields.length];
-		for (int i = 0; i < fields.length; i++) {
+		for (int i = 0; i < fields.length; i++)
 			columnNames[i] = fields[i].getName();
-		}
 
 		Object[][] rowData = new Object[dataList.size()][fields.length];
+
 		for (int i = 0; i < dataList.size(); i++) {
 			T obj = dataList.get(i);
 			for (int j = 0; j < fields.length; j++) {
 				try {
 					Object value = fields[j].get(obj);
-					if (value instanceof byte[] && "CampingCar".equals(tableName)) {
-						// 이미지를 아이콘으로 변환
-						byte[] imageBytes = (byte[]) value;
-						BufferedImage img = ImageIO.read(new ByteArrayInputStream(imageBytes));
-						Image scaled = img.getScaledInstance(100, 70, Image.SCALE_SMOOTH);
-						rowData[i][j] = new ImageIcon(scaled);
+					if (value instanceof byte[] && "CampingCar".equals(tableName)
+							&& fields[j].getName().equals("image")) {
+						byte[] imgBytes = (byte[]) value;
+						try {
+							BufferedImage bufferedImage = ImageIO.read(new ByteArrayInputStream(imgBytes));
+							if (bufferedImage != null) {
+								ImageIcon icon = new ImageIcon(
+										bufferedImage.getScaledInstance(150, 100, Image.SCALE_SMOOTH));
+								rowData[i][j] = icon;
+							} else {
+								rowData[i][j] = "이미지 오류";
+							}
+						} catch (Exception ex) {
+							rowData[i][j] = "이미지 오류";
+						}
 					} else {
 						rowData[i][j] = value;
 					}
@@ -121,7 +133,59 @@ public class AllTableViewerPanel extends JPanel {
 		};
 
 		resultTable.setModel(model);
-		resultTable.setRowHeight(80);
+		resultTable.setFont(new Font("SansSerif", Font.PLAIN, 13));
+		boolean flag = false;
+		for (String col : columnNames) {
+			if (col.equals("image"))
+				flag = true;
+		}
+		if (flag) {
+			resultTable.setRowHeight(80);
+		} else {
+			resultTable.setRowHeight(20);
+		}
+		resultTable.setIntercellSpacing(new Dimension(5, 5));
+		resultTable.setShowGrid(true);
+		resultTable.setGridColor(Color.LIGHT_GRAY);
+
+		// 중앙 정렬 렌더러
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+
+		// 컬럼별 렌더러 설정
+		for (int i = 0; i < resultTable.getColumnCount(); i++) {
+			String columnName = columnNames[i];
+			if ("image".equals(columnName) && "CampingCar".equals(tableName)) {
+				resultTable.getColumnModel().getColumn(i).setCellRenderer(new DefaultTableCellRenderer() {
+					@Override
+					public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+							boolean hasFocus, int row, int column) {
+						if (value instanceof ImageIcon) {
+							JLabel label = new JLabel((ImageIcon) value);
+							label.setHorizontalAlignment(SwingConstants.CENTER);
+							return label;
+						}
+						if (value instanceof byte[]) {
+							try {
+								BufferedImage img = ImageIO.read(new ByteArrayInputStream((byte[]) value));
+								if (img != null) {
+									ImageIcon icon = new ImageIcon(img.getScaledInstance(100, 60, Image.SCALE_SMOOTH));
+									JLabel label = new JLabel(icon);
+									label.setHorizontalAlignment(SwingConstants.CENTER);
+									return label;
+								}
+							} catch (IOException e) {
+								return new JLabel("이미지 오류");
+							}
+						}
+						return new JLabel("이미지 없음");
+					}
+				});
+			} else {
+				resultTable.getColumnModel().getColumn(i).setCellRenderer(centerRenderer);
+			}
+		}
+
 		messageLabel.setText("✅ " + dataList.size() + "건 조회됨");
 	}
 

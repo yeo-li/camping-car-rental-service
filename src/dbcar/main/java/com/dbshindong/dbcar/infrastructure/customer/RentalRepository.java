@@ -29,16 +29,16 @@ public class RentalRepository {
 
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				int rental_id = rs.getInt("rental_id");
-				int car_id = rs.getInt("car_id");
-				int customer_id = rs.getInt("customer_id");
-				int company_id = rs.getInt("company_id");
+				Integer rental_id = rs.getInt("rental_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer customer_id = rs.getInt("customer_id");
+				Integer company_id = rs.getInt("company_id");
 				Date start_date = rs.getDate("start_date");
-				int rental_period = rs.getInt("rental_period");
-				int total_charge = rs.getInt("total_charge");
+				Integer rental_period = rs.getInt("rental_period");
+				Integer total_charge = rs.getInt("total_charge");
 				Date due_date = rs.getDate("due_date");
 				String extra_charge_detail = rs.getString("extra_charges");
-				int extra_charge = rs.getInt("extra_charge_amount");
+				Integer extra_charge = rs.getInt("extra_charge_amount");
 
 				return new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
 						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
@@ -91,17 +91,17 @@ public class RentalRepository {
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
-				int rental_id = rs.getInt("rental_id");
-				int car_id = rs.getInt("car_id");
-				int customer_id = rs.getInt("customer_id");
-				int company_id = rs.getInt("company_id");
+				Integer rental_id = rs.getInt("rental_id");
+				Integer car_id = rs.getInt("car_id");
+				Integer customer_id = rs.getInt("customer_id");
+				Integer company_id = rs.getInt("company_id");
 				Date start_date = rs.getDate("start_date");
-				int rental_period = rs.getInt("rental_period");
-				int total_charge = rs.getInt("total_charge");
+				Integer rental_period = rs.getInt("rental_period");
+				Integer total_charge = rs.getInt("total_charge");
 				Date due_date = rs.getDate("due_date");
-				String extra_charge_detail = rs.getString("extra_charges");
-				int extra_charge = rs.getInt("extra_charge_amount");
-
+				String extra_charge_detail = rs.getObject("extra_charges", String.class);
+				Integer extra_charge = rs.getObject("extra_charge_amount", Integer.class);
+				System.out.println(extra_charge);
 				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
 						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
@@ -143,6 +143,11 @@ public class RentalRepository {
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
 			pstmt.setString(8, rental.getExtra_charge_detail());
+			if (rental.getExtra_charge_detail() != null)
+				pstmt.setString(2, rental.getExtra_charge_detail());
+			else
+				pstmt.setNull(2, java.sql.Types.VARCHAR);
+
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
 
@@ -167,8 +172,16 @@ public class RentalRepository {
 			pstmt.setInt(5, rental.getRental_period());
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
-			pstmt.setString(8, rental.getExtra_charge_detail());
-			pstmt.setInt(9, rental.getExtra_charge());
+			if (rental.getExtra_charge_detail() != null)
+				pstmt.setString(2, rental.getExtra_charge_detail());
+			else
+				pstmt.setNull(2, java.sql.Types.VARCHAR);
+
+			if (rental.getExtra_charge() == null) {
+				pstmt.setInt(9, 0);
+			} else {
+				pstmt.setInt(9, rental.getExtra_charge());
+			}
 			pstmt.setInt(10, id);
 			int result = pstmt.executeUpdate();
 

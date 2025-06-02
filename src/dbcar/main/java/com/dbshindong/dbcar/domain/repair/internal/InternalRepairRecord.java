@@ -74,6 +74,7 @@ public class InternalRepairRecord {
 		}
 
 		if (part_id != null && part_id <= 0) {
+			System.out.println(part_id);
 			throw new InvalidInternalRepairRecordException(PART_ID + "의 입력값이 잘못되었습니다.");
 		}
 	}

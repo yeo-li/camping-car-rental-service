@@ -140,6 +140,7 @@ public class CampingCarRepository {
 			}
 
 		} catch (SQLException e) {
+			e.printStackTrace();
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}
 	}
