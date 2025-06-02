@@ -350,21 +350,17 @@ INSERT INTO Rental (car_id, customer_id, company_id, start_date, rental_period, 
 # ALTER USER 'root'@'%' IDENTIFIED BY '1234';
 
 -- 일반 회원 계정
-# DROP USER 'user1'@'%';
+DROP USER IF EXISTS 'user1'@'localhost';
 
-# CREATE USER 'user1'@'%' IDENTIFIED BY 'user1';
--- user1 계정은 반드시 캠핑카 대역 예약에 필요한 테이블에 대해서만 읽기/쓰기 원한을 부여한다. (root 계정은 모든 권한 소유)
+-- 2. user1 계정 생성
+CREATE USER 'user1'@'localhost' IDENTIFIED BY 'user1';
 
--- root: 모든 권한 부여
-# GRANT ALL PRIVILEGES ON DBTEST.* TO 'root'@'%';
-
--- 일반 사용자: 특정 테이블에 대해 CRUD만 허용
--- 일반 회원은 Rental, externalRepairRecord 테이블에 대해서만 삭제/변경을 수행한다.
-# GRANT SELECT, INSERT, UPDATE, DELETE
-# ON DBTEST TO 'user1'@'%';
-
-# GRANT SELECT, INSERT, UPDATE, DELETE
-# ON DBTEST TO 'user1'@'%';
--- 필요한 다른 테이블도 동일하게 반복
+-- 3. 권한을 제한하고 싶다면 예: SELECT, INSERT, UPDATE만
+GRANT SELECT ON DBTEST.CampingCarCompany TO 'user1'@'localhost';
+GRANT SELECT ON DBTEST.CampingCar TO 'user1'@'localhost';
+GRANT SELECT ON DBTEST.Customer TO 'user1'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON DBTEST.Rental TO 'user1'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON DBTEST.ExternalRepairRecord TO 'user1'@'localhost';
+GRANT SELECT ON DBTEST.ExternalRepairShop TO 'user1'@'localhost';
 
 FLUSH PRIVILEGES;
