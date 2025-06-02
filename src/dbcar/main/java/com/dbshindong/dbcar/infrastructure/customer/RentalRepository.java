@@ -208,8 +208,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
-						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
+						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {
@@ -217,11 +217,12 @@ public class RentalRepository {
 		}
 		return rentals;
 	}
+
 	public List<Rental> findByUserId(int id) {
 		List<Rental> rentals = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Rental WHERE Customer_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -237,8 +238,8 @@ public class RentalRepository {
 				String extra_charge_detail = rs.getString("extra_charges");
 				int extra_charge = rs.getInt("extra_charge_amount");
 
-				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(), rental_period,
-						total_charge, due_date.toString(), extra_charge_detail, extra_charge);
+				Rental rental = new Rental(rental_id, car_id, customer_id, company_id, start_date.toString(),
+						rental_period, total_charge, due_date.toString(), extra_charge_detail, extra_charge);
 				rentals.add(rental);
 			}
 		} catch (SQLException e) {
@@ -246,17 +247,16 @@ public class RentalRepository {
 		}
 		return rentals;
 	}
-	public List<Integer> findCarNotInPeriod(Rental rent){
+
+	public List<Integer> findCarNotInPeriod(Rental rent) {
 		try {
 			List<Integer> availCar = new ArrayList<>();
-			String sql = "SELECT DISTINCT car_id "
-					+ "FROM Rental "
-					+ "WHERE start_date <= ? "
+			String sql = "SELECT DISTINCT car_id " + "FROM Rental " + "WHERE start_date <= ? "
 					+ "AND DATE_ADD(start_date, INTERVAL rental_period -1 DAY) >= ?;";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setDate(1, Date.valueOf(rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1)));
 			pstmt.setDate(2, rent.getStart_date());
-			
+
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int car_id = rs.getInt("car_id");
@@ -270,6 +270,5 @@ public class RentalRepository {
 			throw new InvalidQueryException("DB 오류입니다.", e);
 		}
 	}
-	
 
 }

@@ -159,12 +159,12 @@ public class ExternalRepairRecordRepository {
 		return new ExternalRepairRecord(external_repair_id, car_id, shop_id, company_id, customer_id, content,
 				repair_date, cost, due_date, note);
 	}
-	
-	public List<ExternalRepairRecord> findByCarAndCustomer(int carid, int custid){
+
+	public List<ExternalRepairRecord> findByCarAndCustomer(int carid, int custid) {
 		List<ExternalRepairRecord> records = new ArrayList<>();
 		String sql = "SELECT * FROM ExternalRepairRecord WHERE car_id = ? AND customer_id = ?";
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, carid);
 			pstmt.setInt(2, custid);
 			ResultSet rs = pstmt.executeQuery();
