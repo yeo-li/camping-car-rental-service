@@ -51,7 +51,9 @@ public class Rental {
 
 	public Rental(Integer car_id, Integer customer_id, Integer company_id, String start_date, Integer rental_period,
 			Integer total_charge, String due_date, String extra_charge_detail, Integer extra_charge) {
+
 		this.validate(-1, car_id, customer_id, company_id, start_date, rental_period, total_charge, due_date,
+
 				extra_charge_detail, extra_charge);
 		this.rental_id = -1;
 		this.car_id = car_id;
@@ -115,6 +117,7 @@ public class Rental {
 
 		if (extra_charge != null && extra_charge <= 0) {
 			throw new InvalidRentalException(EXTRA_CHARGE_AMOUNT + "의 입력값이 올바르지 않습니다.");
+
 		}
 
 	}
