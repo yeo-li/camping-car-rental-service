@@ -143,10 +143,11 @@ public class RentalRepository {
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
 			pstmt.setString(8, rental.getExtra_charge_detail());
+			
 			if (rental.getExtra_charge_detail() != null)
-				pstmt.setString(2, rental.getExtra_charge_detail());
+				pstmt.setString(8, rental.getExtra_charge_detail());
 			else
-				pstmt.setNull(2, java.sql.Types.VARCHAR);
+				pstmt.setNull(8, java.sql.Types.VARCHAR);
 
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
@@ -154,9 +155,11 @@ public class RentalRepository {
 			} else {
 				pstmt.setInt(9, rental.getExtra_charge());
 			}
-
+			System.out.println(pstmt.toString());
 			pstmt.executeUpdate();
 		} catch (SQLException e) {
+			//System.out.println(e+"!");
+			e.printStackTrace();
 			throw new DataInsertException("데이터 저장 중 오류가 발생했습니다.", e);
 		}
 	}
@@ -173,9 +176,9 @@ public class RentalRepository {
 			pstmt.setInt(6, rental.getTotal_charge());
 			pstmt.setDate(7, rental.getDue_date());
 			if (rental.getExtra_charge_detail() != null)
-				pstmt.setString(2, rental.getExtra_charge_detail());
+				pstmt.setString(8, rental.getExtra_charge_detail());
 			else
-				pstmt.setNull(2, java.sql.Types.VARCHAR);
+				pstmt.setNull(8, java.sql.Types.VARCHAR);
 
 			if (rental.getExtra_charge() == null) {
 				pstmt.setInt(9, 0);
