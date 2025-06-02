@@ -279,11 +279,11 @@ public class DeleteUpdatePanel extends JPanel {
 				dataTable.setRowHeight(20);
 			}
 
-			dataTable.setShowGrid(true); // ✅ 추가
-			dataTable.setGridColor(Color.GRAY); // ✅ 추가
+			dataTable.setShowGrid(true);
+			dataTable.setGridColor(Color.GRAY); 
 
 		} catch (Exception ex) {
-			throw new IllegalArgumentException("데이터를 조회할 수 없습니다. 선택한 테이블: " + table);
+			GlobalExceptionHandler.handle(new IllegalArgumentException("데이터를 조회할 수 없습니다. 선택한 테이블: " + table)); 
 		}
 	}
 

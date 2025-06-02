@@ -170,7 +170,7 @@ public class AppConfig {
 
 	public SqlExecutor sqlExecutor() {
 		if (sqlExecutor == null) {
-			sqlExecutor = new SqlExecutor(dbConnection().getConnection());
+			sqlExecutor = new SqlExecutor();
 		}
 
 		return sqlExecutor;
@@ -269,20 +269,25 @@ public class AppConfig {
 	}
 
 	public UserReservationQueryService userReservationQueryService() {
-		if(userReservationQueryService == null) {
-			this.userReservationQueryService = new UserReservationQueryService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository(), this.campingCarCompanyRepository());
+		if (userReservationQueryService == null) {
+			this.userReservationQueryService = new UserReservationQueryService(this.rentalRepository(),
+					this.campingCarRepository(), this.customerRepository(), this.campingCarCompanyRepository());
 		}
 		return userReservationQueryService;
 	}
+
 	public UserReservationModifyService userReservationModifyService() {
-		if(userReservationModifyService == null) {
-			this.userReservationModifyService = new UserReservationModifyService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository());
+		if (userReservationModifyService == null) {
+			this.userReservationModifyService = new UserReservationModifyService(this.rentalRepository(),
+					this.campingCarRepository(), this.customerRepository());
 		}
 		return userReservationModifyService;
 	}
+
 	public UserRequestRepairService userRequestRepairService() {
-		if(userRequestRepairService == null) {
-			this.userRequestRepairService = new UserRequestRepairService(this.externalRepairRecordRepository(),this.externalRepairShopRepository(), this.customerRepository());
+		if (userRequestRepairService == null) {
+			this.userRequestRepairService = new UserRequestRepairService(this.externalRepairRecordRepository(),
+					this.externalRepairShopRepository(), this.customerRepository());
 		}
 		return userRequestRepairService;
 	}
@@ -320,21 +325,27 @@ public class AppConfig {
 
 		return sqlQueryController;
 	}
+
 	public UserReservationQueryController userReservationQueryController() {
-		if(userReservationQueryController == null) {
-			userReservationQueryController = new UserReservationQueryController(this.userReservationQueryService(), this.appCoordinator());
+		if (userReservationQueryController == null) {
+			userReservationQueryController = new UserReservationQueryController(this.userReservationQueryService(),
+					this.appCoordinator());
 		}
 		return userReservationQueryController;
 	}
+
 	public UserReservationModifyController userReservationModifyController() {
-		if(userReservationModifyController == null) {
-			userReservationModifyController = new UserReservationModifyController(this.userReservationModifyService(), this.appCoordinator());
+		if (userReservationModifyController == null) {
+			userReservationModifyController = new UserReservationModifyController(this.userReservationModifyService(),
+					this.appCoordinator());
 		}
 		return userReservationModifyController;
 	}
+
 	public UserRequestRepairController userRequestRepairController() {
-		if(userRequestRepairController == null) {
-			userRequestRepairController = new UserRequestRepairController(this.userRequestRepairService(), this.appCoordinator());
+		if (userRequestRepairController == null) {
+			userRequestRepairController = new UserRequestRepairController(this.userRequestRepairService(),
+					this.appCoordinator());
 		}
 		return userRequestRepairController;
 	}

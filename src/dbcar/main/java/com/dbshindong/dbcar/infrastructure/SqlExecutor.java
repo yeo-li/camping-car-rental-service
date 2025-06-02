@@ -4,18 +4,14 @@ import java.sql.*;
 import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 
 public class SqlExecutor {
-	private final Connection conn;
-
-	public SqlExecutor(Connection conn) {
-		super();
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public List<Map<String, Object>> findData(String selectSql) {
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(selectSql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(selectSql);
 			ResultSet rs = pstmt.executeQuery();
 
 			return parseResultSet(rs);
