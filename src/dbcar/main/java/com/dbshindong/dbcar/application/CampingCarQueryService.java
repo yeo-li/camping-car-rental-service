@@ -14,7 +14,11 @@ public class CampingCarQueryService {
 	}
 	
 	public List<CampingCar> CampingCarQuery() {
-		List<CampingCar> queryResult = campingCarRepository.findAll();
+		try {
+			List<CampingCar> queryResult = campingCarRepository.findAll();
 		return queryResult;
+		} catch(Exception ex) {
+			throw(ex);
+		}
 	}
 }

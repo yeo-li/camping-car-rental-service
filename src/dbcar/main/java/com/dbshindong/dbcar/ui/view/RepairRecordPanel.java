@@ -9,9 +9,14 @@ import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 import java.awt.*;
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 public class RepairRecordPanel extends JPanel {
@@ -39,13 +44,31 @@ public class RepairRecordPanel extends JPanel {
 		add(togglePanel, BorderLayout.NORTH);
 
 		// 우측 - 캠핑카 테이블
-		carModel = new DefaultTableModel(new String[] { "ID", "이름", "차량번호" }, 0) {
+		carModel = new DefaultTableModel(new String[] { "ID", "이름", "차량번호", "차량 사진" }, 0) {
 			public boolean isCellEditable(int r, int c) {
 				return false;
 			}
 		};
 		carTable = new JTable(carModel);
 		carTable.setFillsViewportHeight(true);
+
+		// 이미지 컬럼 렌더러 설정
+		carTable.setRowHeight(80); // 이미지 크기에 맞춰 행 높이 조정
+		TableColumn imageColumn = carTable.getColumnModel().getColumn(3); // "차량 사진" 컬럼
+		imageColumn.setCellRenderer(new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+					boolean hasFocus, int row, int column) {
+				if (value instanceof ImageIcon icon) {
+					JLabel label = new JLabel(icon);
+					label.setHorizontalAlignment(SwingConstants.CENTER);
+					return label;
+				} else {
+					return new JLabel("이미지 없음");
+				}
+			}
+		});
+
 		JScrollPane carScroll = new JScrollPane(carTable);
 		carScroll.setBorder(new TitledBorder("캠핑카 목록"));
 
@@ -90,13 +113,45 @@ public class RepairRecordPanel extends JPanel {
 
 		loadCampingCars();
 		setupListeners();
+		styleTable(carTable);
+		styleTable(recordTable);
+		styleTable(detailTable);
+	}
+
+	private void styleTable(JTable table) {
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		table.setShowGrid(true);
+		table.setGridColor(Color.GRAY);
+		if (table != carTable) {
+			table.setRowHeight(25);
+		}
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		table.getTableHeader().setReorderingAllowed(false);
 	}
 
 	private void loadCampingCars() {
 		List<CampingCar> cars = ac.repairRecordFetchService().fetchCampingCars();
 		carModel.setRowCount(0);
 		for (CampingCar car : cars) {
-			carModel.addRow(new Object[] { car.getCar_id(), car.getName(), car.getPlate_number() });
+			ImageIcon imageIcon = createImageIcon(car.getImage());
+			carModel.addRow(new Object[] { car.getCar_id(), car.getName(), car.getPlate_number(), imageIcon // ← 여기에 이미지
+																											// 넣기
+			});
+		}
+	}
+
+	private ImageIcon createImageIcon(byte[] imageData) {
+		if (imageData == null || imageData.length == 0) {
+			return null;
+		}
+		try {
+			ImageIcon icon = new ImageIcon(imageData);
+			Image image = icon.getImage().getScaledInstance(100, 70, Image.SCALE_SMOOTH); // 적절한 크기로 조정
+			return new ImageIcon(image);
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		}
 	}
 

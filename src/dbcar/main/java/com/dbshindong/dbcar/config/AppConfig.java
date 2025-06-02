@@ -9,6 +9,9 @@ import dbcar.main.java.com.dbshindong.dbcar.application.DataUpdateService;
 import dbcar.main.java.com.dbshindong.dbcar.application.DatabaseInitService;
 import dbcar.main.java.com.dbshindong.dbcar.application.LoginService;
 import dbcar.main.java.com.dbshindong.dbcar.application.RepairRecordFetchService;
+import dbcar.main.java.com.dbshindong.dbcar.application.UserRequestRepairService;
+import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationModifyService;
+import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.application.factory.LoginServiceFactory;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.DBConnection;
 import dbcar.main.java.com.dbshindong.dbcar.infrastructure.SqlExecutor;
@@ -25,6 +28,9 @@ import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarAvailableDat
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.CampingCarQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.LoginController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.controller.SqlQueryController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserRequestRepairController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationModifyController;
+import dbcar.main.java.com.dbshindong.dbcar.ui.controller.UserReservationQueryController;
 import dbcar.main.java.com.dbshindong.dbcar.ui.coordinator.AppCoordinator;
 
 public class AppConfig {
@@ -56,13 +62,17 @@ public class AppConfig {
 	private RepairRecordFetchService repairRecordFetchService;
 	private CampingCarQueryService campingCarQueryService;
 	private CampingCarAvailableDateQueryService campingCarAvailableDateQueryService;
-	
+	private UserReservationQueryService userReservationQueryService;
+	private UserReservationModifyService userReservationModifyService;
+	private UserRequestRepairService userRequestRepairService;
 	private LoginController loginController;
-  
+
 	private CampingCarQueryController campingCarQueryController;
 	private CampingCarAvailableDateQueryController campingCarAvailableDateQueryController;
 	private SqlQueryController sqlQueryController;
-
+	private UserReservationQueryController userReservationQueryController;
+	private UserReservationModifyController userReservationModifyController;
+	private UserRequestRepairController userRequestRepairController;
 
 	private AppConfig() {
 
@@ -88,7 +98,7 @@ public class AppConfig {
 
 	public CustomerRepository customerRepository() {
 		if (customerRepository == null) {
-			customerRepository = new CustomerRepository(dbConnection().getConnection());
+			customerRepository = new CustomerRepository();
 		}
 
 		return customerRepository;
@@ -96,7 +106,7 @@ public class AppConfig {
 
 	public CampingCarRepository campingCarRepository() {
 		if (campingCarRepository == null) {
-			campingCarRepository = new CampingCarRepository(dbConnection().getConnection());
+			campingCarRepository = new CampingCarRepository();
 		}
 
 		return campingCarRepository;
@@ -104,7 +114,7 @@ public class AppConfig {
 
 	public CampingCarCompanyRepository campingCarCompanyRepository() {
 		if (campingCarCompanyRepository == null) {
-			campingCarCompanyRepository = new CampingCarCompanyRepository(dbConnection().getConnection());
+			campingCarCompanyRepository = new CampingCarCompanyRepository();
 		}
 
 		return campingCarCompanyRepository;
@@ -112,7 +122,7 @@ public class AppConfig {
 
 	public RentalRepository rentalRepository() {
 		if (rentalRepository == null) {
-			rentalRepository = new RentalRepository(dbConnection().getConnection());
+			rentalRepository = new RentalRepository();
 		}
 
 		return rentalRepository;
@@ -120,7 +130,7 @@ public class AppConfig {
 
 	public EmployeeRepository employeeRepository() {
 		if (employeeRepository == null) {
-			employeeRepository = new EmployeeRepository(dbConnection().getConnection());
+			employeeRepository = new EmployeeRepository();
 		}
 
 		return employeeRepository;
@@ -128,7 +138,7 @@ public class AppConfig {
 
 	public ExternalRepairShopRepository externalRepairShopRepository() {
 		if (externalRepairShopRepository == null) {
-			externalRepairShopRepository = new ExternalRepairShopRepository(dbConnection().getConnection());
+			externalRepairShopRepository = new ExternalRepairShopRepository();
 		}
 
 		return externalRepairShopRepository;
@@ -136,7 +146,7 @@ public class AppConfig {
 
 	public ExternalRepairRecordRepository externalRepairRecordRepository() {
 		if (externalRepairRecordRepository == null) {
-			externalRepairRecordRepository = new ExternalRepairRecordRepository(dbConnection().getConnection());
+			externalRepairRecordRepository = new ExternalRepairRecordRepository();
 		}
 
 		return externalRepairRecordRepository;
@@ -144,7 +154,7 @@ public class AppConfig {
 
 	public InternalRepairRecordRepository internalRepairRecordRepository() {
 		if (internalRepairRecordRepository == null) {
-			internalRepairRecordRepository = new InternalRepairRecordRepository(dbConnection().getConnection());
+			internalRepairRecordRepository = new InternalRepairRecordRepository();
 		}
 
 		return internalRepairRecordRepository;
@@ -152,7 +162,7 @@ public class AppConfig {
 
 	public PartRepository partRepository() {
 		if (partRepository == null) {
-			partRepository = new PartRepository(dbConnection().getConnection());
+			partRepository = new PartRepository();
 		}
 
 		return partRepository;
@@ -243,21 +253,39 @@ public class AppConfig {
 
 		return repairRecordFetchService;
 	}
+
 	public CampingCarQueryService campingCarQueryService() {
 		if (campingCarQueryService == null) {
 			this.campingCarQueryService = new CampingCarQueryService(this.campingCarRepository());
 		}
 		return campingCarQueryService;
 	}
-	
+
 	public CampingCarAvailableDateQueryService campingCarAvailableDateQueryService() {
 		if (campingCarAvailableDateQueryService == null) {
 			this.campingCarAvailableDateQueryService = new CampingCarAvailableDateQueryService(this.rentalRepository());
 		}
 		return campingCarAvailableDateQueryService;
 	}
-	
-	
+
+	public UserReservationQueryService userReservationQueryService() {
+		if(userReservationQueryService == null) {
+			this.userReservationQueryService = new UserReservationQueryService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository(), this.campingCarCompanyRepository());
+		}
+		return userReservationQueryService;
+	}
+	public UserReservationModifyService userReservationModifyService() {
+		if(userReservationModifyService == null) {
+			this.userReservationModifyService = new UserReservationModifyService(this.rentalRepository(), this.campingCarRepository(), this.customerRepository());
+		}
+		return userReservationModifyService;
+	}
+	public UserRequestRepairService userRequestRepairService() {
+		if(userRequestRepairService == null) {
+			this.userRequestRepairService = new UserRequestRepairService(this.externalRepairRecordRepository(),this.externalRepairShopRepository(), this.customerRepository());
+		}
+		return userRequestRepairService;
+	}
 
 	// controller
 
@@ -268,19 +296,22 @@ public class AppConfig {
 
 		return loginController;
 	}
+
 	public CampingCarQueryController campingCarQueryController() {
-		if(campingCarQueryController == null) {
-			campingCarQueryController = new CampingCarQueryController(this.campingCarQueryService(),this.appCoordinator());
+		if (campingCarQueryController == null) {
+			campingCarQueryController = new CampingCarQueryController(this.campingCarQueryService(),
+					this.appCoordinator());
 		}
 		return campingCarQueryController;
 	}
+
 	public CampingCarAvailableDateQueryController campingCarAvailableDateQueryController() {
-		if(campingCarAvailableDateQueryController == null) {
-			campingCarAvailableDateQueryController = new CampingCarAvailableDateQueryController(this.campingCarAvailableDateQueryService(), this.appCoordinator());
+		if (campingCarAvailableDateQueryController == null) {
+			campingCarAvailableDateQueryController = new CampingCarAvailableDateQueryController(
+					this.campingCarAvailableDateQueryService(), this.appCoordinator());
 		}
 		return campingCarAvailableDateQueryController;
 	}
-	
 
 	public SqlQueryController sqlQueryController() {
 		if (sqlQueryController == null) {
@@ -289,5 +320,22 @@ public class AppConfig {
 
 		return sqlQueryController;
 	}
-
+	public UserReservationQueryController userReservationQueryController() {
+		if(userReservationQueryController == null) {
+			userReservationQueryController = new UserReservationQueryController(this.userReservationQueryService(), this.appCoordinator());
+		}
+		return userReservationQueryController;
+	}
+	public UserReservationModifyController userReservationModifyController() {
+		if(userReservationModifyController == null) {
+			userReservationModifyController = new UserReservationModifyController(this.userReservationModifyService(), this.appCoordinator());
+		}
+		return userReservationModifyController;
+	}
+	public UserRequestRepairController userRequestRepairController() {
+		if(userRequestRepairController == null) {
+			userRequestRepairController = new UserRequestRepairController(this.userRequestRepairService(), this.appCoordinator());
+		}
+		return userRequestRepairController;
+	}
 }

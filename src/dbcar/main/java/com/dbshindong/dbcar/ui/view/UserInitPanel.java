@@ -43,6 +43,9 @@ public class UserInitPanel extends JPanel {
 		campingcarLookupButton.addActionListener(e -> { 
 			ac.appCoordinator().showCampingCarQueryView();
 		});
+		reservationLookupButton.addActionListener(e -> {
+			ac.appCoordinator().showUserReservationQueryView();
+		});
 	
 
 	}

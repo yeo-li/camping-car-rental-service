@@ -1,11 +1,14 @@
 package dbcar.main.java.com.dbshindong.dbcar.ui.view;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +54,8 @@ public class DeleteUpdatePanel extends JPanel {
 		add(tableSelector, BorderLayout.NORTH);
 
 		dataTable = new JTable();
+		dataTable.setShowGrid(true);
+		dataTable.setGridColor(Color.GRAY);
 		add(new JScrollPane(dataTable), BorderLayout.CENTER);
 
 		JPanel bottomPanel = new JPanel(new BorderLayout());
@@ -173,6 +178,36 @@ public class DeleteUpdatePanel extends JPanel {
 		updateFieldPanel.repaint();
 	}
 
+//	private void refreshTableData() {
+//		String table = (String) tableSelector.getSelectedItem();
+//		try {
+//			List<Map<String, Object>> rows = ac.dataFetchService().fetchData("SELECT * FROM " + table);
+//			if (rows.isEmpty()) {
+//				dataTable.setModel(new DefaultTableModel());
+//				return;
+//			}
+//
+//			String[] columns = rows.get(0).keySet().toArray(new String[0]);
+//			for (int i = 0; i < columns.length; i++) {
+//				columns[i] = columns[i].substring(columns[i].indexOf('_') + 1);
+//			}
+//
+//			DefaultTableModel model = new DefaultTableModel(columns, 0) {
+//				@Override
+//				public boolean isCellEditable(int row, int column) {
+//					return false;
+//				}
+//			};
+//			for (Map<String, Object> row : rows) {
+//				Object[] rowData = row.values().toArray();
+//				model.addRow(rowData);
+//			}
+//			dataTable.setModel(model);
+//		} catch (Exception ex) {
+//			throw new IllegalArgumentException("데이터를 조회할 수 없습니다. 선택한 테이블: " + table);
+//		}
+//	}
+
 	private void refreshTableData() {
 		String table = (String) tableSelector.getSelectedItem();
 		try {
@@ -182,22 +217,71 @@ public class DeleteUpdatePanel extends JPanel {
 				return;
 			}
 
-			String[] columns = rows.get(0).keySet().toArray(new String[0]);
+			Map<String, Object> firstRow = rows.get(0);
+			String[] columns = firstRow.keySet().toArray(new String[0]);
+			Object[][] data = new Object[rows.size()][columns.length];
+
+			for (int i = 0; i < rows.size(); i++) {
+				Map<String, Object> row = rows.get(i);
+				for (int j = 0; j < columns.length; j++) {
+					Object value = row.get(columns[j]);
+					if (value instanceof byte[] && columns[j].toLowerCase().contains("image")) {
+						try {
+							BufferedImage img = ImageIO.read(new ByteArrayInputStream((byte[]) value));
+							if (img != null) {
+								value = new ImageIcon(img.getScaledInstance(100, 60, Image.SCALE_SMOOTH));
+							} else {
+								value = "이미지 오류";
+							}
+						} catch (IOException e) {
+							value = "이미지 오류";
+						}
+					}
+					data[i][j] = value;
+				}
+			}
+
 			for (int i = 0; i < columns.length; i++) {
 				columns[i] = columns[i].substring(columns[i].indexOf('_') + 1);
 			}
 
-			DefaultTableModel model = new DefaultTableModel(columns, 0) {
+			DefaultTableModel model = new DefaultTableModel(data, columns) {
 				@Override
 				public boolean isCellEditable(int row, int column) {
 					return false;
 				}
 			};
-			for (Map<String, Object> row : rows) {
-				Object[] rowData = row.values().toArray();
-				model.addRow(rowData);
-			}
 			dataTable.setModel(model);
+
+			// 이미지 렌더링 셀 설정
+			dataTable.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					if (value instanceof ImageIcon) {
+						JLabel label = new JLabel((ImageIcon) value);
+						label.setHorizontalAlignment(SwingConstants.CENTER);
+						return label;
+					}
+					return super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				}
+			});
+
+			dataTable.setRowHeight(80); // 이미지 높이에 맞게 설정
+			boolean flag = false;
+			for (String col : columns) {
+				if (col.equals("image"))
+					flag = true;
+			}
+			if (flag) {
+				dataTable.setRowHeight(80);
+			} else {
+				dataTable.setRowHeight(20);
+			}
+
+			dataTable.setShowGrid(true); // ✅ 추가
+			dataTable.setGridColor(Color.GRAY); // ✅ 추가
+
 		} catch (Exception ex) {
 			throw new IllegalArgumentException("데이터를 조회할 수 없습니다. 선택한 테이블: " + table);
 		}

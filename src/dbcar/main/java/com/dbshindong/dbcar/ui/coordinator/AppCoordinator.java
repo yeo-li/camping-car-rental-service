@@ -9,6 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
+import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Customer;
+import dbcar.main.java.com.dbshindong.dbcar.domain.customer.Rental;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.*;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.CampingCarCompanyInsertPanel;
 import dbcar.main.java.com.dbshindong.dbcar.ui.view.tableinsert.CampingCarInsertPanel;
@@ -207,6 +209,7 @@ public class AppCoordinator {
 		tableContentPanel.removeAll();
 		tableContentPanel.revalidate();
 		tableContentPanel.repaint();
+		tableContentPanel.requestFocusInWindow(); // 기본 포커스 회복용
 	}
 
 	public void showSqlQueryView() {
@@ -242,6 +245,24 @@ public class AppCoordinator {
 		frame.revalidate();
 	}
 
+	public void showUserReservationQueryView() { 
+		UserReservationQueryPanel view = new UserReservationQueryPanel();
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+	
+	public void showUserReservationModifyView(Rental target, String carname) {
+		UserReservationModifyPanel view = new UserReservationModifyPanel(target, carname);
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+	public void showUserRequestRepairView(Rental rent, String userId) {
+		UserRequestRepairPanel view = new UserRequestRepairPanel(rent, userId);
+		frame.setContentPane(view);
+		frame.revalidate();
+	}
+
+
 	private JPanel buildTopBar() {
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 
@@ -256,6 +277,7 @@ public class AppCoordinator {
 		JButton logoutButton = new JButton("🔒 로그아웃");
 		logoutButton.addActionListener(e -> {
 			setUser(null);
+			ac.dbConnection().close();
 			showLoginView();
 		});
 

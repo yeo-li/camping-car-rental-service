@@ -5,24 +5,21 @@ import java.util.*;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.RepositoryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCarCompany;
 
 public class CampingCarCompanyRepository {
-	private final Connection conn;
 
-	public CampingCarCompanyRepository(Connection conn) throws RepositoryException {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public List<CampingCarCompany> findAll() {
 		List<CampingCarCompany> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM CampingCarCompany";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -44,7 +41,7 @@ public class CampingCarCompanyRepository {
 	public CampingCarCompany findById(int id) throws RepositoryException {
 		try {
 			String sql = "SELECT * FROM CampingCarCompany WHERE company_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			ResultSet rs = pstmt.executeQuery();
 
@@ -67,7 +64,7 @@ public class CampingCarCompanyRepository {
 
 		try {
 			String sql = "SELECT * FROM CampingCarCompany WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -96,7 +93,7 @@ public class CampingCarCompanyRepository {
 	public void save(CampingCarCompany company) throws RepositoryException {
 		try {
 			String sql = "INSERT INTO CampingCarCompany (name, address, phone, manager_name, manager_email) VALUES (?, ?, ?, ?, ?)";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, company.getName());
 			pstmt.setString(2, company.getAddress());
 			pstmt.setString(3, company.getPhone());
@@ -114,7 +111,7 @@ public class CampingCarCompanyRepository {
 	public void delete(int id) {
 		try {
 			String sql = "DELETE FROM CampingCarCompany WHERE company_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
@@ -130,7 +127,7 @@ public class CampingCarCompanyRepository {
 	public void update(int id, CampingCarCompany company) {
 		try {
 			String sql = "UPDATE CampingCarCompany SET name = ?, address = ?, phone = ?, manager_name = ?, manager_email = ? WHERE company_id = ?";
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, company.getName());
 			pstmt.setString(2, company.getAddress());
 			pstmt.setString(3, company.getPhone());

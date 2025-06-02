@@ -6,24 +6,20 @@ import java.util.List;
 
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataDeleteException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataInsertException;
-import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataNotFoundException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.DataUpdateException;
 import dbcar.main.java.com.dbshindong.dbcar.common.exception.InvalidQueryException;
+import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.repair.internal.Part;
 
 public class PartRepository {
-	private final Connection conn;
-
-	public PartRepository(Connection conn) {
-		this.conn = conn;
-	}
+	private final AppConfig ac = AppConfig.getInstance();
 
 	public List<Part> findAll() {
 		List<Part> parts = new ArrayList<>();
 		String sql = "SELECT * FROM Part";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 
 			while (rs.next()) {
@@ -51,7 +47,7 @@ public class PartRepository {
 		String sql = "SELECT * FROM Part WHERE part_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 
 			ResultSet rs = pstmt.executeQuery();
@@ -79,7 +75,7 @@ public class PartRepository {
 		List<Part> list = new ArrayList<>();
 		try {
 			String sql = "SELECT * FROM Part WHERE " + condition;
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			ResultSet rs = pstmt.executeQuery();
 			while (rs.next()) {
 				int part_id = rs.getInt("part_id");
@@ -104,7 +100,7 @@ public class PartRepository {
 		String sql = "INSERT INTO Part (name, unit_price, stock_quantity, stock_date, supplier_name) VALUES (?, ?, ?, ?, ?)";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, part.getName());
 			pstmt.setInt(2, part.getUnit_price());
 			pstmt.setInt(3, part.getStock_quantity());
@@ -124,7 +120,7 @@ public class PartRepository {
 		String sql = "UPDATE Part SET name = ?, unit_price = ?, stock_quantity = ?, stock_date = ?, supplier_name = ? WHERE part_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setString(1, part.getName());
 			pstmt.setInt(2, part.getUnit_price());
 			pstmt.setInt(3, part.getStock_quantity());
@@ -147,7 +143,7 @@ public class PartRepository {
 		String sql = "DELETE FROM Part WHERE part_id = ?";
 
 		try {
-			PreparedStatement pstmt = conn.prepareStatement(sql);
+			PreparedStatement pstmt = ac.dbConnection().getConnection().prepareStatement(sql);
 			pstmt.setInt(1, id);
 			int result = pstmt.executeUpdate();
 
