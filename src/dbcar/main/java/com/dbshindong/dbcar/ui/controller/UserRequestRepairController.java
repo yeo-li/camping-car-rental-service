@@ -31,12 +31,17 @@ public class UserRequestRepairController {
 		try {
 			Customer user = this.userRequestRepairService.findCustomerByUserId(userId);
 			List<ExternalRepairRecord> res = this.userRequestRepairService.findRecordByCarAndCustomer(rent.getCar_id(), user.getCustomer_id());
-			boolean flag = true;
+			LocalDate start = rent.getStart_date().toLocalDate();
+			LocalDate end = rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1);
+			LocalDate fix = end;
+			LocalDate today = LocalDate.now();
+			boolean flag = !(today.isAfter(fix) || today.isBefore(start));
 			for(ExternalRepairRecord r : res) {
-				if(r.getRepair_date().toLocalDate().isEqual(LocalDate.now()) || r.getRepair_date().toLocalDate().isBefore(LocalDate.now()) && r.getDue_date().toLocalDate().isAfter(LocalDate.now())) {
-					flag = false;
-					break;
-				}
+				 if (r.getCar_id() == rent.getCar_id()) {
+				        if (r.getRepair_date().toLocalDate().isEqual(fix)) {
+				        	flag = false;
+				        }; //이미 존재
+				 }
 			}
 			if(flag) {
 				ExternalRepairRecord addNew = new ExternalRepairRecord(
@@ -45,9 +50,9 @@ public class UserRequestRepairController {
 						(Integer) rent.getCompany_id(),
 						(Integer) user.getCustomer_id(),
 						"정비내역 추가 요망",
-						LocalDate.now().toString(),
+						rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1).toString(),
 						(Integer) 0,
-						LocalDate.now().toString(),
+						rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1).toString(),
 						""
 						);
 				this.userRequestRepairService.saveRecord(addNew);

@@ -3,6 +3,8 @@ package dbcar.main.java.com.dbshindong.dbcar.ui.controller;
 import java.time.LocalDate;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import dbcar.main.java.com.dbshindong.dbcar.application.UserReservationQueryService;
 import dbcar.main.java.com.dbshindong.dbcar.config.AppConfig;
 import dbcar.main.java.com.dbshindong.dbcar.domain.company.CampingCar;
@@ -64,5 +66,19 @@ public class UserReservationQueryController {
 			throw e;
 		}
 	}
-	
+	public void onSelectedRepair(Rental rent, String id) {
+		LocalDate start = rent.getStart_date().toLocalDate();
+		LocalDate end = rent.getStart_date().toLocalDate().plusDays(rent.getRental_period() - 1);
+		LocalDate fix = end;
+		LocalDate today = LocalDate.now();
+		try {
+			boolean flag = !(today.isAfter(fix) || today.isBefore(start));
+			if(flag) ac.appCoordinator().showUserRequestRepairView(rent, id);
+			else {
+				JOptionPane.showMessageDialog(null, "현재 대여중인 캠핑카에 대해서만 수리를 신청할 수 있습니다.");
+			}
+		} catch(Exception e) {
+			throw e;
+		}
+	}
 }
