@@ -148,7 +148,7 @@ public class UserReservationQueryPanel extends JPanel {
 			            } else if("삭제".equals(columnName)) {
 			            	//삭제 버튼처럼 동작
 			            } else if("정비".equals(columnName)){
-			            	ac.appCoordinator().showUserRequestRepairView(rentList.get(row), ac.appCoordinator().getUser());
+			            	ac.userReservationQueryController().onSelectedRepair(rentList.get(row), ac.appCoordinator().getUser());
 			            }
 			        }
 				}
