@@ -31,11 +31,11 @@ public class UserInitPanel extends JPanel {
 
 		panel.add(mainLabel);
 
-		JButton campingcarLookupButton = new JButton("Lookup Campingcars");
+		JButton campingcarLookupButton = new JButton("캠핑카 예약");
 		campingcarLookupButton.setBounds(presetx, 80 + presety, 200, 25);
 		panel.add(campingcarLookupButton);
 
-		JButton reservationLookupButton = new JButton("Lookup Your Reservations");
+		JButton reservationLookupButton = new JButton("예약 내역 조회");
 		reservationLookupButton.setBounds(presetx + 250, 80 + presety, 200, 25);
 		panel.add(reservationLookupButton);
 
