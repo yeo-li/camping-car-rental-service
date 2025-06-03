@@ -77,7 +77,7 @@ public class UserReservationModifyPanel extends JPanel {
 
         dateOption.addActionListener(e -> {
             switchActionPanel("date");
-            showDateTable();
+            showDateTable(rent);
         });
 
         switchActionPanel("car");
@@ -175,7 +175,7 @@ public class UserReservationModifyPanel extends JPanel {
         actionPanel.repaint();
     }
     private void setupDateComboBoxes() {
-        availableDates = ac.userReservationModifyController().findUnavailableDate(this.rent.getCar_id(), ac.appCoordinator().getUser())
+        availableDates = ac.userReservationModifyController().findUnavailableDate(this.rent.getCar_id(), ac.appCoordinator().getUser(), this.rent)
             .stream()
             .toList();
 
@@ -266,9 +266,9 @@ public class UserReservationModifyPanel extends JPanel {
         }
     }
 
-    private void showDateTable() {
+    private void showDateTable(Rental selected) {
         try {
-            List<DateAvailabilityRequest> list = ac.userReservationModifyController().findUnavailableDate(this.rent.getCar_id(), ac.appCoordinator().getUser());
+            List<DateAvailabilityRequest> list = ac.userReservationModifyController().findUnavailableDate(this.rent.getCar_id(), ac.appCoordinator().getUser(), selected);
             String[] columnNames = {"선택", "날짜"};
             Object[][] data = new Object[list.size()][2];
             for (int i = 0; i < list.size(); i++) {

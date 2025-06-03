@@ -47,7 +47,7 @@ public class UserReservationModifyController {
 		}
 	}
 	
-	public List<DateAvailabilityRequest> findUnavailableDate(int id, String username){
+	public List<DateAvailabilityRequest> findUnavailableDate(int id, String username, Rental selected){
 		try {
 			List<Rental> rentals = this.userReservationModifyService.findRentByCarId(id);//그 자동차의 대여이력 불러와서
 		    
@@ -71,7 +71,7 @@ public class UserReservationModifyController {
 		                rentalIndex++;
 		                continue;
 		            }
-			        if (!date.isBefore(start) && date.isBefore(end) && customer_id != (rentals.get(rentalIndex).getCustomer_id())) {
+			        if (!date.isBefore(start) && date.isBefore(end) && !selected.getStart_date().toLocalDate().isEqual(start)) {
 		                available = false;
 		            }
 			        break; // 이 날짜에 대한 판단이 끝났으면 다음 날짜로
