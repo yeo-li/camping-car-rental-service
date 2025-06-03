@@ -50,8 +50,8 @@ public class LoginPanel extends JPanel {
 		formPanel.add(userPWText, gbc);
 
 		JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 0));
-		JButton userLoginButton = new JButton("User Login");
-		JButton adminLoginButton = new JButton("Admin Login");
+		JButton userLoginButton = new JButton("사용자 로그인");
+		JButton adminLoginButton = new JButton("관리자 로그인");
 		buttonPanel.add(userLoginButton);
 		buttonPanel.add(adminLoginButton);
 
