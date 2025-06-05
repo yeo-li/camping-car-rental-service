@@ -11,6 +11,8 @@ camping-car-rental-project
 │               ├── CampingCarRentalApplication.java
 │               ├── application
 │               ├── common
+│               │   └── exception
+│               ├── config
 │               ├── domain
 │               │   ├── company
 │               │   ├── customer
@@ -18,9 +20,15 @@ camping-car-rental-project
 │               │       ├── external
 │               │       └── internal
 │               ├── infrastructure
+│               │   ├── company
+│               │   ├── customer
+│               │   └── repair
+│               │   │   ├── external
+│               │   │   └── internal
 │               │   └── DBConnection.java
 │               └── ui
 │                   ├── controller
+│                   ├── coordinator
 │                   └── view
 └── resources
 
